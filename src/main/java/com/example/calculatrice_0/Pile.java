@@ -2,7 +2,7 @@ package com.example.calculatrice_0;
 
 import java.util.Stack;
 
-public class Pile {
+public class Pile extends Stack{//héritage
     Stack pile;
     double nombre;
 

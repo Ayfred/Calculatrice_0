@@ -5,6 +5,7 @@ import java.beans.PropertyChangeSupport;
 
 public class Accumulateur {
     Pile pile;
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     public Accumulateur(Pile pile) {
         this.pile = pile;
@@ -47,12 +48,6 @@ public class Accumulateur {
         double dernier = pile.pop();
         pile.push(-dernier);
     };
-
-
-
-
-
-    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         this.support.addPropertyChangeListener(listener);
