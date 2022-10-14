@@ -3,20 +3,27 @@ package com.example.calculatrice_0;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class InterfaceGraphique extends Application {
 
     @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+    public void start(Stage stage) throws Exception {
+        //FXMLLoader fxmlLoader = new FXMLLoader(InterfaceGraphique.class.getResource("Windows.fxml"));
 
         //settings
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Calculatrice v0.1 alpha");
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("Windows.fxml")));
+
+
         stage.setScene(scene);
+        stage.setTitle("Calculatrice v0.1 alpha");
+        //stage.initStyle(StageStyle.TRANSPARENT);
+        stage.setResizable(false);
+
 
 
 
@@ -25,11 +32,16 @@ public class HelloApplication extends Application {
 
     }
 
+
+
+
+
+
+
+
+
+
     public static void main(String[] args) {
-
-
-
-
         launch();
     }
 }

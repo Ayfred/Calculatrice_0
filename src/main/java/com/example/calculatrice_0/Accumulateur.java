@@ -1,4 +1,7 @@
-import java.util.Stack;
+package com.example.calculatrice_0;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 public class Accumulateur {
     Pile pile;
@@ -40,7 +43,38 @@ public class Accumulateur {
         pile.push(dernier / avant_dernier);
     };
 
-    public void neg(){ //neg ?????
-        return -;
+    public void neg(){
+        double dernier = pile.pop();
+        pile.push(-dernier);
     };
+
+
+
+
+
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        this.support.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        this.support.removePropertyChangeListener(listener);
+    }
+
+    private String value;
+
+    public String getValue() {
+        return this.value;
+    }
+
+    public void setValue(String newValue) {
+        String oldValue = this.value;
+        this.value = newValue;
+        this.support.firePropertyChange("value", oldValue, newValue);
+    }
+
+
+
+
 }
