@@ -5,6 +5,7 @@ Version 1.01 beta
 
 Changelog:
 - Ajout d'un icone
+- Bug fixes
 
 Future update v1.1:
 - Eviter d'afficher les erreurs pour cela faire des try and catch partout ? à demander
