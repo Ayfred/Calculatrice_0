@@ -1,10 +1,11 @@
 # Calculatrice polonaise
 Calculatrice polonaise avec l'interface de la calculatrice iPhone
 
-Version 1.0 beta
+Version 1.01 beta
 
 Changelog:
 - Calculatrice polonaise fonctionnelle : ajout de calculs, ajout de clear etc..
+- Ajout icone
 
 Next update v1.1:
 - Eviter d'afficher les erreurs pour cela faire des try and catch partout ? à demander
