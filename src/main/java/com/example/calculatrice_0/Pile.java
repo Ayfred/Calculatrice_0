@@ -2,7 +2,7 @@ package com.example.calculatrice_0;
 
 import java.util.Stack;
 
-public class Pile extends Stack{//héritage
+public class Pile{//héritage
     Stack pile;
     double nombre;
 
@@ -34,5 +34,7 @@ public class Pile extends Stack{//héritage
         pile.clear();//supprime tous les éléments de la liste
     };
 
-
+    public Stack clone(){
+        return (Stack) pile.clone();
+    }
 }

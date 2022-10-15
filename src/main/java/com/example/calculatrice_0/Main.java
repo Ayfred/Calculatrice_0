@@ -1,7 +1,5 @@
 package com.example.calculatrice_0;
 
-import static javafx.application.Application.launch;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -13,11 +11,22 @@ public class Main {
         p.push(6);
         p.push(1);
         p.push(6);
+        p.push(7);
+
 
         accumulateur.add();
-        //accumulateur.div();
+        accumulateur.div();
+        accumulateur.mult();
+        accumulateur.sub();
+        accumulateur.neg();
+        try{
+            accumulateur.sub();}
+        catch(Exception e){
+            System.out.println("Opération impossible");
+        };
 
-        System.out.println(p.pile);
+
+        //System.out.println(p.pile);
 
     }
 }
