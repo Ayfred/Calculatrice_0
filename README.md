@@ -1,4 +1,4 @@
-# Calculatrice_0
+# Calculatrice polonaise
 Calculatrice polonaise avec l'interface de la calculatrice iPhone
 
 Version 1.0 beta
