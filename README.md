@@ -15,6 +15,7 @@ Version 1.0 beta
 
 Changelog:
 - Calculatrice polonaise fonctionnelle : ajout de calculs, ajout de clear etc..
+- Ajout d'une interface graphique
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
