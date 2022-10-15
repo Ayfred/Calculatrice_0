@@ -14,8 +14,8 @@ public class Pile{//héritage
         return pile;
     }
 
-    public int getLast(){//ne sert à r en vrai t'as raison
-        return (int) pile.get(pile.size()-1);
+    public double getLast(){//ne sert à r en vrai t'as raison
+        return (double) pile.get(pile.size()-1);
     }
 
     public void push(double nombre){

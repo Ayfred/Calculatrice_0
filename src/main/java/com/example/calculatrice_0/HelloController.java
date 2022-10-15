@@ -5,15 +5,17 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import java.beans.PropertyChangeSupport;
 
 public class HelloController {
     @FXML
     private Pane titlePane;
-
+    @FXML
+    private Label Resultat;
+    public Pile pile = new Pile();
+    public Accumulateur accumulateur = new Accumulateur(pile);
     private double x, y;
-    private double num1 = 0;
-    private String operator = "+";
+    private String result = "0";
+
 
     public void init(Stage stage) {
         titlePane.setOnMousePressed(mouseEvent -> {
@@ -24,43 +26,38 @@ public class HelloController {
             stage.setX(mouseEvent.getScreenX()-x);
             stage.setY(mouseEvent.getScreenY()-y);
         });
-
-        //btnClose.setOnMouseClicked(mouseEvent -> stage.close());
-        //btnMinimize.setOnMouseClicked(mouseEvent -> stage.setIconified(true));
     }
 
     @FXML
     void onNumberClicked(MouseEvent event) {
-        int value = Integer.parseInt(((Pane)event.getSource()).getId().replace("btn",""));
-        //lblResult.setText(Double.parseDouble(lblResult.getText())==0?String.valueOf((double)value):String.valueOf(Double.parseDouble(lblResult.getText())*10+value));
+        String valeur = "";
+        switch(((Pane)event.getSource()).getId()){
+            case "Numero0" : valeur = "0"; break;
+            case "Numero1" : valeur = "1"; break;
+            case "Numero2" : valeur = "2"; break;
+            case "Numero3" : valeur = "3"; break;
+            case "Numero4" : valeur = "4"; break;
+            case "Numero5" : valeur = "5"; break;
+            case "Numero6" : valeur = "6"; break;
+            case "Numero7" : valeur = "7"; break;
+            case "Numero8" : valeur = "8"; break;
+            case "Numero9" : valeur = "9"; break;
+        }
+        if(result == "0.0" || result == "0"){ result = valeur;}
+        else{result += valeur;}
+        Resultat.setText(result);
     }
 
     @FXML
     void onSymbolClicked(MouseEvent event) {
-        String symbol = ((Pane)event.getSource()).getId().replace("btn","");
-        if(symbol.equals("Equals")) {
-            //double num2 = Double.parseDouble(lblResult.getText());
-            switch (operator) {
-                //case "+" -> lblResult.setText((num1+num2) + "");
-                //case "-" -> lblResult.setText((num1-num2) + "");
-                //case "*" -> lblResult.setText((num1*num2) + "");
-                //case "/" -> lblResult.setText((num1/num2) + "");
-            }
-            operator = ".";
-        }
-        else if(symbol.equals("Clear")) {
-            //lblResult.setText(String.valueOf(0.0));
-            operator = ".";
-        }
-        else {
-            switch (symbol) {
-                case "Plus" -> operator = "+";
-                case "Minus" -> operator = "-";
-                case "Multiply" -> operator = "*";
-                case "Divide" -> operator = "/";
-            }
-            //num1 = Double.parseDouble(lblResult.getText());
-            //lblResult.setText(String.valueOf(0.0));
+        switch(((Pane)event.getSource()).getId()){
+            case "Add" : accumulateur.add(); Resultat.setText(String.valueOf(accumulateur.pile.getLast())); break;
+            case "Mult" : accumulateur.mult(); Resultat.setText(String.valueOf(accumulateur.pile.getLast())); break;
+            case "Sub" : accumulateur.sub(); Resultat.setText(String.valueOf(accumulateur.pile.getLast())); break;
+            case "Div" : accumulateur.div(); Resultat.setText(String.valueOf(accumulateur.pile.getLast())); break;
+            case "Entrer" : accumulateur.pile.push(Double.parseDouble(result)); result = "0.0"; break;
+            case "Clear" : accumulateur.pile.clear(); result = "0.0"; Resultat.setText(result);  break;
+            //case "Push" : accumulateur.pile.push(Double.parseDouble(result)); result = "0.0"; break;
         }
     }
 }
