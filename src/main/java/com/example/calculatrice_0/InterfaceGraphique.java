@@ -3,11 +3,8 @@ package com.example.calculatrice_0;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-
-import java.io.IOException;
 
 public class InterfaceGraphique extends Application {
 
@@ -17,9 +14,10 @@ public class InterfaceGraphique extends Application {
         //settings
         Scene scene = new Scene(FXMLLoader.load(getClass().getResource("Windows.fxml")));
         stage.setScene(scene);
-        stage.setTitle("Calculatrice v0.1 alpha");
+        stage.setTitle("Calculatrice v1.0 beta");
         //stage.initStyle(StageStyle.TRANSPARENT);
         stage.setResizable(false);
+        stage.getIcons().add(new Image("D://maxim//EclipseJava//Calculatrice_0//src//main//resources//Calcultatrice.jpg"));
         stage.show();
     }
 
