@@ -11,5 +11,5 @@ Next update v1.1:
 - nombre à virgule à implementer
 
 
+<span style="color:red;">Created and developped by Ayfred & Smilaid</span>
 
-Created and developped by Ayfred & Smilaid
