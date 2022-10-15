@@ -10,3 +10,6 @@ Next update v1.1:
 - Eviter d'afficher les erreurs pour cela faire des try and catch partout ? à demander
 - nombre à virgule à implementer
 
+
+
+Created and developped by Ayfred & Smilaid
