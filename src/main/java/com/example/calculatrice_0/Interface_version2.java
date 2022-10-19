@@ -37,7 +37,7 @@ public class Interface_version2 extends Application {
         Button btn_add = new Button(); Button btn_mult = new Button(); Button btn_div = new Button(); Button btn_sub = new Button();
         Button btn_neg = new Button(); Button btn_virgule = new Button();
         Label resultat = new Label("0.0");
-
+        Pane pane = new Pane();
 
         //attribution des noms
         button0.setText("0"); button1.setText("1"); button2.setText("2"); button3.setText("3"); button4.setText("4"); button5.setText("5");
@@ -47,13 +47,17 @@ public class Interface_version2 extends Application {
         btn_neg.setText("Moins"); btn_virgule.setText(",");
 
         //config de tailles
-        double x = 80; double y = 80;
+        double x = 60; double y = 60;
         button0.setPrefSize(x, y); button1.setPrefSize(x, y); button2.setPrefSize(x, y); button3.setPrefSize(x, y); button4.setPrefSize(x, y);
         button5.setPrefSize(x, y); button6.setPrefSize(x, y); button7.setPrefSize(x, y); button8.setPrefSize(x, y); button9.setPrefSize(x, y);
         btn_clear.setPrefSize(x, y); btn_push.setPrefSize(x, y); btn_div.setPrefSize(x, y); btn_sub.setPrefSize(x, y); btn_add.setPrefSize(x, y);
         btn_mult.setPrefSize(x, y); btn_neg.setPrefSize(x, y); btn_virgule.setPrefSize(x, y);
         resultat.setPrefSize(300,100);
         //resultat.setFont(new Font(30.0));
+
+
+        //positionnement
+        button0.setLayoutX(2.0); button0.setLayoutY(399.0);
 
         //configuration par défaut
         box.setBackground(new Background(new BackgroundFill(Color.BLUEVIOLET, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -88,20 +92,24 @@ public class Interface_version2 extends Application {
 
         //Gridpane centered
         gridpane.setVgap(5); gridpane.setHgap(5);
-        gridpane.setAlignment(Pos.BOTTOM_CENTER);
+        //gridpane.setAlignment(Pos.BOTTOM_CENTER);
+        gridpane.setLayoutX(100); gridpane.setLayoutY(100);
 
         //Vbox setting up
-        box.getChildren().add(label1);
-        box.getChildren().add(l);
+        box.getChildren().add(pane);
+        box.getChildren().add(button0);
+        //box.getChildren().add(l);
         box.getChildren().add(gridpane);
 
         //création
-        Scene scene = new Scene (new StackPane(box),400, 640);
+        Scene scene = new Scene (new StackPane(box),372, 550);
 
         stage.setScene(scene);
         stage.show();
 
     }
+
+
 
 
     public static void main(String[] args) {
