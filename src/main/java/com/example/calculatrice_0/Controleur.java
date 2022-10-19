@@ -5,11 +5,11 @@ import java.beans.PropertyChangeListener;
 
 public class Controleur implements PropertyChangeListener {
 
+
+
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("updating : " + evt.getNewValue());
+        System.out.println("updating: " + evt.getNewValue());
     }
-
-
-
 }

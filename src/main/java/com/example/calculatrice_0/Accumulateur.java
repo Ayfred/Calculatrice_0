@@ -17,53 +17,53 @@ public class Accumulateur {
     //swap le dernier élément avec l'avant dernier élément de la liste sachant qu'on ne peut pas supprimer un élément
     // au milieu de la pile
     public void swap(){
-        Stack oldPile = pile.clone();
+        Pile oldPile = (Pile) pile.clone();
         double temp_dernier = pile.pop();
         double temp_avant_dernier = pile.pop();
         pile.push(temp_dernier);
         pile.push(temp_avant_dernier);
-        this.support.firePropertyChange("Pile", oldPile, pile.getPile());
+        this.support.firePropertyChange("Pile", oldPile, pile);
     };
 
 
 
     public void add(){
-        Stack oldPile = pile.clone();
+        Pile oldPile = (Pile) pile.clone();
         double dernier = pile.pop();
         double avant_dernier = pile.pop();
         pile.push(dernier + avant_dernier);
-        this.support.firePropertyChange("Pile", oldPile, pile.getPile());
+        this.support.firePropertyChange("Pile", oldPile, pile);
     };
 
     public void sub(){
-        Stack oldPile = pile.clone();
+        Pile oldPile = (Pile) pile.clone();
         double dernier = pile.pop();
         double avant_dernier = pile.pop();
-        pile.push(dernier - avant_dernier);
-        this.support.firePropertyChange("Pile", oldPile, pile.getPile());
+        pile.push(avant_dernier - dernier);
+        this.support.firePropertyChange("Pile", oldPile, pile);
     };
 
     public void mult(){
-        Stack oldPile = pile.clone();
+        Pile oldPile = (Pile) pile.clone();
         double dernier = pile.pop();
         double avant_dernier = pile.pop();
         pile.push(dernier * avant_dernier);
-        this.support.firePropertyChange("Pile", oldPile, pile.getPile());
+        this.support.firePropertyChange("Pile", oldPile, pile);
     };
 
     public void div(){
-        Stack oldPile = pile.clone();
+        Pile oldPile = (Pile) pile.clone();
         double dernier = pile.pop();
         double avant_dernier = pile.pop();
-        pile.push(dernier / avant_dernier);
-        this.support.firePropertyChange("Pile", oldPile, pile.getPile());
+        pile.push(avant_dernier / dernier);
+        this.support.firePropertyChange("Pile", oldPile, pile);
     };
 
     public void neg(){
-        Stack oldPile = pile.clone();
+        Pile oldPile = (Pile) pile.clone();
         double dernier = pile.pop();
         pile.push(-dernier);
-        this.support.firePropertyChange("Pile", oldPile, pile.getPile());
+        this.support.firePropertyChange("Pile", oldPile, pile);
     };
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -73,18 +73,6 @@ public class Accumulateur {
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         this.support.removePropertyChangeListener(listener);
     }
-
-    public Pile getValue() {
-        return this.pile;
-    }
-
-    public void setPile(Pile newPile) {
-        Pile oldPile = this.pile;
-        this.pile = newPile;
-        this.support.firePropertyChange("Pile", oldPile, newPile);
-    }
-
-
 
 
 }

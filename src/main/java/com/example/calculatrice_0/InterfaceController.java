@@ -6,7 +6,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class HelloController {
+import java.beans.PropertyChangeSupport;
+
+public class InterfaceController {
     @FXML
     private Pane titlePane;
     @FXML
@@ -16,8 +18,16 @@ public class HelloController {
     private double x, y;
     private String result = "0";
 
+    Controleur controleur = new Controleur();
+
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+
 
     public void init(Stage stage) {
+        Controleur controleur = new Controleur();
+        support.addPropertyChangeListener(controleur);
+
+        support.addPropertyChangeListener(controleur);
         titlePane.setOnMousePressed(mouseEvent -> {
             x = mouseEvent.getSceneX();
             y = mouseEvent.getSceneY();
@@ -51,7 +61,7 @@ public class HelloController {
     @FXML
     void onSymbolClicked(MouseEvent event) {
         switch(((Pane)event.getSource()).getId()){
-            case "Add" : accumulateur.add(); Resultat.setText(String.valueOf(accumulateur.pile.getLast())); break;
+            case "Add" : support.firePropertyChange("Add","",""); /*accumulateur.add();*/ Resultat.setText(String.valueOf(accumulateur.pile.getLast())); break;
             case "Mult" : accumulateur.mult(); Resultat.setText(String.valueOf(accumulateur.pile.getLast())); break;
             case "Sub" : accumulateur.sub(); Resultat.setText(String.valueOf(accumulateur.pile.getLast())); break;
             case "Div" : accumulateur.div(); Resultat.setText(String.valueOf(accumulateur.pile.getLast())); break;

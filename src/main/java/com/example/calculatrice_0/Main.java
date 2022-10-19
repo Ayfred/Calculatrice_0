@@ -4,14 +4,14 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Pile p = new Pile();
-        Accumulateur accumulateur = new Accumulateur(p);
+/*        Pile p = new Pile();
+        Accumulateur accumulateur = new Accumulateur(p);*/
 
-        p.push(553);
-        p.push(6);
-        p.push(1);
-        p.push(6);
-        p.push(7);
+/*        p.push(553.0);
+        p.push(6.0);
+        p.push(1.0);
+        p.push(6.0);
+        p.push(7.0);
 
 
         accumulateur.add();
@@ -23,7 +23,8 @@ public class Main {
             accumulateur.sub();}
         catch(Exception e){
             System.out.println("Opération impossible");
-        };
+        };*/
+
 
 
         //System.out.println(p.pile);
