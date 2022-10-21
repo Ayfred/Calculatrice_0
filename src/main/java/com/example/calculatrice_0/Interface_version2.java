@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import javax.swing.text.Position;
@@ -56,6 +57,26 @@ public class Interface_version2 extends Application {
         resultat.setPrefSize(50,150);
         //resultat.setFont(new Font(30.0));
 
+        button0.setShape(new Circle(1.5));
+        button1.setShape(new Circle(1.5));
+        button2.setShape(new Circle(1.5));
+        button3.setShape(new Circle(1.5));
+        button4.setShape(new Circle(1.5));
+        button5.setShape(new Circle(1.5));
+        button6.setShape(new Circle(1.5));
+        button7.setShape(new Circle(1.5));
+        button8.setShape(new Circle(1.5));
+        button9.setShape(new Circle(1.5));
+        btn_add.setShape(new Circle(1.5));
+        btn_div.setShape(new Circle(1.5));
+        btn_sub.setShape(new Circle(1.5));
+        btn_mult.setShape(new Circle(1.5));
+        btn_clear.setShape(new Circle(1.5));
+        btn_virgule.setShape(new Circle(1.5));
+        btn_neg.setShape(new Circle(1.5));
+        btn_push.setShape(new Circle(1.5));
+
+
 
 
         //positionnement
@@ -65,7 +86,7 @@ public class Interface_version2 extends Application {
         button3.setTranslateX(180); button3.setTranslateY(323);
         button4.setTranslateX(2.0); button4.setTranslateY(248);
         button5.setTranslateX(92); button5.setTranslateY(248);
-        button6.setTranslateX(180); button6.setTranslateY(247);
+        button6.setTranslateX(180); button6.setTranslateY(248);
         button7.setTranslateX(2.0); button7.setTranslateY(172);
         button8.setTranslateX(92); button8.setTranslateY(172);
         button9.setTranslateX(180); button9.setTranslateY(172);
@@ -75,18 +96,41 @@ public class Interface_version2 extends Application {
         btn_neg.setTranslateX(92); btn_neg.setTranslateY(399);
         btn_clear.setTranslateX(2); btn_clear.setTranslateY(98);
         btn_mult.setTranslateX(268); btn_mult.setTranslateY(173);
-        btn_push.setTranslateX(267); btn_push.setTranslateY(399);
+        btn_push.setTranslateX(268); btn_push.setTranslateY(399);
         btn_virgule.setTranslateX(180); btn_virgule.setTranslateY(399);
         btn_sub.setTranslateX(268); btn_sub.setTranslateY(248);
 
+        resultat.setTranslateX(2); resultat.setTranslateY(20);
 
 
         //configuration par défaut
-        box.setBackground(new Background(new BackgroundFill(Color.BLUEVIOLET, CornerRadii.EMPTY, Insets.EMPTY)));
+        box.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
 
-        //gridpane
+        //color config
+        resultat.setTextFill(Color.WHITE);
+        button0.setStyle("-fx-background-color: #FFFFFF");
 
+        //button color
+        button0. setStyle("-fx-background-color: #5A5A5A");
+        button1. setStyle("-fx-background-color: #5A5A5A");
+        button2. setStyle("-fx-background-color: #5A5A5A");
+        button3. setStyle("-fx-background-color: #5A5A5A");
+        button4. setStyle("-fx-background-color: #5A5A5A");
+        button5. setStyle("-fx-background-color: #5A5A5A");
+        button6. setStyle("-fx-background-color: #5A5A5A");
+        button7. setStyle("-fx-background-color: #5A5A5A");
+        button8. setStyle("-fx-background-color: #5A5A5A");
+        button9. setStyle("-fx-background-color: #5A5A5A");
+        btn_virgule. setStyle("-fx-background-color: #5A5A5A");
+
+        btn_add. setStyle("-fx-background-color: #EC9706");
+        btn_div. setStyle("-fx-background-color: #EC9706");
+        btn_mult. setStyle("-fx-background-color: #EC9706");
+        btn_sub. setStyle("-fx-background-color: #EC9706");
+        btn_push. setStyle("-fx-background-color: #EC9706");
+
+        btn_clear.setStyle("-fx-background-color: #808080");
 
 
 
@@ -99,9 +143,6 @@ public class Interface_version2 extends Application {
 
 
         //Vbox setting up
-        //box.getChildren().add(pane);
-        //box.getChildren().add(button0);
-        //box.getChildren().add(l);
         box.getChildren().add(stackPane);
 
         //création
