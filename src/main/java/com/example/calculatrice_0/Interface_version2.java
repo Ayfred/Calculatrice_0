@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 
 import javax.swing.text.Position;
 import java.awt.*;
+import java.util.Stack;
 
 
 public class Interface_version2 extends Application {
@@ -30,7 +31,7 @@ public class Interface_version2 extends Application {
         Label l = new Label ("Hello, JavaFX 13, running on Java version " + version);
         Label label1 = new Label ( "Bonjour ! ");
         VBox box = new VBox();
-        GridPane gridpane = new GridPane();
+        StackPane stackPane = new StackPane();
         Button button0 = new Button(); Button button1 = new Button(); Button button2 = new Button(); Button button3 = new Button(); Button button4 = new Button();
         Button button5 = new Button(); Button button6 = new Button(); Button button7 = new Button(); Button button8 = new Button(); Button button9 = new Button();
         Button btn_clear = new Button(); Button btn_push = new Button();
@@ -47,63 +48,65 @@ public class Interface_version2 extends Application {
         btn_neg.setText("Moins"); btn_virgule.setText(",");
 
         //config de tailles
-        double x = 60; double y = 60;
+        double x = 70; double y = 70;
         button0.setPrefSize(x, y); button1.setPrefSize(x, y); button2.setPrefSize(x, y); button3.setPrefSize(x, y); button4.setPrefSize(x, y);
         button5.setPrefSize(x, y); button6.setPrefSize(x, y); button7.setPrefSize(x, y); button8.setPrefSize(x, y); button9.setPrefSize(x, y);
         btn_clear.setPrefSize(x, y); btn_push.setPrefSize(x, y); btn_div.setPrefSize(x, y); btn_sub.setPrefSize(x, y); btn_add.setPrefSize(x, y);
         btn_mult.setPrefSize(x, y); btn_neg.setPrefSize(x, y); btn_virgule.setPrefSize(x, y);
-        resultat.setPrefSize(300,100);
+        resultat.setPrefSize(50,150);
         //resultat.setFont(new Font(30.0));
 
 
+
         //positionnement
-        button0.setLayoutX(2.0); button0.setLayoutY(399.0);
+        button0.setTranslateX(2.0); button0.setTranslateY(399);
+        button1.setTranslateX(2.0); button1.setTranslateY(323);
+        button2.setTranslateX(92); button2.setTranslateY(323);
+        button3.setTranslateX(180); button3.setTranslateY(323);
+        button4.setTranslateX(2.0); button4.setTranslateY(248);
+        button5.setTranslateX(92); button5.setTranslateY(248);
+        button6.setTranslateX(180); button6.setTranslateY(247);
+        button7.setTranslateX(2.0); button7.setTranslateY(172);
+        button8.setTranslateX(92); button8.setTranslateY(172);
+        button9.setTranslateX(180); button9.setTranslateY(172);
+
+        btn_add.setTranslateX(268); btn_add.setTranslateY(322);
+        btn_div.setTranslateX(268); btn_div.setTranslateY(98);
+        btn_neg.setTranslateX(92); btn_neg.setTranslateY(399);
+        btn_clear.setTranslateX(2); btn_clear.setTranslateY(98);
+        btn_mult.setTranslateX(268); btn_mult.setTranslateY(173);
+        btn_push.setTranslateX(267); btn_push.setTranslateY(399);
+        btn_virgule.setTranslateX(180); btn_virgule.setTranslateY(399);
+        btn_sub.setTranslateX(268); btn_sub.setTranslateY(248);
+
+
 
         //configuration par défaut
         box.setBackground(new Background(new BackgroundFill(Color.BLUEVIOLET, CornerRadii.EMPTY, Insets.EMPTY)));
 
 
         //gridpane
-        GridPane.setRowIndex(button0, 4); GridPane.setColumnIndex(button0, 1);
-        GridPane.setRowIndex(button1, 3); GridPane.setColumnIndex(button1, 1);
-        GridPane.setRowIndex(button2, 3); GridPane.setColumnIndex(button2, 2);
-        GridPane.setRowIndex(button3, 3); GridPane.setColumnIndex(button3, 3);
-        GridPane.setRowIndex(button4, 2); GridPane.setColumnIndex(button4, 1);
-        GridPane.setRowIndex(button5, 2); GridPane.setColumnIndex(button5, 2);
-        GridPane.setRowIndex(button6, 2); GridPane.setColumnIndex(button6, 3);
-        GridPane.setRowIndex(button7, 1); GridPane.setColumnIndex(button7, 1);
-        GridPane.setRowIndex(button8, 1); GridPane.setColumnIndex(button8, 2);
-        GridPane.setRowIndex(button9, 1); GridPane.setColumnIndex(button9, 3);
-
-        GridPane.setRowIndex(btn_div, 0); GridPane.setColumnIndex(btn_div, 4);
-        GridPane.setRowIndex(btn_mult, 1); GridPane.setColumnIndex(btn_mult, 4);
-        GridPane.setRowIndex(btn_sub, 2); GridPane.setColumnIndex(btn_sub, 4);
-        GridPane.setRowIndex(btn_add, 3); GridPane.setColumnIndex(btn_add, 4);
-        GridPane.setRowIndex(btn_clear, 0); GridPane.setColumnIndex(btn_clear, 1);
-        GridPane.setRowIndex(btn_push, 4); GridPane.setColumnIndex(btn_push, 4);
-        GridPane.setRowIndex(btn_virgule, 4); GridPane.setColumnIndex(btn_virgule, 3);
-        GridPane.setRowIndex(btn_neg, 4); GridPane.setColumnIndex(btn_neg, 2);
 
 
 
-        GridPane.setConstraints(label1, 3, 0);
-        gridpane.getChildren().addAll(button0, button1, button2, button3, button4, button5, button6, button7, button8, button9, btn_add, btn_clear, btn_div, btn_mult, btn_neg, btn_push, btn_sub, btn_virgule);
+
+        stackPane.getChildren().addAll(resultat, button0, button1, button2, button3, button4, button5, button6, button7, button8, button9, btn_add, btn_clear, btn_div, btn_mult, btn_neg, btn_push, btn_sub, btn_virgule);
 
 
         //Gridpane centered
-        gridpane.setVgap(5); gridpane.setHgap(5);
         //gridpane.setAlignment(Pos.BOTTOM_CENTER);
-        gridpane.setLayoutX(100); gridpane.setLayoutY(100);
+        stackPane.setTranslateX(-140); stackPane.setTranslateY(-30);
 
 
         //Vbox setting up
-        box.getChildren().add(pane);
-        box.getChildren().add(button0);
+        //box.getChildren().add(pane);
+        //box.getChildren().add(button0);
         //box.getChildren().add(l);
-        box.getChildren().add(gridpane);
+        box.getChildren().add(stackPane);
 
         //création
-        Scene scene = new Scene (new StackPane(box),372, 550);
+        Scene scene = new Scene (new StackPane(box),372, 500);
+        stage.setResizable(false);
 
         stage.setScene(scene);
         stage.show();
