@@ -95,6 +95,7 @@ public class Interface_version2 extends Application {
         //gridpane.setAlignment(Pos.BOTTOM_CENTER);
         gridpane.setLayoutX(100); gridpane.setLayoutY(100);
 
+
         //Vbox setting up
         box.getChildren().add(pane);
         box.getChildren().add(button0);
