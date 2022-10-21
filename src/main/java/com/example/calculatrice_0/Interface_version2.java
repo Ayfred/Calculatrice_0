@@ -12,6 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import javax.swing.text.Position;
@@ -107,11 +109,33 @@ public class Interface_version2 extends Application {
         box.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
 
-        //color config
-        resultat.setTextFill(Color.WHITE);
-        button0.setStyle("-fx-background-color: #FFFFFF");
+
+        //button font
+        button0.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+        button1.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+        button2.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+        button3.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+        button4.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+        button5.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+        button6.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+        button7.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+        button8.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+        button9.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+        btn_add.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+        btn_div.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+        btn_clear.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+        btn_sub.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+        //btn_neg.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+        //btn_push.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+        btn_mult.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+        btn_virgule.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+
+        resultat.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+
 
         //button color
+        resultat.setTextFill(Color.WHITE);
+
         button0. setStyle("-fx-background-color: #5A5A5A");
         button1. setStyle("-fx-background-color: #5A5A5A");
         button2. setStyle("-fx-background-color: #5A5A5A");
@@ -122,15 +146,35 @@ public class Interface_version2 extends Application {
         button7. setStyle("-fx-background-color: #5A5A5A");
         button8. setStyle("-fx-background-color: #5A5A5A");
         button9. setStyle("-fx-background-color: #5A5A5A");
+        btn_neg. setStyle("-fx-background-color: #5A5A5A");
         btn_virgule. setStyle("-fx-background-color: #5A5A5A");
-
         btn_add. setStyle("-fx-background-color: #EC9706");
         btn_div. setStyle("-fx-background-color: #EC9706");
         btn_mult. setStyle("-fx-background-color: #EC9706");
         btn_sub. setStyle("-fx-background-color: #EC9706");
         btn_push. setStyle("-fx-background-color: #EC9706");
+        btn_clear.setStyle("-fx-background-color: #C0C0C0");
 
-        btn_clear.setStyle("-fx-background-color: #808080");
+
+        button0.setTextFill(Color.WHITE);
+        button1.setTextFill(Color.WHITE);
+        button2.setTextFill(Color.WHITE);
+        button3.setTextFill(Color.WHITE);
+        button4.setTextFill(Color.WHITE);
+        button5.setTextFill(Color.WHITE);
+        button6.setTextFill(Color.WHITE);
+        button7.setTextFill(Color.WHITE);
+        button8.setTextFill(Color.WHITE);
+        button9.setTextFill(Color.WHITE);
+        btn_clear.setTextFill(Color.BLACK);
+        btn_virgule.setTextFill(Color.WHITE);
+        btn_add.setTextFill(Color.WHITE);
+        btn_div.setTextFill(Color.WHITE);
+        btn_sub.setTextFill(Color.WHITE);
+        btn_mult.setTextFill(Color.WHITE);
+        btn_push.setTextFill(Color.WHITE);
+        btn_neg.setTextFill(Color.WHITE);
+
 
 
 
