@@ -22,7 +22,7 @@ public class Obsolete_InterfaceGraphique extends Application {
 
 
 
-        stage.getIcons().add(new Image("D://maxim//EclipseJava//Calculatrice_0//src//main//resources//Calcultatrice.jpg"));
+        stage.getIcons().add(new Image("D://maxim//EclipseJava//Calculatrice_0//src//main//resources//Calculatrice.jpg"));
         stage.show();
     }
 

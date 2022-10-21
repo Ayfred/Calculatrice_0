@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 import java.beans.PropertyChangeSupport;
 
-public class InterfaceController {
+public class Obsolete_InterfaceController {
     @FXML
     private Pane titlePane;
     @FXML
