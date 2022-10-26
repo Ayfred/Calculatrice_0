@@ -11,17 +11,26 @@ import java.util.Objects;
 
 public class Controleur implements PropertyChangeListener, EventHandler<MouseEvent> {
 
+    Accumulateur accumulateur = new Accumulateur(new Pile());
+
     public String result = "0.0";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+    private Interface_version2 interface_version2;
 
-    public Controleur() {
+    public Controleur(Interface_version2 interface_version2) {
+        this.interface_version2 = interface_version2;
         support.addPropertyChangeListener(this);
+        accumulateur.support.addPropertyChangeListener(this);
 
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        switch(evt.getPropertyName()){
 
+            case "Push" : interface_version2.resultat.setText("0"); break;
+        }
+        System.out.println(evt.getPropertyName());
     }
 
 
@@ -29,13 +38,13 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
     public void handle(MouseEvent mouseEvent) {
         String valeur = ""; String oldvaleur = valeur;
         switch(((Button)mouseEvent.getSource()).getText()){
-            case "0" : valeur = "0"; support.firePropertyChange("valeur", oldvaleur, valeur); break;
-            case "1" : valeur = "1"; support.firePropertyChange("valeur", oldvaleur, valeur);break;
-            case "2" : valeur = "2"; support.firePropertyChange("valeur", oldvaleur, valeur);break;
-            case "3" : valeur = "3"; support.firePropertyChange("valeur", oldvaleur, valeur);break;
-            case "4" : valeur = "4"; support.firePropertyChange("valeur", oldvaleur, valeur);break;
-            case "5" : valeur = "5"; support.firePropertyChange("valeur", oldvaleur, valeur);break;
-            case "6" : valeur = "6"; support.firePropertyChange("valeur", oldvaleur, valeur);break;
+            case "0" : interface_version2.resultat.setText("0"); break;
+            case "1" : interface_version2.resultat.setText("1"); break;
+            case "2" : interface_version2.resultat.setText("2"); break;
+            case "3" : interface_version2.resultat.setText("3");break;
+            case "4" : interface_version2.resultat.setText("4");break;
+            case "5" : interface_version2.resultat.setText("5");break;
+            case "6" : interface_version2.resultat.setText("6");break;
             case "7" : valeur = "7"; support.firePropertyChange("valeur", oldvaleur, valeur);break;
             case "8" : valeur = "8"; support.firePropertyChange("valeur", oldvaleur, valeur);break;
             case "9" : valeur = "9"; support.firePropertyChange("valeur", oldvaleur, valeur);break;
@@ -43,7 +52,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
             case "*" : support.firePropertyChange("valeur", oldvaleur, valeur);break;
             case "-" : support.firePropertyChange("valeur", oldvaleur, valeur);break;
             case "/" : support.firePropertyChange("valeur", oldvaleur, valeur);break;
-            case "push" : support.firePropertyChange("valeur", oldvaleur, valeur);break;
+            case "push" : accumulateur.push(Double.parseDouble((interface_version2.resultat.getText())));
             case "C" : support.firePropertyChange("valeur", oldvaleur, valeur);break;
         }
         if(Objects.equals(result, "0.0") || Objects.equals(result, "0")){

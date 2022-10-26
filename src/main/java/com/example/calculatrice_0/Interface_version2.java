@@ -23,7 +23,8 @@ import java.beans.PropertyChangeSupport;
 
 public class Interface_version2 extends Application {
 
-    Controleur controleur = new Controleur();
+    Controleur controleur = new Controleur(this);
+    Label resultat;
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     @Override
@@ -32,6 +33,12 @@ public class Interface_version2 extends Application {
         //creation de nouveaux objets
         VBox box = new VBox();
         StackPane stackPane = new StackPane();
+
+        resultat = new Label("0.0");
+        resultat.setTranslateY(20); resultat.setTranslateX(10);
+        resultat.setTextFill(Color.WHITE);
+        resultat.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+        stackPane.getChildren().addAll(resultat);
 
         createButtons(stackPane);
 
@@ -75,11 +82,7 @@ public class Interface_version2 extends Application {
             sp.getChildren().add(button);
             button.setTextFill(Color.WHITE);
 
-            Label resultat = new Label("0.0");
-            resultat.setTranslateY(20); resultat.setTranslateX(10);
-            resultat.setTextFill(Color.WHITE);
-            resultat.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
-            sp.getChildren().addAll(resultat);
+
 
             if(i<10 || i == 16){
                 //si on a 0-9 ou tout
