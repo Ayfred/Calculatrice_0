@@ -25,14 +25,16 @@ public class Accumulateur {
         this.support.firePropertyChange("Pile", oldPile, pile);
     };
 
+    public void push(){
 
+    }
 
     public void add(){
         Pile oldPile = (Pile) pile.clone();
         double dernier = pile.pop();
         double avant_dernier = pile.pop();
         pile.push(dernier + avant_dernier);
-        this.support.firePropertyChange("Pile", oldPile, pile);
+        this.support.firePropertyChange("Pile", null, pile);
     };
 
     public void sub(){
