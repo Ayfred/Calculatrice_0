@@ -18,7 +18,6 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
         PropertyChangeSupport support = new PropertyChangeSupport(this);
         support.addPropertyChangeListener(this);
         accumulateur.addPropertyChangeListener(this);
-
     }
 
     @Override
@@ -50,6 +49,24 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
         modele.resultat = "0";
     }
 
+    public void negatif(){
+        String text = modele.resultat;
+        if(!String.valueOf(text.charAt(0)).equals("-")){
+            modele.resultat = "-" + modele.resultat;
+            modele.updateAffichageResultat();
+        }
+        else{
+            modele.resultat = modele.resultat.substring(1);
+            modele.updateAffichageResultat();
+        }
+    }
+
+    public void virgule(){
+        if(!modele.resultat.contains("."))
+            update(".");
+    }
+    
+
     @Override
     public void handle(MouseEvent mouseEvent) {
         switch (((Button) mouseEvent.getSource()).getText()) {
@@ -69,7 +86,8 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
             case "/" -> accumulateur.div();
             case "push" -> push();
             case "C" -> reset();
-            case "'" -> update(",");
+            case "," -> virgule();
+            case "_" -> negatif();
         }
     }
 }

@@ -112,7 +112,7 @@ public class Modele extends Application {
     }
 
     public void updateResultat(String newResultat){
-        if(resultat.equals("0.0") || resultat.equals("0")){
+        if((resultat.equals("0.0") || resultat.equals("0")) && !newResultat.equals(".")){
             resultat = newResultat;
         }
         else{
