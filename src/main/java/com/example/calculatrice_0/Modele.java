@@ -3,7 +3,6 @@ package com.example.calculatrice_0;
 
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,15 +15,15 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeListener;
+
 import java.beans.PropertyChangeSupport;
 
 
-public class Interface_version2 extends Application {
+public class Modele extends Application {
 
     Controleur controleur = new Controleur(this);
-    Label resultat;
+    Label affichageResultat;
+    String resultat = "0";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     @Override
@@ -34,11 +33,11 @@ public class Interface_version2 extends Application {
         VBox box = new VBox();
         StackPane stackPane = new StackPane();
 
-        resultat = new Label("0.0");
-        resultat.setTranslateY(20); resultat.setTranslateX(10);
-        resultat.setTextFill(Color.WHITE);
-        resultat.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
-        stackPane.getChildren().addAll(resultat);
+        affichageResultat = new Label(resultat);
+        affichageResultat.setTranslateY(20); affichageResultat.setTranslateX(80);
+        affichageResultat.setTextFill(Color.WHITE);
+        affichageResultat.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+        stackPane.getChildren().addAll(affichageResultat);
 
         createButtons(stackPane);
 
@@ -82,52 +81,43 @@ public class Interface_version2 extends Application {
             sp.getChildren().add(button);
             button.setTextFill(Color.WHITE);
 
-
-
-            if(i<10 || i == 16){
-                //si on a 0-9 ou tout
+            if(i<=10 || i == 16 || i == 17){
                 button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
-                if(i==0){
-                    //numéro 0
-                    button.setStyle("-fx-background-color: #5A5A5A");
-                    button.setTextFill(Color.WHITE);
-                    button.addEventHandler(MouseEvent.MOUSE_CLICKED, controleur);
+                button.setStyle("-fx-background-color: #5A5A5A");//couleur grise
+                button.setTextFill(Color.WHITE);//texte blanc
+                button.addEventHandler(MouseEvent.MOUSE_CLICKED, controleur);
 
-                }
-                else{
-                    button.setStyle("-fx-background-color: #5A5A5A");
-                    button.addEventHandler(MouseEvent.MOUSE_CLICKED, controleur);
-
-                }
             }
-            else{
-                if(i==10){
-                    button.setStyle("-fx-background-color: #808080");
+            else if(nomBoutons[i].equals("C")){
+                    button.setStyle("-fx-background-color: #bcbcbc");
                     button.setTextFill(Color.BLACK);
                     button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
                     button.addEventHandler(MouseEvent.MOUSE_CLICKED, controleur);
                 }
-                else{
-                    if(i==17){
-                        button.setStyle("-fx-background-color: #5A5A5A");
-                        button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
-                        button.addEventHandler(MouseEvent.MOUSE_CLICKED, controleur);
-
-                    }
-                    else{
-                        button.setStyle("-fx-background-color: #EC9706");
-                        button.setFont(Font.font("Courier New", FontWeight.BOLD, 18));
-                        if(i != 11) {
-                            button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
-                            button.addEventHandler(MouseEvent.MOUSE_CLICKED, controleur);
-
-                        }
-                    }
-                }
+            else if(nomBoutons[i].equals("push")){
+                button.setStyle("-fx-background-color: #EC9706");//couleur orange
+                button.setFont(Font.font("Courier New", FontWeight.BOLD, 18));
+                button.addEventHandler(MouseEvent.MOUSE_CLICKED, controleur);
+            }
+            else{
+                button.setStyle("-fx-background-color: #EC9706");//couleur orange
+                button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+                button.addEventHandler(MouseEvent.MOUSE_CLICKED, controleur);
             }
         }
     }
 
+    public void updateAffichageResultat(){
+        affichageResultat.setText(resultat);
+    }
+
+    public void updateResultat(String newResultat){
+        if(resultat.equals("0.0") || resultat.equals("0")){
+            resultat = newResultat;
+        }
+        else{
+        resultat = resultat + newResultat;}
+    }
 
 
     public static void main(String[] args) {
