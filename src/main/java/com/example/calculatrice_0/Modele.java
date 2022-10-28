@@ -8,10 +8,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -21,8 +23,9 @@ import java.beans.PropertyChangeSupport;
 
 public class Modele extends Application {
 
-    int coord_x = 372; int coord_y = 500;
+    int largeur = 340; int longueur = 500;
     Controleur controleur = new Controleur(this);
+    Input input = new Input(controleur);
     Label affichageResultat;
     Label affichageMessage;
     Label affichageHistorique_1; Label affichageHistorique_2; Label affichageHistorique_3;
@@ -52,7 +55,7 @@ public class Modele extends Application {
         box.getChildren().add(stackPane);
 
         //création
-        Scene scene = new Scene (new StackPane(box),coord_x, coord_y);
+        Scene scene = new Scene (new StackPane(box), largeur, longueur);
         stage.setResizable(false);
         stage.setTitle("Calculatrice v1.0 Beta");
         stage.getIcons().add(new Image("Calculatrice.jpg"));
@@ -62,7 +65,7 @@ public class Modele extends Application {
     }
 
     public void createLabels(StackPane sp){
-        double centre = coord_x/2.5;
+        double centre = largeur /2.5;
         double coord_y_resultat = 45;
 
         affichageResultat = new Label(resultat);
@@ -97,10 +100,23 @@ public class Modele extends Application {
 
 
     public void createButtons(StackPane sp){
+        //noms des boutons
         String[] nomBoutons = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "C",
-                                "push", "+", "-", "x", "/", "_", ","};
-        int[][] pos = {{2,399},{2,323},{92,323},{180,323},{2,248},{92,248},{180,248},{2,172},{92,172},{180,172},
-                            {2,98},{268,399},{268,322},{268,248},{268,173},{268,98},{92,399},{180,399}};
+                                "push", "+", "-", "x", "/", "_", ",", "%"};
+
+        //coordonnées des boutons
+        int b_x = 20; int b_y = 110;
+        int b_x_1 = b_x + 80; int b_y_1 = b_y + 75;
+        int b_x_2 = b_x_1 + 80; int b_y_2 = b_y_1 + 75;
+        int b_x_3 = b_x_2 + 80; int b_y_3 = b_y_2 + 75;
+        int b_y_4 = b_y_3 + 75;
+
+        int[][] pos = {{b_x+40,b_y_4},{b_x,b_y_3},{b_x_1,b_y_3},{b_x_2,b_y_3},//0-3
+                {b_x,b_y_2},{b_x_1,b_y_2},{b_x_2,b_y_2},//4-6
+                {b_x,b_y_1},{b_x_1,b_y_1},{b_x_2,b_y_1},//7-9
+                {b_x,b_y},{b_x_3,b_y_4},{b_x_3,b_y_3},{b_x_3,b_y_2},{b_x_3,b_y_1},{b_x_3,b_y},{b_x_1,b_y},{b_x_2,b_y_4}, {b_x_2, b_y}};
+
+        //tailles des boutons
         double x = 70; double y = 70;
 
 
@@ -113,28 +129,47 @@ public class Modele extends Application {
             sp.getChildren().add(button);
             button.setTextFill(Color.WHITE);
 
-            if(i<=10 || i == 16 || i == 17){
-                button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
-                button.setStyle("-fx-background-color: #5A5A5A");//couleur grise
-                button.setTextFill(Color.WHITE);//texte blanc
-                button.addEventHandler(MouseEvent.MOUSE_CLICKED, controleur);
+            String button_i = nomBoutons[i];
+            switch(button_i){
+                case "0" ->{
+                    button.setShape(new Rectangle(x+80, y));
+                    button.setPrefSize(x+80,y);
+                    button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+                    //problème avec le border radius
+                    button.setStyle("-fx-background-color: #5A5A5A; -fx-background-radius: 25px;" +//couleur grise
+                            " -fx-border-radius: 10px;-fx-border-width: 5px;-fx-border-color: red;");
+                    button.setTextFill(Color.WHITE);//texte blanc
+                    button.addEventHandler(MouseEvent.MOUSE_CLICKED, controleur);
+                    button.addEventHandler(KeyEvent.KEY_PRESSED, input);
 
-            }
-            else if(nomBoutons[i].equals("C")){
+                }
+
+                case "1", "2", "3", "4", "5", "6", "7", "8", "9","," -> {
+                    button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+                    button.setStyle("-fx-background-color: #5A5A5A");//couleur grise
+                    button.setTextFill(Color.WHITE);//texte blanc
+                    button.addEventHandler(MouseEvent.MOUSE_CLICKED, controleur);
+                    button.addEventHandler(KeyEvent.KEY_PRESSED, input);
+                }
+                case "C", "%", "_" -> {
                     button.setStyle("-fx-background-color: #bcbcbc");
-                    button.setTextFill(Color.BLACK);
+                    button.setTextFill(Color.WHITE);
                     button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
                     button.addEventHandler(MouseEvent.MOUSE_CLICKED, controleur);
+                    button.addEventHandler(KeyEvent.KEY_PRESSED, input);
                 }
-            else if(nomBoutons[i].equals("push")){
-                button.setStyle("-fx-background-color: #EC9706");//couleur orange
-                button.setFont(Font.font("Courier New", FontWeight.BOLD, 18));
-                button.addEventHandler(MouseEvent.MOUSE_CLICKED, controleur);
-            }
-            else{
-                button.setStyle("-fx-background-color: #EC9706");//couleur orange
-                button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
-                button.addEventHandler(MouseEvent.MOUSE_CLICKED, controleur);
+                case "/", "x", "-", "+" -> {
+                    button.setStyle("-fx-background-color: #EC9706");//couleur orange
+                    button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+                    button.addEventHandler(MouseEvent.MOUSE_CLICKED, controleur);
+                    button.addEventHandler(KeyEvent.KEY_PRESSED, input);
+                }
+                case "push" ->{
+                    button.setStyle("-fx-background-color: #EC9706");//couleur orange
+                    button.setFont(Font.font("Courier New", FontWeight.BOLD, 18));
+                    button.addEventHandler(MouseEvent.MOUSE_CLICKED, controleur);
+                    button.addEventHandler(KeyEvent.KEY_PRESSED, input);
+                }
             }
         }
     }
@@ -145,13 +180,6 @@ public class Modele extends Application {
 
     public void updateAffichageMessage(){affichageMessage.setText(message);}
 
-    public void updateResultat(String newResultat){
-        if((resultat.equals("0.0") || resultat.equals("0")) && !newResultat.equals(".")){
-            resultat = newResultat;
-        }
-        else{
-        resultat = resultat + newResultat;}
-    }
 
     public void updateHistorique(){
         historique_3 = historique_2;

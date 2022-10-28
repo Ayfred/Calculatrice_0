@@ -53,7 +53,13 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
         }
 
         //mettre à jour l'affichage du nombre sur la calculatrice
-        modele.updateResultat(nombre);
+        if((modele.resultat.equals("0.0") || modele.resultat.equals("0")) && !nombre.equals(".")){
+            modele.resultat = nombre;
+        }
+        else{
+            modele.resultat = modele.resultat + nombre;}
+
+        //mettre à jour l'affichage du nombre sur la calculatrice
         modele.updateAffichageResultat();
 
         //reset le message
@@ -98,24 +104,21 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
             update(".");
     }
 
-    public void messageErreur(String k){
+    public void operation(String k){
         if(accumulateur.pile.size() >= 2){
             switch (k){
                 case "+" -> {
                     accumulateur.add();
                     historique_resultat = true;
                 }
-
                 case "x" -> {
                     accumulateur.mult();
                     historique_resultat = true;
                 }
-
                 case "-" -> {
                     accumulateur.sub();
                     historique_resultat = true;
                 }
-
                 case "/" -> {
                     if (accumulateur.pile.getLast() == 0) {
                         modele.message = "Erreur opération impossible";
@@ -127,7 +130,6 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                         accumulateur.div();
                         historique_resultat = true;
                     }
-
                 }
             }
         }
@@ -150,11 +152,18 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
             case "7" -> update("7");
             case "8" -> update("8");
             case "9" -> update("9");
-            case "+", "-", "x", "/" -> messageErreur(k);
+            case "+", "-", "x", "/" -> operation(k);
             case "push" -> push();
             case "C" -> reset();
             case "," -> virgule();
             case "_" -> negatif();
+            case "%" -> pourcentage();
         }
     }
+
+    public void pourcentage(){
+        modele.resultat = String.valueOf(Double.parseDouble(modele.resultat)/100);
+        modele.updateAffichageResultat();
+    }
+
 }
