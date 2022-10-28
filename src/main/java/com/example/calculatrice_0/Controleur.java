@@ -13,6 +13,8 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
     Accumulateur accumulateur = new Accumulateur(new Pile());
     private final Modele modele;
 
+    private boolean historique_resultat = false;
+
     public Controleur(Modele modele) {
         this.modele = modele;
         PropertyChangeSupport support = new PropertyChangeSupport(this);
@@ -24,29 +26,59 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
     public void propertyChange(PropertyChangeEvent evt) {
         switch(evt.getPropertyName()){
             case "pushOperateur" -> {
-                modele.affichageResultat.setText(Double.toString(accumulateur.pile.getLast()));
+                //affichage du résultat après opération
+                modele.resultat = String.valueOf(accumulateur.pile.getLast());
+                modele.updateAffichageResultat();
                 System.out.println(accumulateur.pile);
             }
             case "pushNombre", "Clear" -> {
-                modele.affichageResultat.setText("0");
+                //Affichage du nombre 0
+                modele.affichageResultat.setText("0"); //ne modifie pas resultat
                 System.out.println(accumulateur.pile);
             }
         }
     }
 
     public void update(String nombre){
+
+        //affichage du résultat dans l'historique
+        if(historique_resultat){
+            modele.updateHistorique();
+
+            //reset pour écraser la donnée lorsqu'on entre un nouveau chiffre
+            modele.resultat = "0";
+
+            //ne pas mettre à jour l'historique lorsqu'on tape sur les chiffres sans les push
+            historique_resultat = false;
+        }
+
+        //mettre à jour l'affichage du nombre sur la calculatrice
         modele.updateResultat(nombre);
         modele.updateAffichageResultat();
+
+        //reset le message
+        if(!modele.message.equals("")){
+            modele.message = "";
+            modele.updateAffichageMessage();
+        }
     }
 
     public void reset(){
         accumulateur.clear();
         modele.resultat = "0";
+
+        modele.message = "Effacement de la mémoire en cours...";
+        modele.updateAffichageMessage();
     }
 
     public void push(){
         accumulateur.push(Double.parseDouble((modele.affichageResultat.getText())),"nombre");
+        modele.updateHistorique();
         modele.resultat = "0";
+        if(!modele.message.equals("")){
+            modele.message = "";
+            modele.updateAffichageMessage();
+        }
     }
 
     public void negatif(){
@@ -65,11 +97,49 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
         if(!modele.resultat.contains("."))
             update(".");
     }
-    
+
+    public void messageErreur(String k){
+        if(accumulateur.pile.size() >= 2){
+            switch (k){
+                case "+" -> {
+                    accumulateur.add();
+                    historique_resultat = true;
+                }
+
+                case "x" -> {
+                    accumulateur.mult();
+                    historique_resultat = true;
+                }
+
+                case "-" -> {
+                    accumulateur.sub();
+                    historique_resultat = true;
+                }
+
+                case "/" -> {
+                    if (accumulateur.pile.getLast() == 0) {
+                        modele.message = "Erreur opération impossible";
+                        modele.updateAffichageMessage();
+                        modele.resultat = "Error";
+                        modele.updateAffichageResultat();
+                    }
+                    else {
+                        accumulateur.div();
+                        historique_resultat = true;
+                    }
+
+                }
+            }
+        }
+        else{
+        modele.message = "Veuillez sélectionner un chiffre";
+        modele.updateAffichageMessage();}
+    }
 
     @Override
     public void handle(MouseEvent mouseEvent) {
-        switch (((Button) mouseEvent.getSource()).getText()) {
+        String k = ((Button) mouseEvent.getSource()).getText();
+        switch (k) {
             case "0" -> update("0");
             case "1" -> update("1");
             case "2" -> update("2");
@@ -80,10 +150,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
             case "7" -> update("7");
             case "8" -> update("8");
             case "9" -> update("9");
-            case "+" -> accumulateur.add();
-            case "x" -> accumulateur.mult();
-            case "-" -> accumulateur.sub();
-            case "/" -> accumulateur.div();
+            case "+", "-", "x", "/" -> messageErreur(k);
             case "push" -> push();
             case "C" -> reset();
             case "," -> virgule();

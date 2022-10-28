@@ -21,9 +21,14 @@ import java.beans.PropertyChangeSupport;
 
 public class Modele extends Application {
 
+    int coord_x = 372; int coord_y = 500;
     Controleur controleur = new Controleur(this);
     Label affichageResultat;
+    Label affichageMessage;
+    Label affichageHistorique_1; Label affichageHistorique_2; Label affichageHistorique_3;
     String resultat = "0";
+    String message = "";
+    String historique_1 = ""; String historique_2 = ""; String historique_3 = "";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     @Override
@@ -33,12 +38,7 @@ public class Modele extends Application {
         VBox box = new VBox();
         StackPane stackPane = new StackPane();
 
-        affichageResultat = new Label(resultat);
-        affichageResultat.setTranslateY(20); affichageResultat.setTranslateX(80);
-        affichageResultat.setTextFill(Color.WHITE);
-        affichageResultat.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
-        stackPane.getChildren().addAll(affichageResultat);
-
+        createLabels(stackPane);
         createButtons(stackPane);
 
         //configuration par défaut
@@ -52,7 +52,7 @@ public class Modele extends Application {
         box.getChildren().add(stackPane);
 
         //création
-        Scene scene = new Scene (new StackPane(box),372, 500);
+        Scene scene = new Scene (new StackPane(box),coord_x, coord_y);
         stage.setResizable(false);
         stage.setTitle("Calculatrice v1.0 Beta");
         stage.getIcons().add(new Image("Calculatrice.jpg"));
@@ -61,6 +61,38 @@ public class Modele extends Application {
 
     }
 
+    public void createLabels(StackPane sp){
+        double centre = coord_x/2.5;
+        double coord_y_resultat = 45;
+
+        affichageResultat = new Label(resultat);
+        affichageResultat.setTranslateY(coord_y_resultat); affichageResultat.setTranslateX(centre);
+        affichageResultat.setTextFill(Color.WHITE);
+        affichageResultat.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+        sp.getChildren().addAll(affichageResultat);
+
+        affichageMessage = new Label(message);
+        affichageMessage.setTranslateY(coord_y_resultat-20); affichageMessage.setTranslateX(centre);
+        affichageMessage.setTextFill(Color.WHITE);
+        affichageMessage.setFont(Font.font("Courier New", FontWeight.NORMAL, 12));
+        sp.getChildren().addAll(affichageMessage);
+
+        affichageHistorique_1 = new Label(historique_1);
+        affichageHistorique_1.setTranslateY(coord_y_resultat-40); affichageHistorique_1.setTranslateX(centre);
+        affichageHistorique_1.setTextFill(Color.WHITE);
+        affichageHistorique_1.setFont(Font.font("Courier New", FontWeight.NORMAL, 18));
+        sp.getChildren().addAll(affichageHistorique_1);
+        affichageHistorique_2 = new Label(historique_2);
+        affichageHistorique_2.setTranslateY(coord_y_resultat-60); affichageHistorique_2.setTranslateX(centre);
+        affichageHistorique_2.setTextFill(Color.WHITE);
+        affichageHistorique_2.setFont(Font.font("Courier New", FontWeight.NORMAL, 18));
+        sp.getChildren().addAll(affichageHistorique_2);
+        affichageHistorique_3 = new Label(historique_3);
+        affichageHistorique_3.setTranslateY(coord_y_resultat-80); affichageHistorique_3.setTranslateX(centre);
+        affichageHistorique_3.setTextFill(Color.WHITE);
+        affichageHistorique_3.setFont(Font.font("Courier New", FontWeight.NORMAL, 18));
+        sp.getChildren().addAll(affichageHistorique_3);
+    }
 
 
 
@@ -111,12 +143,23 @@ public class Modele extends Application {
         affichageResultat.setText(resultat);
     }
 
+    public void updateAffichageMessage(){affichageMessage.setText(message);}
+
     public void updateResultat(String newResultat){
         if((resultat.equals("0.0") || resultat.equals("0")) && !newResultat.equals(".")){
             resultat = newResultat;
         }
         else{
         resultat = resultat + newResultat;}
+    }
+
+    public void updateHistorique(){
+        historique_3 = historique_2;
+        historique_2 = historique_1;
+        historique_1 = resultat;
+        affichageHistorique_1.setText(historique_1);
+        affichageHistorique_2.setText(historique_2);
+        affichageHistorique_3.setText(historique_3);
     }
 
 
