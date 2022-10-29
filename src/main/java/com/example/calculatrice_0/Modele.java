@@ -33,7 +33,6 @@ public class Modele extends Application {
     String message = "";
     String historique_1 = ""; String historique_2 = ""; String historique_3 = "";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
-    public int state; public int calculatorState = 1; public int easterState = 2; boolean run = true;
 
     VBox box = new VBox();
     StackPane stackPane = new StackPane();
@@ -181,38 +180,6 @@ public class Modele extends Application {
     }
 
     public void updateAffichageMessage(){affichageMessage.setText(message);}
-
-
-    public void updateHistorique(){
-        historique_3 = historique_2;
-        historique_2 = historique_1;
-        historique_1 = resultat;
-        affichageHistorique_1.setText(historique_1);
-        affichageHistorique_2.setText(historique_2);
-        affichageHistorique_3.setText(historique_3);
-    }
-
-
-    public void gameState(int state){
-        if(state == calculatorState){
-            start(new Stage());
-        }
-        else if(state == easterState){
-            easterEgg();
-        }
-
-    }
-
-
-    public void easterEgg(){
-        box.setBackground(new Background(new BackgroundFill(Color.PINK, CornerRadii.EMPTY, Insets.EMPTY)));
-
-
-        //embeded gif
-        //<div style="width:100%;height:0;padding-bottom:100%;position:relative;"><iframe src="https://giphy.com/embed/fckbO2dUKL3bmuYFoW" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/PlayWonderlands-unicorn-day-butt-stallion-fckbO2dUKL3bmuYFoW">via GIPHY</a></p>
-
-
-    }
 
 
     public static void main(String[] args) {

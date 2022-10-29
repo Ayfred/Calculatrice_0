@@ -55,10 +55,8 @@ public class Input implements EventHandler<KeyEvent> {
         else if(keyEvent.getCode() == KeyCode.UNDEFINED){//touche % ou ù
             controleur.pourcentage();}
         else if(keyEvent.getCode() == KeyCode.T){
-            controleur.modele.gameState(2);
         }
         else if(keyEvent.getCode() == KeyCode.SPACE){
-            controleur.modele.gameState(1);
         }
     }
 
