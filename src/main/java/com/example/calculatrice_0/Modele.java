@@ -33,13 +33,15 @@ public class Modele extends Application {
     String message = "";
     String historique_1 = ""; String historique_2 = ""; String historique_3 = "";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+    public int state; public int calculatorState = 1; public int easterState = 2; boolean run = true;
+
+    VBox box = new VBox();
+    StackPane stackPane = new StackPane();
 
     @Override
     public void start(Stage stage) {
         support.addPropertyChangeListener(controleur);
         //creation de nouveaux objets
-        VBox box = new VBox();
-        StackPane stackPane = new StackPane();
 
         createLabels(stackPane);
         createButtons(stackPane);
@@ -47,17 +49,17 @@ public class Modele extends Application {
         //configuration par défaut
         box.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
-
         //Gridpane centered
         stackPane.setTranslateX(-140); stackPane.setTranslateY(10);
 
         //Vbox setting up
         box.getChildren().add(stackPane);
 
+
         //création
         Scene scene = new Scene (new StackPane(box), largeur, longueur);
         stage.setResizable(false);
-        stage.setTitle("Calculatrice v1.0 Beta");
+        stage.setTitle("Calculatrice v1.15");
         stage.getIcons().add(new Image("Calculatrice.jpg"));
         stage.setScene(scene);
         stage.show();
@@ -188,6 +190,28 @@ public class Modele extends Application {
         affichageHistorique_1.setText(historique_1);
         affichageHistorique_2.setText(historique_2);
         affichageHistorique_3.setText(historique_3);
+    }
+
+
+    public void gameState(int state){
+        if(state == calculatorState){
+            start(new Stage());
+        }
+        else if(state == easterState){
+            easterEgg();
+        }
+
+    }
+
+
+    public void easterEgg(){
+        box.setBackground(new Background(new BackgroundFill(Color.PINK, CornerRadii.EMPTY, Insets.EMPTY)));
+
+
+        //embeded gif
+        //<div style="width:100%;height:0;padding-bottom:100%;position:relative;"><iframe src="https://giphy.com/embed/fckbO2dUKL3bmuYFoW" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/PlayWonderlands-unicorn-day-butt-stallion-fckbO2dUKL3bmuYFoW">via GIPHY</a></p>
+
+
     }
 
 

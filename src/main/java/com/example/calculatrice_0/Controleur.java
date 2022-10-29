@@ -11,7 +11,7 @@ import java.beans.PropertyChangeSupport;
 public class Controleur implements PropertyChangeListener, EventHandler<MouseEvent> {
 
     Accumulateur accumulateur = new Accumulateur(new Pile());
-    private final Modele modele;
+    public final Modele modele;
 
     private boolean historique_resultat = false;
 
@@ -36,6 +36,29 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                 modele.affichageResultat.setText("0"); //ne modifie pas resultat
                 System.out.println(accumulateur.pile);
             }
+        }
+    }
+
+    @Override
+    public void handle(MouseEvent mouseEvent) {
+        String k = ((Button) mouseEvent.getSource()).getText();
+        switch (k) {
+            case "0" -> update("0");
+            case "1" -> update("1");
+            case "2" -> update("2");
+            case "3" -> update("3");
+            case "4" -> update("4");
+            case "5" -> update("5");
+            case "6" -> update("6");
+            case "7" -> update("7");
+            case "8" -> update("8");
+            case "9" -> update("9");
+            case "+", "-", "x", "/" -> operation(k);
+            case "push" -> push();
+            case "C" -> reset();
+            case "," -> virgule();
+            case "_" -> negatif();
+            case "%" -> pourcentage();
         }
     }
 
@@ -136,29 +159,6 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
         else{
         modele.message = "Veuillez sélectionner un chiffre";
         modele.updateAffichageMessage();}
-    }
-
-    @Override
-    public void handle(MouseEvent mouseEvent) {
-        String k = ((Button) mouseEvent.getSource()).getText();
-        switch (k) {
-            case "0" -> update("0");
-            case "1" -> update("1");
-            case "2" -> update("2");
-            case "3" -> update("3");
-            case "4" -> update("4");
-            case "5" -> update("5");
-            case "6" -> update("6");
-            case "7" -> update("7");
-            case "8" -> update("8");
-            case "9" -> update("9");
-            case "+", "-", "x", "/" -> operation(k);
-            case "push" -> push();
-            case "C" -> reset();
-            case "," -> virgule();
-            case "_" -> negatif();
-            case "%" -> pourcentage();
-        }
     }
 
     public void pourcentage(){
