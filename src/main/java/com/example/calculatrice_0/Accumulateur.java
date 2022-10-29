@@ -2,89 +2,79 @@ package com.example.calculatrice_0;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.Stack;
 
 public class Accumulateur {
     Pile pile;
-    Controleur controleur = new Controleur();
-    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+    public PropertyChangeSupport support = new PropertyChangeSupport(this);
+    //public PropertyChangeSupport support;
 
     public Accumulateur(Pile pile) {
         this.pile = pile;
-        support.addPropertyChangeListener(controleur);
+    }
+
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        support.addPropertyChangeListener(listener);
+    }
+
+    public double arrondi(double nombre){
+        if(nombre%1 != 0){
+            double temp = 1e5;
+            return Math.round(nombre * temp) / temp;
+        }
+        return nombre;
     }
 
     //swap le dernier élément avec l'avant dernier élément de la liste sachant qu'on ne peut pas supprimer un élément
     // au milieu de la pile
     public void swap(){
-        Stack oldPile = pile.clone();
         double temp_dernier = pile.pop();
         double temp_avant_dernier = pile.pop();
-        pile.push(temp_dernier);
-        pile.push(temp_avant_dernier);
-        this.support.firePropertyChange("Pile", oldPile, pile.getPile());
+        push(temp_dernier, "");
+        push(temp_avant_dernier, "");
     };
 
+    public void push(double nombre, String operation){
+        pile.push(nombre);
+        if(operation.equals("operateur")){
+            support.firePropertyChange("pushOperateur", null, pile);
+        }
+        else{
+            support.firePropertyChange("pushNombre", null, pile);
+        }
+    }
 
+    public void clear(){
+        pile.clear();
+        support.firePropertyChange("Clear", null, pile);
+    }
 
     public void add(){
-        Stack oldPile = pile.clone();
         double dernier = pile.pop();
         double avant_dernier = pile.pop();
-        pile.push(dernier + avant_dernier);
-        this.support.firePropertyChange("Pile", oldPile, pile.getPile());
+        push(arrondi(dernier + avant_dernier), "operateur");
     };
 
     public void sub(){
-        Stack oldPile = pile.clone();
         double dernier = pile.pop();
         double avant_dernier = pile.pop();
-        pile.push(dernier - avant_dernier);
-        this.support.firePropertyChange("Pile", oldPile, pile.getPile());
+        push(arrondi(avant_dernier - dernier), "operateur");
     };
 
     public void mult(){
-        Stack oldPile = pile.clone();
         double dernier = pile.pop();
         double avant_dernier = pile.pop();
-        pile.push(dernier * avant_dernier);
-        this.support.firePropertyChange("Pile", oldPile, pile.getPile());
+        push(arrondi(dernier * avant_dernier), "operateur");
     };
 
     public void div(){
-        Stack oldPile = pile.clone();
         double dernier = pile.pop();
         double avant_dernier = pile.pop();
-        pile.push(dernier / avant_dernier);
-        this.support.firePropertyChange("Pile", oldPile, pile.getPile());
+        push(arrondi(avant_dernier / dernier), "operateur");
     };
 
     public void neg(){
-        Stack oldPile = pile.clone();
         double dernier = pile.pop();
-        pile.push(-dernier);
-        this.support.firePropertyChange("Pile", oldPile, pile.getPile());
-    };
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        this.support.addPropertyChangeListener(listener);
+        push(-dernier, "operateur");
     }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        this.support.removePropertyChangeListener(listener);
-    }
-
-    public Pile getValue() {
-        return this.pile;
-    }
-
-    public void setPile(Pile newPile) {
-        Pile oldPile = this.pile;
-        this.pile = newPile;
-        this.support.firePropertyChange("Pile", oldPile, newPile);
-    }
-
-
-
-
 }
