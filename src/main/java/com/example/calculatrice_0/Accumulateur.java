@@ -33,7 +33,7 @@ public class Accumulateur {
         double temp_avant_dernier = pile.pop();
         push(temp_dernier, "");
         push(temp_avant_dernier, "");
-    };
+    }
 
     //Méthode push
     public void push(double nombre, String operation){

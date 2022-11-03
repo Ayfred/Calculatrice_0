@@ -8,7 +8,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class Controleur implements PropertyChangeListener, EventHandler<MouseEvent> {
+public class Controleur implements PropertyChangeListener, EventHandler<MouseEvent> {//implémentation des interfaces PropertyChangeListener et EventHandler
 
     Accumulateur accumulateur = new Accumulateur(new Pile());
     public final Modele modele;
