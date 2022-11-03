@@ -21,8 +21,8 @@ import javafx.stage.Stage;
 import java.beans.PropertyChangeSupport;
 
 
-public class Modele extends Application {
-
+public class Modele extends Application {//Interface Application
+    //Création des objets nécéssaires pour la création de la calculatrice
     int largeur = 340; int longueur = 500;
     Controleur controleur = new Controleur(this);
     Input input = new Input(controleur);
@@ -32,30 +32,35 @@ public class Modele extends Application {
     String resultat = "0";
     String message = "";
     String historique_1 = ""; String historique_2 = ""; String historique_3 = "";
+
+    //Ajout du PropertyChangeSupport
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
+    //création de la Vbox
     VBox box = new VBox();
+    //Création de la StackPane
     StackPane stackPane = new StackPane();
 
+    //Méthode de création de la fenêtre
     @Override
     public void start(Stage stage) {
+        //Ajout du listener controleur
         support.addPropertyChangeListener(controleur);
         //creation de nouveaux objets
-
         createLabels(stackPane);
         createButtons(stackPane);
 
         //configuration par défaut
         box.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
-        //Gridpane centered
+        //Coordonnées du StackPane
         stackPane.setTranslateX(-140); stackPane.setTranslateY(10);
 
-        //Vbox setting up
+        //Ajout du StackPane à la Vbox
         box.getChildren().add(stackPane);
 
 
-        //création
+        //création de la fenêtre
         Scene scene = new Scene (new StackPane(box), largeur, longueur);
         stage.setResizable(false);
         stage.setTitle("Calculatrice v1.15");
@@ -65,22 +70,26 @@ public class Modele extends Application {
 
     }
 
+    //Méthode de création des Label
     public void createLabels(StackPane sp){
         double centre = largeur /2.5;
         double coord_y_resultat = 45;
 
+        //Label affichage de résultat ou des nombres entrés dans la calculatrice
         affichageResultat = new Label(resultat);
         affichageResultat.setTranslateY(coord_y_resultat); affichageResultat.setTranslateX(centre);
         affichageResultat.setTextFill(Color.WHITE);
         affichageResultat.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
         sp.getChildren().addAll(affichageResultat);
 
+        //Label affichage des messages pour la gestion d'erreurs
         affichageMessage = new Label(message);
         affichageMessage.setTranslateY(coord_y_resultat-20); affichageMessage.setTranslateX(centre);
         affichageMessage.setTextFill(Color.WHITE);
         affichageMessage.setFont(Font.font("Courier New", FontWeight.NORMAL, 12));
         sp.getChildren().addAll(affichageMessage);
 
+        //Labels pour l'affichage de l'historique des 3 dernières valeurs enregistrées par la calculatrice
         affichageHistorique_1 = new Label(historique_1);
         affichageHistorique_1.setTranslateY(coord_y_resultat-40); affichageHistorique_1.setTranslateX(centre);
         affichageHistorique_1.setTextFill(Color.WHITE);
@@ -99,37 +108,40 @@ public class Modele extends Application {
     }
 
 
-
+    //Méthode de création des boutons
     public void createButtons(StackPane sp){
-        //noms des boutons
+        //Liste des noms des boutons
         String[] nomBoutons = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "C",
                                 "push", "+", "-", "x", "/", "_", ",", "%"};
 
-        //coordonnées des boutons
+        //Initialisation des coordonnées des boutons
         int b_x = 20; int b_y = 110;
         int b_x_1 = b_x + 80; int b_y_1 = b_y + 75;
         int b_x_2 = b_x_1 + 80; int b_y_2 = b_y_1 + 75;
         int b_x_3 = b_x_2 + 80; int b_y_3 = b_y_2 + 75;
         int b_y_4 = b_y_3 + 75;
 
+        //Liste des coordonnées des boutons sur la calculatrice
         int[][] pos = {{b_x+40,b_y_4},{b_x,b_y_3},{b_x_1,b_y_3},{b_x_2,b_y_3},//0-3
                 {b_x,b_y_2},{b_x_1,b_y_2},{b_x_2,b_y_2},//4-6
                 {b_x,b_y_1},{b_x_1,b_y_1},{b_x_2,b_y_1},//7-9
                 {b_x,b_y},{b_x_3,b_y_4},{b_x_3,b_y_3},{b_x_3,b_y_2},{b_x_3,b_y_1},{b_x_3,b_y},{b_x_1,b_y},{b_x_2,b_y_4}, {b_x_2, b_y}};
 
-        //tailles des boutons
+        //initialisation de la taille des boutons
         double x = 70; double y = 70;
 
 
+        //Création des boutons
         for(int i = 0; i < nomBoutons.length; i++){
             Button button = new Button(nomBoutons[i]);
             button.setPrefSize(x,y);
             button.setTranslateX(pos[i][0]);
             button.setTranslateY(pos[i][1]);
             button.setShape(new Circle(1.5));
-            sp.getChildren().add(button);
+            sp.getChildren().add(button);//Ajout des boutons à StackPane
             button.setTextFill(Color.WHITE);
 
+            //Cas particulier des boutons (couleurs, textes, polices, tailles, formes, etc...)
             String button_i = nomBoutons[i];
             switch(button_i){
                 case "0" ->{
@@ -139,7 +151,8 @@ public class Modele extends Application {
                     //problème avec le border radius
                     button.setStyle("-fx-background-color: #5A5A5A; -fx-background-radius: 25px;" +//couleur grise
                             " -fx-border-radius: 10px;-fx-border-width: 5px;-fx-border-color: red;");
-                    button.setTextFill(Color.WHITE);//texte blanc
+                    button.setTextFill(Color.WHITE);//couleur du texte en blanc
+                    //Ajout des méthodes au bouton
                     button.addEventHandler(MouseEvent.MOUSE_CLICKED, controleur);
                     button.addEventHandler(KeyEvent.KEY_PRESSED, input);
 
@@ -175,13 +188,25 @@ public class Modele extends Application {
         }
     }
 
+    //Méthode de mise à jour du Label AffichageResultat
     public void updateAffichageResultat(){
         affichageResultat.setText(resultat);
     }
 
+    //Méthode de mise à jour du Label AffichageMessage
     public void updateAffichageMessage(){affichageMessage.setText(message);}
 
+    //Méthode de mise à jour de l'historique
+    public void updateHistorique(){
+        historique_3 = historique_2;
+        historique_2 = historique_1;
+        historique_1 = resultat;
+        affichageHistorique_1.setText(historique_1);
+        affichageHistorique_2.setText(historique_2);
+        affichageHistorique_3.setText(historique_3);
+    }
 
+    //Lancement de la calculatrice
     public static void main(String[] args) {
         launch();
     }

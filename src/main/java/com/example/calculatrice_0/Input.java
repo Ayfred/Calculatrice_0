@@ -4,18 +4,18 @@ import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-public class Input implements EventHandler<KeyEvent> {
-
+public class Input implements EventHandler<KeyEvent> {//Interface EventHandler avec comme type KeyEvent pour la gestion du clavier
 
     private final Controleur controleur;
 
+    //Création du constructeur
     public Input(Controleur controleur) {
         this.controleur = controleur;
     }
 
     @Override
     public void handle(KeyEvent keyEvent) {
-        //System.out.println(keyEvent.getCode());
+        //Configuration des touches du clavier
         if(keyEvent.getCode() == KeyCode.DIGIT0 || keyEvent.getCode() == KeyCode.NUMPAD0){
             controleur.update("0");}
         else if(keyEvent.getCode() == KeyCode.DIGIT1 || keyEvent.getCode() == KeyCode.NUMPAD1){

@@ -15,6 +15,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
 
     private boolean historique_resultat = false;
 
+    //Constructeur
     public Controleur(Modele modele) {
         this.modele = modele;
         PropertyChangeSupport support = new PropertyChangeSupport(this);
@@ -22,6 +23,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
         accumulateur.addPropertyChangeListener(this);
     }
 
+    //Listener
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         switch(evt.getPropertyName()){
@@ -39,8 +41,10 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
         }
     }
 
+    //Méthode abstraite des événements liés à la souris
     @Override
     public void handle(MouseEvent mouseEvent) {
+        //Récupération du texte du bouton qu'on a appuiyé
         String k = ((Button) mouseEvent.getSource()).getText();
         switch (k) {
             case "0" -> update("0");
@@ -62,6 +66,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
         }
     }
 
+    //Méthode update
     public void update(String nombre){
 
         //affichage du résultat dans l'historique
@@ -80,7 +85,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
             modele.resultat = nombre;
         }
         else{
-            modele.resultat = modele.resultat + nombre;}
+            modele.resultat = modele.resultat + nombre;}//Permet d'entrer un nombre ( != un chiffre)
 
         //mettre à jour l'affichage du nombre sur la calculatrice
         modele.updateAffichageResultat();
@@ -92,6 +97,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
         }
     }
 
+    //Méthode reset
     public void reset(){
         accumulateur.clear();
         modele.resultat = "0";
@@ -100,6 +106,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
         modele.updateAffichageMessage();
     }
 
+    //Méthode push
     public void push(){
         accumulateur.push(Double.parseDouble((modele.affichageResultat.getText())),"nombre");
         modele.updateHistorique();
@@ -110,6 +117,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
         }
     }
 
+    //Méthode négatif
     public void negatif(){
         String text = modele.resultat;
         if(!String.valueOf(text.charAt(0)).equals("-")){
@@ -122,13 +130,17 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
         }
     }
 
+    //Méthode d'implementation de la virgule
     public void virgule(){
         if(!modele.resultat.contains("."))
             update(".");
     }
 
+
     public void operation(String k){
-        if(accumulateur.pile.size() >= 2){
+
+        if(accumulateur.pile.size() >= 2){//Tant que la taille de la pile est supérieure à 2 alors on peut lui appliquer des opérations
+            //Distinction des opérations
             switch (k){
                 case "+" -> {
                     accumulateur.add();
@@ -143,7 +155,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                     historique_resultat = true;
                 }
                 case "/" -> {
-                    if (accumulateur.pile.getLast() == 0) {
+                    if (accumulateur.pile.getLast() == 0) {//Division par 0
                         modele.message = "Erreur opération impossible";
                         modele.updateAffichageMessage();
                         modele.resultat = "Error";
@@ -156,11 +168,12 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                 }
             }
         }
-        else{
+        else{//Si on veut entrer une opération lorsque la taille de la pile est inférieure ou égale à 1
         modele.message = "Veuillez sélectionner un chiffre";
         modele.updateAffichageMessage();}
     }
 
+    //Création de la méthode pourcentage qui permet de multiplier par 0.01 le chiffre
     public void pourcentage(){
         modele.resultat = String.valueOf(Double.parseDouble(modele.resultat)/100);
         modele.updateAffichageResultat();
