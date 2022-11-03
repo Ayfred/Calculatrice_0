@@ -11,13 +11,17 @@ import java.beans.PropertyChangeSupport;
 public class Controleur implements PropertyChangeListener, EventHandler<MouseEvent> {//implémentation des interfaces PropertyChangeListener et EventHandler
 
     Accumulateur accumulateur = new Accumulateur(new Pile());
-    public final Modele modele;
+    public final InterfaceGraphique interfaceGraphique;
 
     private boolean historique_resultat = false;
 
-    //Constructeur
-    public Controleur(Modele modele) {
-        this.modele = modele;
+    /**
+     * Constructeur controleur avec la structure MVC
+     * @param interfaceGraphique permet de faire des manipulations a l'interface graphique telles que le changement d'affichage
+     *                           du resultat etc...
+     */
+    public Controleur(InterfaceGraphique interfaceGraphique) {
+        this.interfaceGraphique = interfaceGraphique;
         PropertyChangeSupport support = new PropertyChangeSupport(this);
         support.addPropertyChangeListener(this);
         accumulateur.addPropertyChangeListener(this);
@@ -33,16 +37,16 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                 double dernier_nombre = accumulateur.pile.getLast();
                 //on évite les zéros inutiles après la virgule si on a un type double
                 if(dernier_nombre%1 == 0){
-                    modele.resultat = String.valueOf((int) dernier_nombre);}
+                    interfaceGraphique.resultat = String.valueOf((int) dernier_nombre);}
                 else{
-                    modele.resultat = String.valueOf(dernier_nombre);
+                    interfaceGraphique.resultat = String.valueOf(dernier_nombre);
                 }
-                modele.updateAffichageResultat();
+                interfaceGraphique.updateAffichageResultat();
                 System.out.println(accumulateur.pile);
             }
             case "pushNombre", "Clear" -> {
                 //Affichage du nombre 0
-                modele.affichageResultat.setText("0"); //ne modifie pas resultat
+                interfaceGraphique.affichageResultat.setText("0"); //ne modifie pas resultat
                 System.out.println(accumulateur.pile);
             }
         }
@@ -78,74 +82,90 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
 
         //affichage du résultat dans l'historique
         if(historique_resultat){
-            modele.updateHistorique();
+            interfaceGraphique.updateHistorique();
 
             //reset pour écraser la donnée lorsqu'on entre un nouveau chiffre
-            modele.resultat = "0";
+            interfaceGraphique.resultat = "0";
 
             //ne pas mettre à jour l'historique lorsqu'on tape sur les chiffres sans les push
             historique_resultat = false;
         }
 
         //mettre à jour l'affichage du nombre sur la calculatrice
-        if((modele.resultat.equals("0.0") || modele.resultat.equals("0")) && !nombre.equals(".")){
-            modele.resultat = nombre;
+        if((interfaceGraphique.resultat.equals("0.0") || interfaceGraphique.resultat.equals("0")) && !nombre.equals(".")){
+            interfaceGraphique.resultat = nombre;
         }
         else{
-            modele.resultat = modele.resultat + nombre;}//Permet d'entrer un nombre ( != un chiffre)
+            interfaceGraphique.resultat = interfaceGraphique.resultat + nombre;}//Permet d'entrer un nombre ( != un chiffre)
 
         //mettre à jour l'affichage du nombre sur la calculatrice
-        modele.updateAffichageResultat();
+        interfaceGraphique.updateAffichageResultat();
 
         //reset le message
-        if(!modele.message.equals("")){
-            modele.message = "";
-            modele.updateAffichageMessage();
+        if(!interfaceGraphique.message.equals("")){
+            interfaceGraphique.message = "";
+            interfaceGraphique.updateAffichageMessage();
         }
     }
 
-    //Méthode reset
+    /**
+     * Methode qui permet d'effacer le contenu d'une pile donc utilisation de clear d'accumulateur avec l'ajout de texte
+     * pour l'affichage
+     */
     public void reset(){
         //Effacement de la pile
         accumulateur.clear();
         //Réinitialisation du résultat
-        modele.resultat = "0";
+        interfaceGraphique.resultat = "0";
         //Commentaires
-        modele.message = "Effacement de la mémoire terminé";
-        modele.updateAffichageMessage();
+        interfaceGraphique.message = "Effacement de la mémoire terminé";
+        interfaceGraphique.updateAffichageMessage();
     }
 
-    //Méthode push
+    /**
+     * Methode push qui integre la methode push d'accumulateur en rajoutant les changements de texte pour l'affichage
+     * de commentaires
+     */
     public void push(){
-        accumulateur.push(Double.parseDouble((modele.affichageResultat.getText())),"nombre");
-        modele.updateHistorique();
-        modele.resultat = "0";
-        if(!modele.message.equals("")){
-            modele.message = "";
-            modele.updateAffichageMessage();
+        accumulateur.push(Double.parseDouble((interfaceGraphique.affichageResultat.getText())),"nombre");
+        interfaceGraphique.updateHistorique();
+        interfaceGraphique.resultat = "0";
+        if(!interfaceGraphique.message.equals("")){
+            interfaceGraphique.message = "";
+            interfaceGraphique.updateAffichageMessage();
         }
     }
 
-    //Méthode négatif
+    /**
+     * Methode qui permet d'ajouter un signe - a un nombre lors de l'affichage de ce dernier
+     */
     public void negatif(){
-        String text = modele.resultat;
+        String text = interfaceGraphique.resultat;
         if(!String.valueOf(text.charAt(0)).equals("-")){//Si le nombre est positif, on le rend négatif
-            modele.resultat = "-" + modele.resultat;
-            modele.updateAffichageResultat();
+            interfaceGraphique.resultat = "-" + interfaceGraphique.resultat;
+            interfaceGraphique.updateAffichageResultat();
         }
         else{//sinon on enlève le -
-            modele.resultat = modele.resultat.substring(1);
-            modele.updateAffichageResultat();
+            interfaceGraphique.resultat = interfaceGraphique.resultat.substring(1);
+            interfaceGraphique.updateAffichageResultat();
         }
     }
 
-    //Méthode d'implementation de la virgule
+
+    /**
+     * Méthode d'implementation de la virgule
+     */
     public void virgule(){
-        if(!modele.resultat.contains("."))
+        if(!interfaceGraphique.resultat.contains("."))//On regarde si le resultat contient une virgule
             update(".");
     }
 
 
+    /**
+     * Methode qui permet d'effectuer les operations et en isolant les erreurs liees aux operations
+     * ici la division par zero
+     * @param k on entre l'operateur + - x /
+     */
     public void operation(String k){
 
         if(accumulateur.pile.size() >= 2){//Tant que la taille de la pile est supérieure à 2 alors on peut lui appliquer des opérations
@@ -165,10 +185,10 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                 }
                 case "/" -> {
                     if (accumulateur.pile.getLast() == 0) {//Division par 0
-                        modele.message = "Erreur opération impossible";
-                        modele.updateAffichageMessage();
-                        modele.resultat = "Error";
-                        modele.updateAffichageResultat();
+                        interfaceGraphique.message = "Erreur opération impossible";
+                        interfaceGraphique.updateAffichageMessage();
+                        interfaceGraphique.resultat = "Error";
+                        interfaceGraphique.updateAffichageResultat();
                     }
                     else {
                         accumulateur.div();
@@ -178,13 +198,16 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
             }
         }
         else{//Si on veut entrer une opération lorsque la taille de la pile est inférieure ou égale à 1
-        modele.message = "Veuillez sélectionner un chiffre";
-        modele.updateAffichageMessage();}
+        interfaceGraphique.message = "Veuillez sélectionner un chiffre";
+        interfaceGraphique.updateAffichageMessage();}
     }
 
-    //Création de la méthode pourcentage qui permet de multiplier par 0.01 le chiffre
+
+    /**
+     * Creation de la methode pourcentage qui permet de multiplier par 0.01 le chiffre
+     */
     public void pourcentage(){
-        modele.resultat = String.valueOf(Double.parseDouble(modele.resultat)/100);
-        modele.updateAffichageResultat();
+        interfaceGraphique.resultat = String.valueOf(Double.parseDouble(interfaceGraphique.resultat)/100);
+        interfaceGraphique.updateAffichageResultat();
     }
 }

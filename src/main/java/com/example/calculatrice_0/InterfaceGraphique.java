@@ -21,7 +21,7 @@ import javafx.stage.Stage;
 import java.beans.PropertyChangeSupport;
 
 
-public class Modele extends Application {//Interface Application
+public class InterfaceGraphique extends Application {//Interface Application
     //Création des objets nécéssaires pour la création de la calculatrice
     int largeur = 340; int longueur = 500;
     Controleur controleur = new Controleur(this);
