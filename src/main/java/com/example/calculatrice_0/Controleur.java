@@ -26,10 +26,17 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
     //Listener
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+
         switch(evt.getPropertyName()){
             case "pushOperateur" -> {
                 //affichage du résultat après opération
-                modele.resultat = String.valueOf(accumulateur.pile.getLast());
+                double dernier_nombre = accumulateur.pile.getLast();
+                //on évite les zéros inutiles après la virgule si on a un type double
+                if(dernier_nombre%1 == 0){
+                    modele.resultat = String.valueOf((int) dernier_nombre);}
+                else{
+                    modele.resultat = String.valueOf(dernier_nombre);
+                }
                 modele.updateAffichageResultat();
                 System.out.println(accumulateur.pile);
             }
@@ -99,10 +106,12 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
 
     //Méthode reset
     public void reset(){
+        //Effacement de la pile
         accumulateur.clear();
+        //Réinitialisation du résultat
         modele.resultat = "0";
-
-        modele.message = "Effacement de la mémoire en cours...";
+        //Commentaires
+        modele.message = "Effacement de la mémoire terminé";
         modele.updateAffichageMessage();
     }
 
@@ -120,11 +129,11 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
     //Méthode négatif
     public void negatif(){
         String text = modele.resultat;
-        if(!String.valueOf(text.charAt(0)).equals("-")){
+        if(!String.valueOf(text.charAt(0)).equals("-")){//Si le nombre est positif, on le rend négatif
             modele.resultat = "-" + modele.resultat;
             modele.updateAffichageResultat();
         }
-        else{
+        else{//sinon on enlève le -
             modele.resultat = modele.resultat.substring(1);
             modele.updateAffichageResultat();
         }
@@ -178,5 +187,4 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
         modele.resultat = String.valueOf(Double.parseDouble(modele.resultat)/100);
         modele.updateAffichageResultat();
     }
-
 }
