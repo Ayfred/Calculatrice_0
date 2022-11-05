@@ -21,8 +21,6 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.beans.PropertyChangeSupport;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -82,7 +80,7 @@ public class InterfaceGraphique extends Application{//Interface Application
 
         //Fichier css seulement pour l'esthétique, ici les bordures de fenêtre arrondies
         scene.setFill(Color.TRANSPARENT);
-        scene.getStylesheets().add(InterfaceGraphique.class.getResource("Windows.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(InterfaceGraphique.class.getResource("Windows.css")).toExternalForm());
 
 
         //Initialisation de stage
