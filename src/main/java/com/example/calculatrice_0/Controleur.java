@@ -59,7 +59,6 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
 
         //Récupération du texte du bouton qu'on a appuyé
         Button button = (Button) mouseEvent.getSource();
-        System.out.println(button);
         String k = button.getText();
         if(mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED){
             switch (k) {
@@ -86,8 +85,6 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
 
     //Méthode update
     public void update(String nombre){
-        //changement de couleur du bouton
-        interfaceGraphique.hold = true;
 
         //affichage du résultat dans l'historique
         if(historique_resultat){

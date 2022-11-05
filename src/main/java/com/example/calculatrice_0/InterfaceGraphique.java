@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -36,7 +35,10 @@ public class InterfaceGraphique extends Application{//Interface Application
     String resultat = "0";
     String message = "";
     String historique_1 = ""; String historique_2 = ""; String historique_3 = "";
-    boolean hold = false;
+    List<Button> buttons;
+
+    PauseTransition transition = new PauseTransition(Duration.seconds(0.05));
+
 
     //Ajout du PropertyChangeSupport
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
@@ -46,7 +48,10 @@ public class InterfaceGraphique extends Application{//Interface Application
     //Création de la StackPane
     StackPane stackPane = new StackPane();
 
-    //Méthode de création de la fenêtre
+    /**
+     * Méthode de création de la fenêtre
+     * @param stage fenêtre
+     */
     @Override
     public void start(Stage stage) {
         //Ajout du listener controleur
@@ -54,6 +59,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         //creation de nouveaux objets
         createLabels(stackPane);
         createButtons(stackPane);
+
 
         //configuration par défaut
         box.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -67,6 +73,8 @@ public class InterfaceGraphique extends Application{//Interface Application
 
         //création de la fenêtre
         Scene scene = new Scene (new StackPane(box), largeur, longueur);
+        //Ajout des touches
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, input);
         stage.setResizable(false);
         stage.setTitle("Calculatrice v1.15");
         stage.getIcons().add(new Image("Calculatrice.jpg"));
@@ -150,6 +158,7 @@ public class InterfaceGraphique extends Application{//Interface Application
             //Liste boutons
             buttons.add(button);
 
+
             //Ajout des méthodes au bouton
             button.addEventHandler(MouseEvent.MOUSE_CLICKED, controleur);
             //button.addEventHandler(KeyEvent.KEY_PRESSED, input);
@@ -166,13 +175,7 @@ public class InterfaceGraphique extends Application{//Interface Application
                             " -fx-border-radius: 10px;-fx-border-width: 5px;-fx-border-color: red;");
                     button.setTextFill(Color.WHITE);//couleur du texte en blanc
                     updateButtonOnClick(button, "-fx-background-color: #5A5A5A");
-                    button.addEventFilter(KeyEvent.KEY_PRESSED, ev -> {
-                        if (ev.getCode() == KeyCode.NUMPAD0) {
-                            System.out.println(button);
-                            button.fire();
-                            ev.consume();
-                        }
-                    });
+
                 }
 
                 case "1", "2", "3", "4", "5", "6", "7", "8", "9","," -> {
@@ -180,13 +183,6 @@ public class InterfaceGraphique extends Application{//Interface Application
                     button.setStyle("-fx-background-color: #5A5A5A");//couleur grise
                     button.setTextFill(Color.WHITE);//texte blanc
                     updateButtonOnClick(button, "-fx-background-color: #5A5A5A");
-                    buttons.get(1).addEventFilter(KeyEvent.KEY_PRESSED, ev -> {
-                        if (ev.getCode() == KeyCode.NUMPAD1) {
-                            System.out.println(buttons.get(1));
-                            buttons.get(1).fire();
-                            ev.consume();
-                        }
-                    });
                 }
                 case "C", "%", "_" -> {
                     button.setStyle("-fx-background-color: #bcbcbc");
@@ -206,7 +202,10 @@ public class InterfaceGraphique extends Application{//Interface Application
                 }
             }
         }
+        //Ajout de la liste des boutons à la variable buttons
+        this.buttons = buttons;
     }
+
 
     /**
      * Methode de mise a jour du Label AffichageResultat
@@ -241,6 +240,13 @@ public class InterfaceGraphique extends Application{//Interface Application
             transition.playFromStart();
         });
     }
+
+    public void updateButtonOnKey(Button button, String couleur){
+        transition.setOnFinished(event -> button.setStyle(couleur));
+        button.setStyle("-fx-background-color: #00FF00");
+        transition.playFromStart();
+    }
+
 
     //Lancement de la calculatrice
     public static void main(String[] args) {
