@@ -54,8 +54,17 @@ public class Accumulateur {
     public void push(double nombre, String operation){
         pile.push(nombre);
         //Distinction du push avec un opérateur et avec un nombre
-        if(operation.equals("operateur")){
-            support.firePropertyChange("pushOperateur", null, pile);
+        if(operation.equals("+")){
+            support.firePropertyChange(operation, null, pile);
+        }
+        else if(operation.equals("-")){
+            support.firePropertyChange(operation, null, pile);
+        }
+        else if(operation.equals("x")){
+            support.firePropertyChange(operation, null, pile);
+        }
+        else if(operation.equals("/")){
+            support.firePropertyChange(operation, null, pile);
         }
         else{
             support.firePropertyChange("pushNombre", null, pile);
@@ -77,7 +86,7 @@ public class Accumulateur {
     public void add(){
         double dernier = pile.pop();
         double avant_dernier = pile.pop();
-        push(arrondi(dernier + avant_dernier), "operateur");
+        push(arrondi(dernier + avant_dernier), "+");
     }
 
     /**
@@ -86,7 +95,7 @@ public class Accumulateur {
     public void sub(){
         double dernier = pile.pop();
         double avant_dernier = pile.pop();
-        push(arrondi(avant_dernier - dernier), "operateur");
+        push(arrondi(avant_dernier - dernier), "-");
     }
 
     /**
@@ -95,7 +104,7 @@ public class Accumulateur {
     public void mult(){
         double dernier = pile.pop();
         double avant_dernier = pile.pop();
-        push(arrondi(dernier * avant_dernier), "operateur");
+        push(arrondi(dernier * avant_dernier), "x");
     }
 
     /**
@@ -104,7 +113,7 @@ public class Accumulateur {
     public void div(){
         double dernier = pile.pop();
         double avant_dernier = pile.pop();
-        push(arrondi(avant_dernier / dernier), "operateur");
+        push(arrondi(avant_dernier / dernier), "/");
     }
 
     /**

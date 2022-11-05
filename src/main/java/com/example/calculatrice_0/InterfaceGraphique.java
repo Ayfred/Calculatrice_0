@@ -74,7 +74,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         //création de la fenêtre
         Scene scene = new Scene (new StackPane(box), largeur, longueur);
         //Ajout des touches
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, input);
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, input);
         stage.setResizable(false);
         stage.setTitle("Calculatrice v1.15");
         stage.getIcons().add(new Image("Calculatrice.jpg"));
@@ -125,7 +125,7 @@ public class InterfaceGraphique extends Application{//Interface Application
     public void createButtons(StackPane sp){
         //Liste des noms des boutons
         String[] nomBoutons = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "C",
-                                "push", "+", "-", "x", "/", "_", ",", "%"};
+                                "push", "+", "-", "x", "/", "_", ",", "%", "<-"};
 
         //Initialisation des coordonnées des boutons
         int b_x = 20; int b_y = 110;
@@ -135,15 +135,16 @@ public class InterfaceGraphique extends Application{//Interface Application
         int b_y_4 = b_y_3 + 75;
 
         //Liste des coordonnées des boutons sur la calculatrice
-        int[][] pos = {{b_x+40,b_y_4},{b_x,b_y_3},{b_x_1,b_y_3},{b_x_2,b_y_3},//0-3
+        int[][] pos = {{b_x,b_y_4},{b_x,b_y_3},{b_x_1,b_y_3},{b_x_2,b_y_3},//0-3
                 {b_x,b_y_2},{b_x_1,b_y_2},{b_x_2,b_y_2},//4-6
                 {b_x,b_y_1},{b_x_1,b_y_1},{b_x_2,b_y_1},//7-9
-                {b_x,b_y},{b_x_3,b_y_4},{b_x_3,b_y_3},{b_x_3,b_y_2},{b_x_3,b_y_1},{b_x_3,b_y},{b_x_1,b_y},{b_x_2,b_y_4}, {b_x_2, b_y}};
+                {b_x,b_y},{b_x_3,b_y_4},{b_x_3,b_y_3},{b_x_3,b_y_2},{b_x_3,b_y_1},{b_x_3,b_y},{b_x_1,b_y},{b_x_2,b_y_4}, {b_x_2, b_y},
+                {b_x_1, b_y_4}};
 
         //initialisation de la taille des boutons
         double x = 70; double y = 70;
 
-        List<Button> buttons = new ArrayList<Button>();
+        List<Button> buttons = new ArrayList<>();
 
         //Création des boutons
         for(int i = 0; i < nomBoutons.length; i++){
@@ -166,7 +167,7 @@ public class InterfaceGraphique extends Application{//Interface Application
             //Cas particulier des boutons (couleurs, textes, polices, tailles, formes, etc...)
             String button_i = nomBoutons[i];
             switch(button_i){
-                case "0" ->{
+                /*case "0" ->{
                     button.setShape(new Rectangle(x+80, y));
                     button.setPrefSize(x+80,y);
                     button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
@@ -176,16 +177,16 @@ public class InterfaceGraphique extends Application{//Interface Application
                     button.setTextFill(Color.WHITE);//couleur du texte en blanc
                     updateButtonOnClick(button, "-fx-background-color: #5A5A5A");
 
-                }
+                }*/
 
-                case "1", "2", "3", "4", "5", "6", "7", "8", "9","," -> {
+                case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9","," -> {
                     button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
                     button.setStyle("-fx-background-color: #5A5A5A");//couleur grise
                     button.setTextFill(Color.WHITE);//texte blanc
                     updateButtonOnClick(button, "-fx-background-color: #5A5A5A");
                 }
                 case "C", "%", "_" -> {
-                    button.setStyle("-fx-background-color: #bcbcbc");
+                    button.setStyle("-fx-background-color: #bcbcbc");//couleur grise
                     button.setTextFill(Color.WHITE);
                     button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
                     updateButtonOnClick(button, "-fx-background-color: #bcbcbc");
@@ -199,6 +200,11 @@ public class InterfaceGraphique extends Application{//Interface Application
                     button.setStyle("-fx-background-color: #EC9706");//couleur orange
                     button.setFont(Font.font("Courier New", FontWeight.BOLD, 18));
                     updateButtonOnClick(button, "-fx-background-color: #EC9706");
+                }
+                case "<-" ->{
+                    button.setStyle("-fx-background-color: #bcbcbc");//couleur grise
+                    button.setFont(Font.font("Courier New", FontWeight.BOLD, 18));
+                    updateButtonOnClick(button, "-fx-background-color: #bcbcbc");
                 }
             }
         }
@@ -226,6 +232,15 @@ public class InterfaceGraphique extends Application{//Interface Application
         historique_3 = historique_2;
         historique_2 = historique_1;
         historique_1 = resultat;
+        affichageHistorique_1.setText(historique_1);
+        affichageHistorique_2.setText(historique_2);
+        affichageHistorique_3.setText(historique_3);
+    }
+
+    public void resetHistorique(){
+        historique_1 = "";
+        historique_2 = "";
+        historique_3 = "";
         affichageHistorique_1.setText(historique_1);
         affichageHistorique_2.setText(historique_2);
         affichageHistorique_3.setText(historique_3);

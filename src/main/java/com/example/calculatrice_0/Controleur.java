@@ -28,14 +28,18 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
         accumulateur.addPropertyChangeListener(this);
     }
 
-    //Listener
+    /**
+     * Methode abstraite qui permet de detecter tous evenements lies au changement de l'etat de la pile
+      * @param evt A PropertyChangeEvent object describing the event source
+     *          and the property that has changed.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
         switch(evt.getPropertyName()){
-            case "pushOperateur" -> {
-                //affichage du résultat après opération
+            case "+", "-", "x", "/" -> {
+                //Affichage du résultat après opération
                 double dernier_nombre = accumulateur.pile.getLast();
+
                 //on évite les zéros inutiles après la virgule si on a un type double
                 if(dernier_nombre%1 == 0){
                     interfaceGraphique.resultat = String.valueOf((int) dernier_nombre);}
@@ -43,14 +47,48 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                     interfaceGraphique.resultat = String.valueOf(dernier_nombre);
                 }
                 interfaceGraphique.updateAffichageResultat();
-                System.out.println(accumulateur.pile);
+
+                //Mise à jour du message
+                if(evt.getPropertyName().equals("+")){
+                    interfaceGraphique.message = "Opération addition effectuée";
+                }
+                else if(evt.getPropertyName().equals("-")){
+                    interfaceGraphique.message = "Opération soustraction effectuée";
+                }
+                else if(evt.getPropertyName().equals("x")){
+                    interfaceGraphique.message = "Opération multiplication effectuée";
+                }
+                else if(evt.getPropertyName().equals("/")){
+                    interfaceGraphique.message = "Opération division effectuée";
+                }
+                interfaceGraphique.updateAffichageMessage();
+                historique_resultat = true;
             }
-            case "pushNombre", "Clear" -> {
+            case "pushNombre" -> {
                 //Affichage du nombre 0
-                interfaceGraphique.affichageResultat.setText("0"); //ne modifie pas resultat
-                System.out.println(accumulateur.pile);
+                interfaceGraphique.updateHistorique();
+                interfaceGraphique.resultat = "0";
+                interfaceGraphique.updateAffichageResultat();
+
+                //Efface le message dès qu'on appuie sur un chiffre
+                if(!interfaceGraphique.message.equals("")){
+                    interfaceGraphique.message = "";
+                    interfaceGraphique.updateAffichageMessage();
+                }
             }
+            case "Clear" -> {
+                //Réinitialisation du résultat
+                interfaceGraphique.resultat = "0";
+                interfaceGraphique.updateAffichageResultat();
+                //Commentaires
+                interfaceGraphique.message = "Effacement de la mémoire terminé";
+                interfaceGraphique.updateAffichageMessage();
+                //On efface l'historique
+                interfaceGraphique.resetHistorique();
+            }
+
         }
+        System.out.println(accumulateur.pile);
     }
 
     //Méthode abstraite des événements liés à la souris
@@ -74,10 +112,11 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                 case "9" -> update("9");
                 case "+", "-", "x", "/" -> operation(k);
                 case "push" -> push();
-                case "C" -> reset();
+                case "C" -> accumulateur.clear(); //Effacement de la pile
                 case "," -> virgule();
                 case "_" -> negatif();
                 case "%" -> pourcentage();
+                case "<-" -> supprimer();
             }
         }
         mouseEvent.consume();
@@ -116,20 +155,6 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
     }
 
     /**
-     * Methode qui permet d'effacer le contenu d'une pile donc utilisation de clear d'accumulateur avec l'ajout de texte
-     * pour l'affichage
-     */
-    public void reset(){
-        //Effacement de la pile
-        accumulateur.clear();
-        //Réinitialisation du résultat
-        interfaceGraphique.resultat = "0";
-        //Commentaires
-        interfaceGraphique.message = "Effacement de la mémoire terminé";
-        interfaceGraphique.updateAffichageMessage();
-    }
-
-    /**
      * Methode push qui integre la methode push d'accumulateur en rajoutant les changements de texte pour l'affichage
      * de commentaires
      */
@@ -140,18 +165,13 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
             interfaceGraphique.updateAffichageMessage();
         }
         else{
-        accumulateur.push(Double.parseDouble((interfaceGraphique.affichageResultat.getText())),"nombre");
-        interfaceGraphique.updateHistorique();
-        interfaceGraphique.resultat = "0";
-        if(!interfaceGraphique.message.equals("")){
-                interfaceGraphique.message = "";
-                interfaceGraphique.updateAffichageMessage();
-            }
+        accumulateur.push(Double.parseDouble(interfaceGraphique.resultat),"nombre");
         }
     }
 
     /**
-     * Methode qui permet d'ajouter un signe - a un nombre lors de l'affichage de ce dernier
+     * Methode qui permet d'ajouter un signe - a un nombre lors de <b>l'affichage</b> de ce dernier
+     * On ne MODIFIE PAS la pile
      */
     public void negatif(){
         String text = interfaceGraphique.resultat;
@@ -181,41 +201,22 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
      * @param k on entre l'operateur + - x /
      */
     public void operation(String k){
-
-        if(accumulateur.pile.size() >= 2){//Tant que la taille de la pile est supérieure à 2 alors on peut lui appliquer des opérations
+        //Gestion d'erreur : Tant que la taille de la pile est supérieure à 2 alors on peut lui appliquer des opérations
+        if(accumulateur.pile.size() >= 2){
             //Distinction des opérations
-            switch (k){
-                case "+" -> {
-                    interfaceGraphique.message = "Opération addition effectuée";
-                    interfaceGraphique.updateAffichageMessage();
-                    accumulateur.add();
-                    historique_resultat = true;
-                }
-                case "x" -> {
-                    interfaceGraphique.message = "Opération multiplication effectuée";
-                    interfaceGraphique.updateAffichageMessage();
-                    accumulateur.mult();
-                    historique_resultat = true;
-                }
-                case "-" -> {
-                    interfaceGraphique.message = "Opération soustraction effectuée";
-                    interfaceGraphique.updateAffichageMessage();
-                    accumulateur.sub();
-                    historique_resultat = true;
-                }
+            switch (k) {
+                case "+" -> accumulateur.add();
+                case "-" -> accumulateur.sub();
+                case "x" -> accumulateur.mult();
                 case "/" -> {
-
-                    if (accumulateur.pile.getLast() == 0) {//Division par 0
+                    //Gestion d'erreur : Divison par 0
+                    if (accumulateur.pile.getLast() == 0) {
                         interfaceGraphique.message = "Erreur division par 0 impossible";
                         interfaceGraphique.updateAffichageMessage();
                         interfaceGraphique.resultat = "Error";
                         interfaceGraphique.updateAffichageResultat();
-                    }
-                    else {
-                        interfaceGraphique.message = "Opération division effectuée";
-                        interfaceGraphique.updateAffichageMessage();
+                    } else {
                         accumulateur.div();
-                        historique_resultat = true;
                     }
                 }
             }
@@ -232,5 +233,28 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
     public void pourcentage(){
         interfaceGraphique.resultat = String.valueOf(Double.parseDouble(interfaceGraphique.resultat)/100);
         interfaceGraphique.updateAffichageResultat();
+    }
+
+    /**
+     * Methode supprimer
+     */
+    public void supprimer(){
+        //Gestion d'erreur : Si on essaie de supprimer la chaine de caractère "Error"
+        if(interfaceGraphique.resultat.equals("Error")){
+            interfaceGraphique.message = "Aucun chiffre à supprimer";
+            interfaceGraphique.updateAffichageMessage();
+        }
+        else if(!interfaceGraphique.resultat.equals("0")){
+            //Si le résultat est un chiffre et si on essaie de le supprimer, on retourne à 0
+            if(interfaceGraphique.resultat.length() == 1){
+                interfaceGraphique.resultat = "0";
+                interfaceGraphique.updateAffichageResultat();
+            }
+            //On supprime le dernier chiffre de résultat
+            else{
+                interfaceGraphique.resultat = interfaceGraphique.resultat.substring(0, interfaceGraphique.resultat.length()-1);
+                interfaceGraphique.updateAffichageResultat();
+            }
+        }
     }
 }
