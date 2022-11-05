@@ -1,6 +1,5 @@
 package com.example.calculatrice_0;
 
-
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -19,7 +18,6 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +81,6 @@ public class InterfaceGraphique extends Application{//Interface Application
         //Fichier css seulement pour l'esthétique, ici les bordures de fenêtre arrondies
         scene.setFill(Color.TRANSPARENT);
         scene.getStylesheets().add(Objects.requireNonNull(InterfaceGraphique.class.getResource("Windows.css")).toExternalForm());
-
 
         //Initialisation de stage
         stage.initStyle(StageStyle.TRANSPARENT);
@@ -321,12 +318,8 @@ public class InterfaceGraphique extends Application{//Interface Application
         transition.playFromStart();
     }
 
-
-
     //Lancement de la calculatrice
     public static void main(String[] args) {
         launch();
     }
-
-
 }

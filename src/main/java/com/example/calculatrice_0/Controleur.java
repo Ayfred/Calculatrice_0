@@ -165,7 +165,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
             interfaceGraphique.updateAffichageMessage();
         }
         else{
-        accumulateur.push(Double.parseDouble(interfaceGraphique.resultat),"nombre");
+            accumulateur.push(Double.parseDouble(interfaceGraphique.resultat),"pushNombre");
         }
     }
 
@@ -174,10 +174,13 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
      * On ne MODIFIE PAS la pile
      */
     public void negatif(){
-        String text = interfaceGraphique.resultat;
-        if(!String.valueOf(text.charAt(0)).equals("-")){//Si le nombre est positif, on le rend négatif
+        if(!String.valueOf(interfaceGraphique.resultat.charAt(0)).equals("-") && !interfaceGraphique.resultat.equals("0")){//Si le nombre est positif, on le rend négatif
             interfaceGraphique.resultat = "-" + interfaceGraphique.resultat;
             interfaceGraphique.updateAffichageResultat();
+        }
+        //Lorsque l'utilisateur essaie de push "-0" ou tout nombre contenant "-0", on ne fait rien
+        else if(interfaceGraphique.resultat.equals("0")){
+
         }
         else{//sinon on enlève le -
             interfaceGraphique.resultat = interfaceGraphique.resultat.substring(1);
