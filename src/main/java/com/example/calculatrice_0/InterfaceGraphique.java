@@ -3,7 +3,6 @@ package com.example.calculatrice_0;
 
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,7 +21,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.beans.PropertyChangeSupport;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class InterfaceGraphique extends Application{//Interface Application
@@ -135,6 +135,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         //initialisation de la taille des boutons
         double x = 70; double y = 70;
 
+        List<Button> buttons = new ArrayList<Button>();
 
         //Création des boutons
         for(int i = 0; i < nomBoutons.length; i++){
@@ -146,9 +147,12 @@ public class InterfaceGraphique extends Application{//Interface Application
             sp.getChildren().add(button);//Ajout des boutons à StackPane
             button.setTextFill(Color.WHITE);
 
+            //Liste boutons
+            buttons.add(button);
+
             //Ajout des méthodes au bouton
             button.addEventHandler(MouseEvent.MOUSE_CLICKED, controleur);
-            button.addEventHandler(KeyEvent.KEY_PRESSED, input);
+            //button.addEventHandler(KeyEvent.KEY_PRESSED, input);
 
             //Cas particulier des boutons (couleurs, textes, polices, tailles, formes, etc...)
             String button_i = nomBoutons[i];
@@ -162,6 +166,13 @@ public class InterfaceGraphique extends Application{//Interface Application
                             " -fx-border-radius: 10px;-fx-border-width: 5px;-fx-border-color: red;");
                     button.setTextFill(Color.WHITE);//couleur du texte en blanc
                     updateButtonOnClick(button, "-fx-background-color: #5A5A5A");
+                    button.addEventFilter(KeyEvent.KEY_PRESSED, ev -> {
+                        if (ev.getCode() == KeyCode.NUMPAD0) {
+                            System.out.println(button);
+                            button.fire();
+                            ev.consume();
+                        }
+                    });
                 }
 
                 case "1", "2", "3", "4", "5", "6", "7", "8", "9","," -> {
@@ -169,6 +180,13 @@ public class InterfaceGraphique extends Application{//Interface Application
                     button.setStyle("-fx-background-color: #5A5A5A");//couleur grise
                     button.setTextFill(Color.WHITE);//texte blanc
                     updateButtonOnClick(button, "-fx-background-color: #5A5A5A");
+                    buttons.get(1).addEventFilter(KeyEvent.KEY_PRESSED, ev -> {
+                        if (ev.getCode() == KeyCode.NUMPAD1) {
+                            System.out.println(buttons.get(1));
+                            buttons.get(1).fire();
+                            ev.consume();
+                        }
+                    });
                 }
                 case "C", "%", "_" -> {
                     button.setStyle("-fx-background-color: #bcbcbc");

@@ -59,6 +59,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
 
         //Récupération du texte du bouton qu'on a appuyé
         Button button = (Button) mouseEvent.getSource();
+        System.out.println(button);
         String k = button.getText();
         if(mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED){
             switch (k) {
@@ -80,7 +81,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                 case "%" -> pourcentage();
             }
         }
-
+        mouseEvent.consume();
     }
 
     //Méthode update

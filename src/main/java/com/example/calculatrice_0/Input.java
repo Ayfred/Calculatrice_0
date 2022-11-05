@@ -1,7 +1,6 @@
 package com.example.calculatrice_0;
 
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
@@ -15,7 +14,8 @@ public class Input implements EventHandler<KeyEvent> {//Interface EventHandler a
     }
 
     @Override
-    public void handle(KeyEvent keyEvent) {
+    public void handle(KeyEvent keyEvent){
+
         System.out.println(keyEvent.getSource());
         //Configuration des touches du clavier
         if(keyEvent.getCode() == KeyCode.DIGIT0 || keyEvent.getCode() == KeyCode.NUMPAD0){
