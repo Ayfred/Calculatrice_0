@@ -77,12 +77,17 @@ public class InterfaceGraphique extends Application{//Interface Application
 
         //Création de la fenêtre scene
         Scene scene = new Scene (new StackPane(box), largeur, longueur);
-        scene.addEventFilter(KeyEvent.KEY_PRESSED, input);        //Ajout des touches
+        //Ajout des touches
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, input);
+
+        //Fichier css seulement pour l'esthétique, ici les bordures de fenêtre arrondies
+        scene.setFill(Color.TRANSPARENT);
+        scene.getStylesheets().add(InterfaceGraphique.class.getResource("Windows.css").toExternalForm());
+
 
         //Initialisation de stage
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(scene);
-        stage.getScene().getStylesheets().setAll(Objects.requireNonNull(InterfaceGraphique.class.getResource("Windows.css")).toString());
         stage.show();
 
     }
