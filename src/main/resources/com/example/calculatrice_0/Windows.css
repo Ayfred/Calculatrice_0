@@ -1,11 +1,6 @@
-.root{
-
-}
-
-.mainPane {
-    -fx-background-radius: 15 15 25 25;
-}
-
-.highlight{
+.root {
     -fx-background-radius: 30;
+    -fx-border-radius: 30;
+    -fx-border-width:5;
 }
+

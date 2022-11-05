@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -20,13 +21,16 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.beans.PropertyChangeSupport;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class InterfaceGraphique extends Application{//Interface Application
     //Création des objets nécéssaires pour la création de la calculatrice
-    int largeur = 340; int longueur = 500;
+    int largeur = 340; int longueur = 530;
     Controleur controleur = new Controleur(this);
     Input input = new Input(controleur);
     Label affichageResultat;
@@ -60,6 +64,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         createLabels(stackPane);
         createButtons(stackPane);
 
+        init(stage, stackPane);
 
         //configuration par défaut
         box.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -75,68 +80,101 @@ public class InterfaceGraphique extends Application{//Interface Application
         scene.addEventFilter(KeyEvent.KEY_PRESSED, input);        //Ajout des touches
 
         //Initialisation de stage
-        init(stage, stackPane);
-        stage.setResizable(false);
         stage.initStyle(StageStyle.TRANSPARENT);
-        stage.setTitle("Calculatrice v1.15");
-        stage.getIcons().add(new Image("Calculatrice.jpg"));
         stage.setScene(scene);
+        stage.getScene().getStylesheets().setAll(Objects.requireNonNull(InterfaceGraphique.class.getResource("Windows.css")).toString());
         stage.show();
 
     }
 
-    public void init(Stage stage, StackPane sp){
-        Button buttonClose = new Button(".");
-        Button buttonMinimize = new Button("g");
-        int x = 10; int y = 10;
-        int b_x = 1; int b_y = longueur;
+    public void init(Stage stage, StackPane sp) {
+        Button buttonClose = new Button("x");
+        Button buttonMinimize = new Button("-");
+        Label titre = new Label("Calculator");
+        Image image = new Image("Calculatrice.jpg");
+        Label background = new Label();
+
+        int x = 2; int y = 2;
+        int b_x = largeur; int b_y = -30;
+
+        background.setPrefSize(largeur, 40);
+        background.setTranslateX(140);
+        background.setTranslateY(b_y-7);
+        background.setBackground(new Background(new BackgroundFill(Color.DARKGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
+        sp.getChildren().add(background);
 
         buttonClose.setPrefSize(x,y);
-        buttonClose.setTranslateX(b_x);
-        buttonClose.setTranslateY(b_y-20);
-        buttonClose.setShape(new Circle(1));
+        buttonClose.setTranslateX(b_x-47);
+        buttonClose.setTranslateY(b_y);
+        buttonClose.setShape(new Circle(0.5));
+        buttonClose.setStyle("-fx-background-color: #FF0000");//couleur grise
+        buttonClose.setFont(Font.font("Courier New", FontWeight.NORMAL, 10));
+        buttonClose.setTextFill(Color.WHITE);
+        buttonClose.setOnMouseClicked(mouseEvent -> stage.close());
         sp.getChildren().add(buttonClose);
-        buttonClose.setStyle("-fx-background-color: #bcbcbc");//couleur grise
-        buttonClose.setFont(Font.font("Courier New", FontWeight.BOLD, 18));
-        updateButtonOnClick(buttonClose, "-fx-background-color: #bcbcbc");
 
+        buttonMinimize.setPrefSize(x,y);
+        buttonMinimize.setTranslateX(b_x-70);
+        buttonMinimize.setTranslateY(b_y);
+        buttonMinimize.setShape(new Circle(0.5));
+        buttonMinimize.setStyle("-fx-background-color: #808080");//couleur grise
+        buttonMinimize.setFont(Font.font("Courier New", FontWeight.NORMAL, 10));
+        buttonMinimize.setTextFill(Color.WHITE);
+        buttonMinimize.setOnMouseClicked(mouseEvent -> stage.setIconified(true));
+        sp.getChildren().add(buttonMinimize);
+
+        titre.setTranslateX(30);
+        titre.setTranslateY(b_y);
+        titre.setTextFill(Color.AQUA);
+        titre.setFont(Font.font("Calibri", FontWeight.BOLD, 14));
+        sp.getChildren().add(titre);
+
+        ImageView imageView = new ImageView(image);
+        //Setting the position of the image
+        imageView.setTranslateX(-15);
+        imageView.setTranslateY(b_y);
+        imageView.setFitHeight(17);
+        imageView.setFitWidth(17);
+        imageView.setPreserveRatio(true);
+
+        sp.getChildren().add(imageView);
     }
 
     //Méthode de création des Label
     public void createLabels(StackPane sp){
         double centre = largeur /2.5;
-        double coord_y_resultat = 45;
+        double coord_y_resultat = 75;
 
         //Label affichage de résultat ou des nombres entrés dans la calculatrice
         affichageResultat = new Label(resultat);
         affichageResultat.setTranslateY(coord_y_resultat); affichageResultat.setTranslateX(centre);
         affichageResultat.setTextFill(Color.WHITE);
         affichageResultat.setFont(Font.font("Calibri", FontWeight.BOLD, 36));
-        sp.getChildren().addAll(affichageResultat);
+        sp.getChildren().add(affichageResultat);
 
         //Label affichage des messages pour la gestion d'erreurs
         affichageMessage = new Label(message);
         affichageMessage.setTranslateY(coord_y_resultat-20); affichageMessage.setTranslateX(centre);
         affichageMessage.setTextFill(Color.WHITE);
         affichageMessage.setFont(Font.font("Calibri", FontWeight.BOLD, 14));
-        sp.getChildren().addAll(affichageMessage);
+        sp.getChildren().add(affichageMessage);
 
         //Labels pour l'affichage de l'historique des 3 dernières valeurs enregistrées par la calculatrice
         affichageHistorique_1 = new Label(historique_1);
         affichageHistorique_1.setTranslateY(coord_y_resultat-40); affichageHistorique_1.setTranslateX(centre);
         affichageHistorique_1.setTextFill(Color.WHITE);
         affichageHistorique_1.setFont(Font.font("Calibri", FontWeight.NORMAL, 18));
-        sp.getChildren().addAll(affichageHistorique_1);
+        sp.getChildren().add(affichageHistorique_1);
         affichageHistorique_2 = new Label(historique_2);
         affichageHistorique_2.setTranslateY(coord_y_resultat-60); affichageHistorique_2.setTranslateX(centre);
         affichageHistorique_2.setTextFill(Color.WHITE);
         affichageHistorique_2.setFont(Font.font("Calibri", FontWeight.NORMAL, 18));
-        sp.getChildren().addAll(affichageHistorique_2);
+        sp.getChildren().add(affichageHistorique_2);
         affichageHistorique_3 = new Label(historique_3);
         affichageHistorique_3.setTranslateY(coord_y_resultat-80); affichageHistorique_3.setTranslateX(centre);
         affichageHistorique_3.setTextFill(Color.WHITE);
         affichageHistorique_3.setFont(Font.font("Calibri", FontWeight.NORMAL, 18));
-        sp.getChildren().addAll(affichageHistorique_3);
+        sp.getChildren().add(affichageHistorique_3);
     }
 
 
@@ -147,7 +185,7 @@ public class InterfaceGraphique extends Application{//Interface Application
                                 "push", "+", "-", "x", "/", "_", ",", "%", "<-"};
 
         //Initialisation des coordonnées des boutons
-        int b_x = 20; int b_y = 110;
+        int b_x = 20; int b_y = 140;
         int b_x_1 = b_x + 80; int b_y_1 = b_y + 75;
         int b_x_2 = b_x_1 + 80; int b_y_2 = b_y_1 + 75;
         int b_x_3 = b_x_2 + 80; int b_y_3 = b_y_2 + 75;
