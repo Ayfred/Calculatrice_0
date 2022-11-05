@@ -8,7 +8,7 @@ import java.util.Stack;
 public class Pile extends Stack<Double> {//héritage
 
     /**
-     * Recupere le dernier element de la pile
+     * Recupere le <b>dernier</b> element de la pile
      * @return dernier element de la pile
      */
     public double getLast(){

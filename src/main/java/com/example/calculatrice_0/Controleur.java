@@ -14,6 +14,8 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
     public final InterfaceGraphique interfaceGraphique;
 
     private boolean historique_resultat = false;
+    PropertyChangeSupport support = new PropertyChangeSupport(this);
+
 
     /**
      * Constructeur controleur avec la structure MVC
@@ -22,7 +24,6 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
      */
     public Controleur(InterfaceGraphique interfaceGraphique) {
         this.interfaceGraphique = interfaceGraphique;
-        PropertyChangeSupport support = new PropertyChangeSupport(this);
         support.addPropertyChangeListener(this);
         accumulateur.addPropertyChangeListener(this);
     }
@@ -55,30 +56,37 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
     //Méthode abstraite des événements liés à la souris
     @Override
     public void handle(MouseEvent mouseEvent) {
-        //Récupération du texte du bouton qu'on a appuiyé
-        String k = ((Button) mouseEvent.getSource()).getText();
-        switch (k) {
-            case "0" -> update("0");
-            case "1" -> update("1");
-            case "2" -> update("2");
-            case "3" -> update("3");
-            case "4" -> update("4");
-            case "5" -> update("5");
-            case "6" -> update("6");
-            case "7" -> update("7");
-            case "8" -> update("8");
-            case "9" -> update("9");
-            case "+", "-", "x", "/" -> operation(k);
-            case "push" -> push();
-            case "C" -> reset();
-            case "," -> virgule();
-            case "_" -> negatif();
-            case "%" -> pourcentage();
+
+        //Récupération du texte du bouton qu'on a appuyé
+        Button button = (Button) mouseEvent.getSource();
+        String k = button.getText();
+        if(mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED){
+            switch (k) {
+                case "0" -> update("0");
+                case "1" -> update("1");
+                case "2" -> update("2");
+                case "3" -> update("3");
+                case "4" -> update("4");
+                case "5" -> update("5");
+                case "6" -> update("6");
+                case "7" -> update("7");
+                case "8" -> update("8");
+                case "9" -> update("9");
+                case "+", "-", "x", "/" -> operation(k);
+                case "push" -> push();
+                case "C" -> reset();
+                case "," -> virgule();
+                case "_" -> negatif();
+                case "%" -> pourcentage();
+            }
         }
+
     }
 
     //Méthode update
     public void update(String nombre){
+        //changement de couleur du bouton
+        interfaceGraphique.hold = true;
 
         //affichage du résultat dans l'historique
         if(historique_resultat){
@@ -92,7 +100,8 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
         }
 
         //mettre à jour l'affichage du nombre sur la calculatrice
-        if((interfaceGraphique.resultat.equals("0.0") || interfaceGraphique.resultat.equals("0")) && !nombre.equals(".")){
+        if((interfaceGraphique.resultat.equals("0") && !nombre.equals("."))
+                || interfaceGraphique.resultat.equals("Error")){//si 0 et pas de virgule ou si Error, on écrase le nombre
             interfaceGraphique.resultat = nombre;
         }
         else{
@@ -127,12 +136,19 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
      * de commentaires
      */
     public void push(){
+        //Gestion d'erreur : si on essai de push le string "Error"
+        if(interfaceGraphique.resultat.equals("Error")){
+            interfaceGraphique.message = "Veuillez sélectionner un chiffre";
+            interfaceGraphique.updateAffichageMessage();
+        }
+        else{
         accumulateur.push(Double.parseDouble((interfaceGraphique.affichageResultat.getText())),"nombre");
         interfaceGraphique.updateHistorique();
         interfaceGraphique.resultat = "0";
         if(!interfaceGraphique.message.equals("")){
-            interfaceGraphique.message = "";
-            interfaceGraphique.updateAffichageMessage();
+                interfaceGraphique.message = "";
+                interfaceGraphique.updateAffichageMessage();
+            }
         }
     }
 
@@ -172,25 +188,34 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
             //Distinction des opérations
             switch (k){
                 case "+" -> {
+                    interfaceGraphique.message = "Opération addition effectuée";
+                    interfaceGraphique.updateAffichageMessage();
                     accumulateur.add();
                     historique_resultat = true;
                 }
                 case "x" -> {
+                    interfaceGraphique.message = "Opération multiplication effectuée";
+                    interfaceGraphique.updateAffichageMessage();
                     accumulateur.mult();
                     historique_resultat = true;
                 }
                 case "-" -> {
+                    interfaceGraphique.message = "Opération soustraction effectuée";
+                    interfaceGraphique.updateAffichageMessage();
                     accumulateur.sub();
                     historique_resultat = true;
                 }
                 case "/" -> {
+
                     if (accumulateur.pile.getLast() == 0) {//Division par 0
-                        interfaceGraphique.message = "Erreur opération impossible";
+                        interfaceGraphique.message = "Erreur division par 0 impossible";
                         interfaceGraphique.updateAffichageMessage();
                         interfaceGraphique.resultat = "Error";
                         interfaceGraphique.updateAffichageResultat();
                     }
                     else {
+                        interfaceGraphique.message = "Opération division effectuée";
+                        interfaceGraphique.updateAffichageMessage();
                         accumulateur.div();
                         historique_resultat = true;
                     }
