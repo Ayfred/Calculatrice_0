@@ -13,10 +13,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.beans.PropertyChangeSupport;
@@ -70,16 +70,35 @@ public class InterfaceGraphique extends Application{//Interface Application
         //Ajout du StackPane à la Vbox
         box.getChildren().add(stackPane);
 
-
-        //création de la fenêtre
+        //Création de la fenêtre scene
         Scene scene = new Scene (new StackPane(box), largeur, longueur);
-        //Ajout des touches
-        scene.addEventFilter(KeyEvent.KEY_PRESSED, input);
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, input);        //Ajout des touches
+
+        //Initialisation de stage
+        init(stage, stackPane);
         stage.setResizable(false);
+        stage.initStyle(StageStyle.TRANSPARENT);
         stage.setTitle("Calculatrice v1.15");
         stage.getIcons().add(new Image("Calculatrice.jpg"));
         stage.setScene(scene);
         stage.show();
+
+    }
+
+    public void init(Stage stage, StackPane sp){
+        Button buttonClose = new Button(".");
+        Button buttonMinimize = new Button("g");
+        int x = 10; int y = 10;
+        int b_x = 1; int b_y = longueur;
+
+        buttonClose.setPrefSize(x,y);
+        buttonClose.setTranslateX(b_x);
+        buttonClose.setTranslateY(b_y-20);
+        buttonClose.setShape(new Circle(1));
+        sp.getChildren().add(buttonClose);
+        buttonClose.setStyle("-fx-background-color: #bcbcbc");//couleur grise
+        buttonClose.setFont(Font.font("Courier New", FontWeight.BOLD, 18));
+        updateButtonOnClick(buttonClose, "-fx-background-color: #bcbcbc");
 
     }
 
@@ -167,18 +186,6 @@ public class InterfaceGraphique extends Application{//Interface Application
             //Cas particulier des boutons (couleurs, textes, polices, tailles, formes, etc...)
             String button_i = nomBoutons[i];
             switch(button_i){
-                /*case "0" ->{
-                    button.setShape(new Rectangle(x+80, y));
-                    button.setPrefSize(x+80,y);
-                    button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
-                    //problème avec le border radius
-                    button.setStyle("-fx-background-color: #5A5A5A; -fx-background-radius: 25px;" +//couleur grise
-                            " -fx-border-radius: 10px;-fx-border-width: 5px;-fx-border-color: red;");
-                    button.setTextFill(Color.WHITE);//couleur du texte en blanc
-                    updateButtonOnClick(button, "-fx-background-color: #5A5A5A");
-
-                }*/
-
                 case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9","," -> {
                     button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
                     button.setStyle("-fx-background-color: #5A5A5A");//couleur grise
