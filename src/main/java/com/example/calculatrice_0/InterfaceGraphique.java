@@ -3,13 +3,16 @@ package com.example.calculatrice_0;
 
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -38,6 +41,8 @@ public class InterfaceGraphique extends Application{//Interface Application
     String message = "";
     String historique_1 = ""; String historique_2 = ""; String historique_3 = "";
     List<Button> buttons;
+    double yOffset;
+    double xOffset;
 
     PauseTransition transition = new PauseTransition(Duration.seconds(0.05));
 
@@ -86,6 +91,16 @@ public class InterfaceGraphique extends Application{//Interface Application
         //Initialisation de stage
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(scene);
+
+        //Déplacement de la fenêtre en maintenant sur un endroit de la calculatrice puis en déplaçant la souris
+        scene.setOnMousePressed(event -> {
+            xOffset = stage.getX() - event.getScreenX();
+            yOffset = stage.getY() - event.getScreenY();
+        });
+        scene.setOnMouseDragged(event -> {
+            stage.setX(event.getScreenX() + xOffset);
+            stage.setY(event.getScreenY() + yOffset);
+        });
         stage.show();
 
     }
@@ -222,7 +237,6 @@ public class InterfaceGraphique extends Application{//Interface Application
 
             //Ajout des méthodes au bouton
             button.addEventHandler(MouseEvent.MOUSE_CLICKED, controleur);
-            //button.addEventHandler(KeyEvent.KEY_PRESSED, input);
 
             //Cas particulier des boutons (couleurs, textes, polices, tailles, formes, etc...)
             String button_i = nomBoutons[i];
@@ -309,6 +323,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         button.setStyle("-fx-background-color: #00FF00");
         transition.playFromStart();
     }
+
 
 
     //Lancement de la calculatrice
