@@ -101,7 +101,7 @@ public class Input implements EventHandler<KeyEvent> {//Interface EventHandler a
         }
         else if(key == KeyCode.BACK_SPACE){//touche % ou ù
             controleur.supprimer();
-            interfaceGraphique.updateButtonOnKey(buttons.get(19), "-fx-background-color: #bcbcbc");
+            interfaceGraphique.updateButtonOnKey(buttons.get(19), "-fx-background-color: #5A5A5A");
         }
         keyEvent.consume();
     }

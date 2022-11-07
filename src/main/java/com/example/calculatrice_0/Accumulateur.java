@@ -42,8 +42,8 @@ public class Accumulateur {
     public void swap(){
         double temp_dernier = pile.pop();
         double temp_avant_dernier = pile.pop();
-        push(temp_dernier, "");
-        push(temp_avant_dernier, "");
+        push(temp_dernier, "Swap");
+        push(temp_avant_dernier, "Swap");
     }
 
     /**
@@ -66,7 +66,7 @@ public class Accumulateur {
         else if(operation.equals("/")){
             support.firePropertyChange(operation, null, pile);
         }
-        else{
+        else if(operation.equals("pushNombre")){
             support.firePropertyChange("pushNombre", null, pile);
         }
     }
@@ -111,9 +111,11 @@ public class Accumulateur {
      * Methode division avec la methode arrondi et push
      */
     public void div(){
-        double dernier = pile.pop();
+        /*double dernier = pile.pop();
         double avant_dernier = pile.pop();
-        push(arrondi(avant_dernier / dernier), "/");
+        push(arrondi(avant_dernier / dernier), "/");*/
+        swap();
+        push(arrondi(pile.pop()/pile.pop()), "/");
     }
 
     /**

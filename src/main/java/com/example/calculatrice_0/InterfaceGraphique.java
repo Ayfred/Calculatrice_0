@@ -26,18 +26,21 @@ import java.util.Objects;
 
 public class InterfaceGraphique extends Application{//Interface Application
     //Création des objets nécéssaires pour la création de la calculatrice
-    int largeur = 340; int longueur = 530;
+    int largeur = 340; int longueur = 560;
     Controleur controleur = new Controleur(this);
     Input input = new Input(controleur);
     Label affichageResultat;
     Label affichageMessage;
     Label affichageHistorique_1; Label affichageHistorique_2; Label affichageHistorique_3;
+    Label affichagePile;
     String resultat = "0";
     String message = "";
     String historique_1 = ""; String historique_2 = ""; String historique_3 = "";
     List<Button> buttons;
     double yOffset;
     double xOffset;
+
+    Color couleur_texte = Color.WHITE;
 
     PauseTransition transition = new PauseTransition(Duration.seconds(0.05));
 
@@ -65,7 +68,8 @@ public class InterfaceGraphique extends Application{//Interface Application
         init(stage, stackPane);
 
         //configuration par défaut
-        box.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+        box.setBackground(new Background(new BackgroundFill(Color.BLACK,CornerRadii.EMPTY, Insets.EMPTY)));
+
 
         //Coordonnées du StackPane
         stackPane.setTranslateX(-140); stackPane.setTranslateY(10);
@@ -80,6 +84,7 @@ public class InterfaceGraphique extends Application{//Interface Application
 
         //Fichier css seulement pour l'esthétique, ici les bordures de fenêtre arrondies
         scene.setFill(Color.TRANSPARENT);
+
         scene.getStylesheets().add(Objects.requireNonNull(InterfaceGraphique.class.getResource("Windows.css")).toExternalForm());
 
         //Initialisation de stage
@@ -102,6 +107,8 @@ public class InterfaceGraphique extends Application{//Interface Application
     public void init(Stage stage, StackPane sp) {
         Button buttonClose = new Button("x");
         Button buttonMinimize = new Button("-");
+        Button buttonDark = new Button("D");
+        Button buttonWhite = new Button("W");
         Label titre = new Label("Calculator");
         Image image = new Image("Calculatrice.jpg");
         Label background = new Label();
@@ -112,7 +119,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         background.setPrefSize(largeur, 40);
         background.setTranslateX(140);
         background.setTranslateY(b_y-7);
-        background.setBackground(new Background(new BackgroundFill(Color.DARKGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
+    background.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         sp.getChildren().add(background);
 
         buttonClose.setPrefSize(x,y);
@@ -135,9 +142,46 @@ public class InterfaceGraphique extends Application{//Interface Application
         buttonMinimize.setOnMouseClicked(mouseEvent -> stage.setIconified(true));
         sp.getChildren().add(buttonMinimize);
 
+        buttonDark.setPrefSize(x,y);
+        buttonDark.setTranslateX(b_x-90);
+        buttonDark.setTranslateY(b_y);
+        buttonDark.setShape(new Circle(0.5));
+        buttonDark.setStyle("-fx-background-color: #000000");//couleur grise
+        buttonDark.setFont(Font.font("Courier New", FontWeight.NORMAL, 10));
+        buttonDark.setTextFill(Color.WHITE);
+        buttonDark.setOnMouseClicked(mouseEvent ->{
+            box.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+            couleur_texte = Color.WHITE;
+            update_dark_white_mode();
+            background.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+            titre.setTextFill(Color.WHITE);
+            buttonDark.setVisible(false);
+            buttonWhite.setVisible(true);});
+        sp.getChildren().add(buttonDark);
+
+        buttonDark.setVisible(false);
+
+        buttonWhite.setPrefSize(x,y);
+        buttonWhite.setTranslateX(b_x-90);
+        buttonWhite.setTranslateY(b_y);
+        buttonWhite.setShape(new Circle(0.5));
+        buttonWhite.setStyle("-fx-background-color: #FFFFFF");//couleur grise
+        buttonWhite.setFont(Font.font("Courier New", FontWeight.NORMAL, 10));
+        buttonWhite.setTextFill(Color.BLACK);
+        buttonWhite.setOnMouseClicked(mouseEvent ->{
+            box.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+            couleur_texte = Color.BLACK;
+            update_dark_white_mode();
+            background.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+            titre.setTextFill(Color.BLACK);
+            buttonDark.setVisible(true);
+            buttonWhite.setVisible(false);
+        });
+        sp.getChildren().add(buttonWhite);
+
         titre.setTranslateX(30);
         titre.setTranslateY(b_y);
-        titre.setTextFill(Color.AQUA);
+        titre.setTextFill(Color.WHITE);
         titre.setFont(Font.font("Calibri", FontWeight.BOLD, 14));
         sp.getChildren().add(titre);
 
@@ -160,33 +204,50 @@ public class InterfaceGraphique extends Application{//Interface Application
         //Label affichage de résultat ou des nombres entrés dans la calculatrice
         affichageResultat = new Label(resultat);
         affichageResultat.setTranslateY(coord_y_resultat); affichageResultat.setTranslateX(centre);
-        affichageResultat.setTextFill(Color.WHITE);
+        affichageResultat.setTextFill(couleur_texte);
         affichageResultat.setFont(Font.font("Calibri", FontWeight.BOLD, 36));
         sp.getChildren().add(affichageResultat);
 
         //Label affichage des messages pour la gestion d'erreurs
         affichageMessage = new Label(message);
         affichageMessage.setTranslateY(coord_y_resultat-20); affichageMessage.setTranslateX(centre);
-        affichageMessage.setTextFill(Color.WHITE);
+        affichageMessage.setTextFill(couleur_texte);
         affichageMessage.setFont(Font.font("Calibri", FontWeight.BOLD, 14));
         sp.getChildren().add(affichageMessage);
 
         //Labels pour l'affichage de l'historique des 3 dernières valeurs enregistrées par la calculatrice
         affichageHistorique_1 = new Label(historique_1);
         affichageHistorique_1.setTranslateY(coord_y_resultat-40); affichageHistorique_1.setTranslateX(centre);
-        affichageHistorique_1.setTextFill(Color.WHITE);
+        affichageHistorique_1.setTextFill(couleur_texte);
         affichageHistorique_1.setFont(Font.font("Calibri", FontWeight.NORMAL, 18));
         sp.getChildren().add(affichageHistorique_1);
         affichageHistorique_2 = new Label(historique_2);
         affichageHistorique_2.setTranslateY(coord_y_resultat-60); affichageHistorique_2.setTranslateX(centre);
-        affichageHistorique_2.setTextFill(Color.WHITE);
+        affichageHistorique_2.setTextFill(couleur_texte);
         affichageHistorique_2.setFont(Font.font("Calibri", FontWeight.NORMAL, 18));
         sp.getChildren().add(affichageHistorique_2);
         affichageHistorique_3 = new Label(historique_3);
         affichageHistorique_3.setTranslateY(coord_y_resultat-80); affichageHistorique_3.setTranslateX(centre);
-        affichageHistorique_3.setTextFill(Color.WHITE);
+        affichageHistorique_3.setTextFill(couleur_texte);
         affichageHistorique_3.setFont(Font.font("Calibri", FontWeight.NORMAL, 18));
         sp.getChildren().add(affichageHistorique_3);
+
+
+        //Label affichage de l'état de la pile
+        affichagePile = new Label();
+        affichagePile.setTranslateY(coord_y_resultat+40); affichagePile.setTranslateX(centre);
+        affichagePile.setTextFill(couleur_texte);
+        affichagePile.setFont(Font.font("Calibri", FontWeight.NORMAL, 14));
+        sp.getChildren().add(affichagePile);
+    }
+
+    public void update_dark_white_mode(){
+        affichageResultat.setTextFill(couleur_texte);
+        affichageMessage.setTextFill(couleur_texte);
+        affichageHistorique_1.setTextFill(couleur_texte);
+        affichageHistorique_2.setTextFill(couleur_texte);
+        affichageHistorique_3.setTextFill(couleur_texte);
+        affichagePile.setTextFill(couleur_texte);
     }
 
 
@@ -197,7 +258,7 @@ public class InterfaceGraphique extends Application{//Interface Application
                                 "push", "+", "-", "x", "/", "_", ",", "%", "<-"};
 
         //Initialisation des coordonnées des boutons
-        int b_x = 20; int b_y = 140;
+        int b_x = 20; int b_y = 170;
         int b_x_1 = b_x + 80; int b_y_1 = b_y + 75;
         int b_x_2 = b_x_1 + 80; int b_y_2 = b_y_1 + 75;
         int b_x_3 = b_x_2 + 80; int b_y_3 = b_y_2 + 75;
@@ -258,9 +319,9 @@ public class InterfaceGraphique extends Application{//Interface Application
                     updateButtonOnClick(button, "-fx-background-color: #EC9706");
                 }
                 case "<-" ->{
-                    button.setStyle("-fx-background-color: #bcbcbc");//couleur grise
+                    button.setStyle("-fx-background-color: #5A5A5A");//couleur grise
                     button.setFont(Font.font("Courier New", FontWeight.BOLD, 18));
-                    updateButtonOnClick(button, "-fx-background-color: #bcbcbc");
+                    updateButtonOnClick(button, "-fx-background-color: #5A5A5A");
                 }
             }
         }

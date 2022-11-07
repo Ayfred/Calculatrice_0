@@ -7,6 +7,8 @@ import javafx.scene.input.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.text.DecimalFormat;
+import java.util.Locale;
 
 public class Controleur implements PropertyChangeListener, EventHandler<MouseEvent> {//implémentation des interfaces PropertyChangeListener et EventHandler
 
@@ -63,6 +65,9 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                 }
                 interfaceGraphique.updateAffichageMessage();
                 historique_resultat = true;
+
+                //Mise à jour de l'affichage de la pile
+                interfaceGraphique.affichagePile.setText(String.valueOf(accumulateur.pile));
             }
             case "pushNombre" -> {
                 //Affichage du nombre 0
@@ -75,6 +80,9 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                     interfaceGraphique.message = "";
                     interfaceGraphique.updateAffichageMessage();
                 }
+
+                //Mise à jour de l'affichage de la pile
+                interfaceGraphique.affichagePile.setText(String.valueOf(accumulateur.pile));
             }
             case "Clear" -> {
                 //Réinitialisation du résultat
@@ -85,6 +93,9 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                 interfaceGraphique.updateAffichageMessage();
                 //On efface l'historique
                 interfaceGraphique.resetHistorique();
+
+                //Mise à jour de l'affichage de la pile
+                interfaceGraphique.affichagePile.setText("");
             }
 
         }
@@ -142,7 +153,27 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
             interfaceGraphique.resultat = nombre;
         }
         else{
-            interfaceGraphique.resultat = interfaceGraphique.resultat + nombre;}//Permet d'entrer un nombre ( != un chiffre)
+            //Limite de 9 chiffres en tout et 2 espaces soit un total d'une longueur de 11 pour la chaine de caractère
+            if(interfaceGraphique.resultat.length() >= 9){
+                interfaceGraphique.message = "Taille maximale atteinte !";
+                interfaceGraphique.updateAffichageMessage();
+            }
+            //Permet d'entrer un nombre de 1 jusqu'à 999 999 999
+            else{
+                interfaceGraphique.resultat = interfaceGraphique.resultat + nombre;
+                System.out.println(interfaceGraphique.resultat);
+                interfaceGraphique.resultat = interfaceGraphique.resultat.replaceAll(" ", "");
+                int m = 0;
+                for(int i = 1; i <= interfaceGraphique.resultat.length()-2; i++){
+                    if(i % 3 == 0){
+
+                        System.out.println(interfaceGraphique.resultat.substring(0, interfaceGraphique.resultat.length() -i));
+                        System.out.println(interfaceGraphique.resultat.substring(interfaceGraphique.resultat.length()-i));
+                        interfaceGraphique.resultat = interfaceGraphique.resultat.substring(0, interfaceGraphique.resultat.length() -i-m) + " " + interfaceGraphique.resultat.substring(interfaceGraphique.resultat.length()-i-m);
+                    }
+                }
+            }
+        }
 
         //mettre à jour l'affichage du nombre sur la calculatrice
         interfaceGraphique.updateAffichageResultat();
@@ -163,6 +194,12 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
         if(interfaceGraphique.resultat.equals("Error")){
             interfaceGraphique.message = "Veuillez sélectionner un chiffre";
             interfaceGraphique.updateAffichageMessage();
+        }
+        //Gestion d'erreur: Impossibilité de convertir une chaine de caractère avec la présence d'espace en un double
+        else if(interfaceGraphique.resultat.contains(" ")){
+            //Suppression de l'espace lors du stockage du nombre dans la pile
+            interfaceGraphique.resultat = interfaceGraphique.resultat.replaceAll(" ", "");
+            accumulateur.push(Double.parseDouble(interfaceGraphique.resultat),"pushNombre");
         }
         else{
             accumulateur.push(Double.parseDouble(interfaceGraphique.resultat),"pushNombre");
