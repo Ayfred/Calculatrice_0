@@ -29,7 +29,9 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.beans.PropertyChangeSupport;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -37,7 +39,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class InterfaceGraphique extends Application{//Interface Application
     //Création des objets nécéssaires pour la création de la calculatrice
-    String version = "2.2.3"; String date = "08/11/2022";
+    String version = "2.3.2"; String date =  new SimpleDateFormat("dd-MM-yyyy").format(new Date());
     int largeur = 340; int longueur = 600;
     Controleur controleur = new Controleur(this);
     Input input = new Input(controleur);
