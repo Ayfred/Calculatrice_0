@@ -28,7 +28,7 @@ import java.util.Stack;
 
 public class InterfaceGraphique extends Application{//Interface Application
     //Création des objets nécéssaires pour la création de la calculatrice
-    int largeur = 340; int longueur = 560;
+    int largeur = 340; int longueur = 600;
     Controleur controleur = new Controleur(this);
     Input input = new Input(controleur);
     Label affichageResultat;
@@ -122,7 +122,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         Label background = new Label();
 
         int x = 2; int y = 2;
-        int b_x = largeur; int b_y = -30;
+        int b_x = 5*largeur/11; int b_y = -10*longueur/21;
 
         background.setPrefSize(largeur, 40);
         background.setTranslateX(140);
@@ -131,7 +131,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         //sp.getChildren().add(background);
 
         buttonClose.setPrefSize(x,y);
-        buttonClose.setTranslateX(b_x-47);
+        buttonClose.setTranslateX(b_x);
         buttonClose.setTranslateY(b_y);
         buttonClose.setShape(new Circle(0.5));
         buttonClose.setStyle("-fx-background-color: #FF0000");//couleur grise
@@ -141,7 +141,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         sp.getChildren().add(buttonClose);
 
         buttonMinimize.setPrefSize(x,y);
-        buttonMinimize.setTranslateX(b_x-70);
+        buttonMinimize.setTranslateX(b_x-25);
         buttonMinimize.setTranslateY(b_y);
         buttonMinimize.setShape(new Circle(0.5));
         buttonMinimize.setStyle("-fx-background-color: #808080");//couleur grise
@@ -151,7 +151,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         sp.getChildren().add(buttonMinimize);
 
         buttonDark.setPrefSize(x,y);
-        buttonDark.setTranslateX(b_x-90);
+        buttonDark.setTranslateX(b_x-50);
         buttonDark.setTranslateY(b_y);
         buttonDark.setShape(new Circle(0.5));
         buttonDark.setStyle("-fx-background-color: #000000");//couleur grise
@@ -170,7 +170,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         buttonDark.setVisible(false);
 
         buttonWhite.setPrefSize(x,y);
-        buttonWhite.setTranslateX(b_x-90);
+        buttonWhite.setTranslateX(b_x-50);
         buttonWhite.setTranslateY(b_y);
         buttonWhite.setShape(new Circle(0.5));
         buttonWhite.setStyle("-fx-background-color: #FFFFFF");//couleur grise
@@ -187,7 +187,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         });
         sp.getChildren().add(buttonWhite);
 
-        titre.setTranslateX(30);
+        titre.setTranslateX(-b_x + 40);
         titre.setTranslateY(b_y);
         titre.setTextFill(Color.WHITE);
         titre.setFont(Font.font("Calibri", FontWeight.BOLD, 14));
@@ -195,10 +195,10 @@ public class InterfaceGraphique extends Application{//Interface Application
 
         ImageView imageView = new ImageView(image);
         //Setting the position of the image
-        imageView.setTranslateX(-15);
+        imageView.setTranslateX(-b_x);
         imageView.setTranslateY(b_y);
         imageView.setFitHeight(17);
-        imageView.setFitWidth(17);
+        imageView.setFitWidth(12);
         imageView.setPreserveRatio(true);
 
         sp.getChildren().add(imageView);
@@ -206,14 +206,14 @@ public class InterfaceGraphique extends Application{//Interface Application
 
     //Méthode de création des Label
     public void createLabels(StackPane sp){
-        double centre = largeur /2.5;
-        double coord_y_resultat = 75;
+        double centre = -10;
+        double coord_y_resultat = -5*largeur/12;
 
         //Label affichage de résultat ou des nombres entrés dans la calculatrice
         affichageResultat = new Label(resultat);
         affichageResultat.setTranslateY(coord_y_resultat); affichageResultat.setTranslateX(centre);
         affichageResultat.setTextFill(couleur_texte);
-        affichageResultat.setFont(Font.font("Calibri", FontWeight.BOLD, 36));
+        affichageResultat.setFont(Font.font("Calibri", FontWeight.NORMAL, 62));
         sp.getChildren().add(affichageResultat);
         StackPane.setAlignment(affichageResultat, Pos.CENTER_RIGHT);
 
@@ -222,7 +222,7 @@ public class InterfaceGraphique extends Application{//Interface Application
 
         //Label affichage des messages pour la gestion d'erreurs
         affichageMessage = new Label(message);
-        affichageMessage.setTranslateY(coord_y_resultat-20); affichageMessage.setTranslateX(centre);
+        affichageMessage.setTranslateY(coord_y_resultat-40); affichageMessage.setTranslateX(centre);
         affichageMessage.setTextFill(couleur_texte);
         affichageMessage.setFont(Font.font("Calibri", FontWeight.BOLD, 18));
         sp.getChildren().add(affichageMessage);
@@ -231,21 +231,21 @@ public class InterfaceGraphique extends Application{//Interface Application
 
         //Labels pour l'affichage de l'historique des 3 dernières valeurs enregistrées par la calculatrice
         affichageHistorique_1 = new Label(historique_1);
-        affichageHistorique_1.setTranslateY(coord_y_resultat-40); affichageHistorique_1.setTranslateX(centre);
+        affichageHistorique_1.setTranslateY(coord_y_resultat-60); affichageHistorique_1.setTranslateX(centre);
         affichageHistorique_1.setTextFill(couleur_texte);
         affichageHistorique_1.setFont(Font.font("Calibri", FontWeight.NORMAL, 18));
         sp.getChildren().add(affichageHistorique_1);
         StackPane.setAlignment(affichageHistorique_1, Pos.CENTER_RIGHT);
 
         affichageHistorique_2 = new Label(historique_2);
-        affichageHistorique_2.setTranslateY(coord_y_resultat-60); affichageHistorique_2.setTranslateX(centre);
+        affichageHistorique_2.setTranslateY(coord_y_resultat-80); affichageHistorique_2.setTranslateX(centre);
         affichageHistorique_2.setTextFill(couleur_texte);
         affichageHistorique_2.setFont(Font.font("Calibri", FontWeight.NORMAL, 18));
         sp.getChildren().add(affichageHistorique_2);
         StackPane.setAlignment(affichageHistorique_2, Pos.CENTER_RIGHT);
 
         affichageHistorique_3 = new Label(historique_3);
-        affichageHistorique_3.setTranslateY(coord_y_resultat-80); affichageHistorique_3.setTranslateX(centre);
+        affichageHistorique_3.setTranslateY(coord_y_resultat-100); affichageHistorique_3.setTranslateX(centre);
         affichageHistorique_3.setTextFill(couleur_texte);
         affichageHistorique_3.setFont(Font.font("Calibri", FontWeight.NORMAL, 18));
         sp.getChildren().add(affichageHistorique_3);
@@ -278,7 +278,7 @@ public class InterfaceGraphique extends Application{//Interface Application
                                 "push", "+", "-", "x", "/", "±", ",", "%", "←"};
 
         //Initialisation des coordonnées des boutons
-        int b_x = 20; int b_y = 170;
+        int b_x = -14*largeur/39; int b_y = -largeur/8;
         int b_x_1 = b_x + 80; int b_y_1 = b_y + 75;
         int b_x_2 = b_x_1 + 80; int b_y_2 = b_y_1 + 75;
         int b_x_3 = b_x_2 + 80; int b_y_3 = b_y_2 + 75;
