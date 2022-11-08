@@ -3,6 +3,7 @@ package com.example.calculatrice_0;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -22,6 +23,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Stack;
 
 
 public class InterfaceGraphique extends Application{//Interface Application
@@ -51,7 +53,7 @@ public class InterfaceGraphique extends Application{//Interface Application
     //création de la Vbox
     VBox box = new VBox();
     //Création de la StackPane
-    StackPane stackPane = new StackPane();
+    StackPane stackPane = new StackPane(box);
 
     /**
      * Méthode de création de la fenêtre
@@ -68,17 +70,21 @@ public class InterfaceGraphique extends Application{//Interface Application
         init(stage, stackPane);
 
         //configuration par défaut
-        box.setBackground(new Background(new BackgroundFill(Color.BLACK,CornerRadii.EMPTY, Insets.EMPTY)));
-
+        box.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii( 0.03, 0.03, 0.03, 0.03, true), Insets.EMPTY)));
 
         //Coordonnées du StackPane
-        stackPane.setTranslateX(-140); stackPane.setTranslateY(10);
+        stackPane.setTranslateX(0); stackPane.setTranslateY(0);
+        stackPane.setPrefSize(longueur, largeur);
+        stackPane.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY ,Insets.EMPTY)));
 
         //Ajout du StackPane à la Vbox
-        box.getChildren().add(stackPane);
+        //box.getChildren().add(stackPane);
 
         //Création de la fenêtre scene
-        Scene scene = new Scene (new StackPane(box), largeur, longueur);
+        //StackPane stackPane_1= new StackPane(box);
+        //stackPane_1.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY ,Insets.EMPTY)));
+
+        Scene scene = new Scene (stackPane, largeur, longueur);
         //Ajout des touches
         scene.addEventFilter(KeyEvent.KEY_PRESSED, input);
 
@@ -90,6 +96,8 @@ public class InterfaceGraphique extends Application{//Interface Application
         //Initialisation de stage
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(scene);
+        stage.initStyle(StageStyle.TRANSPARENT);
+
 
         //Déplacement de la fenêtre en maintenant sur un endroit de la calculatrice puis en déplaçant la souris
         scene.setOnMousePressed(event -> {
@@ -119,8 +127,8 @@ public class InterfaceGraphique extends Application{//Interface Application
         background.setPrefSize(largeur, 40);
         background.setTranslateX(140);
         background.setTranslateY(b_y-7);
-    background.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
-        sp.getChildren().add(background);
+        background.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(0.5,0.5,0.5,0.5,true), Insets.EMPTY)));
+        //sp.getChildren().add(background);
 
         buttonClose.setPrefSize(x,y);
         buttonClose.setTranslateX(b_x-47);
@@ -207,13 +215,19 @@ public class InterfaceGraphique extends Application{//Interface Application
         affichageResultat.setTextFill(couleur_texte);
         affichageResultat.setFont(Font.font("Calibri", FontWeight.BOLD, 36));
         sp.getChildren().add(affichageResultat);
+        StackPane.setAlignment(affichageResultat, Pos.CENTER_RIGHT);
+
+
+        affichageResultat.setAlignment(Pos.CENTER);
 
         //Label affichage des messages pour la gestion d'erreurs
         affichageMessage = new Label(message);
         affichageMessage.setTranslateY(coord_y_resultat-20); affichageMessage.setTranslateX(centre);
         affichageMessage.setTextFill(couleur_texte);
-        affichageMessage.setFont(Font.font("Calibri", FontWeight.BOLD, 14));
+        affichageMessage.setFont(Font.font("Calibri", FontWeight.BOLD, 18));
         sp.getChildren().add(affichageMessage);
+        StackPane.setAlignment(affichageMessage, Pos.CENTER);
+
 
         //Labels pour l'affichage de l'historique des 3 dernières valeurs enregistrées par la calculatrice
         affichageHistorique_1 = new Label(historique_1);
@@ -221,16 +235,22 @@ public class InterfaceGraphique extends Application{//Interface Application
         affichageHistorique_1.setTextFill(couleur_texte);
         affichageHistorique_1.setFont(Font.font("Calibri", FontWeight.NORMAL, 18));
         sp.getChildren().add(affichageHistorique_1);
+        StackPane.setAlignment(affichageHistorique_1, Pos.CENTER_RIGHT);
+
         affichageHistorique_2 = new Label(historique_2);
         affichageHistorique_2.setTranslateY(coord_y_resultat-60); affichageHistorique_2.setTranslateX(centre);
         affichageHistorique_2.setTextFill(couleur_texte);
         affichageHistorique_2.setFont(Font.font("Calibri", FontWeight.NORMAL, 18));
         sp.getChildren().add(affichageHistorique_2);
+        StackPane.setAlignment(affichageHistorique_2, Pos.CENTER_RIGHT);
+
         affichageHistorique_3 = new Label(historique_3);
         affichageHistorique_3.setTranslateY(coord_y_resultat-80); affichageHistorique_3.setTranslateX(centre);
         affichageHistorique_3.setTextFill(couleur_texte);
         affichageHistorique_3.setFont(Font.font("Calibri", FontWeight.NORMAL, 18));
         sp.getChildren().add(affichageHistorique_3);
+        StackPane.setAlignment(affichageHistorique_3, Pos.CENTER_RIGHT);
+
 
 
         //Label affichage de l'état de la pile
@@ -255,7 +275,7 @@ public class InterfaceGraphique extends Application{//Interface Application
     public void createButtons(StackPane sp){
         //Liste des noms des boutons
         String[] nomBoutons = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "C",
-                                "push", "+", "-", "x", "/", "_", ",", "%", "<-"};
+                                "push", "+", "-", "x", "/", "±", ",", "%", "←"};
 
         //Initialisation des coordonnées des boutons
         int b_x = 20; int b_y = 170;
@@ -302,7 +322,7 @@ public class InterfaceGraphique extends Application{//Interface Application
                     button.setTextFill(Color.WHITE);//texte blanc
                     updateButtonOnClick(button, "-fx-background-color: #5A5A5A");
                 }
-                case "C", "%", "_" -> {
+                case "C", "%", "±" -> {
                     button.setStyle("-fx-background-color: #bcbcbc");//couleur grise
                     button.setTextFill(Color.WHITE);
                     button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
@@ -318,9 +338,9 @@ public class InterfaceGraphique extends Application{//Interface Application
                     button.setFont(Font.font("Courier New", FontWeight.BOLD, 18));
                     updateButtonOnClick(button, "-fx-background-color: #EC9706");
                 }
-                case "<-" ->{
+                case "←" ->{
                     button.setStyle("-fx-background-color: #5A5A5A");//couleur grise
-                    button.setFont(Font.font("Courier New", FontWeight.BOLD, 18));
+                    button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
                     updateButtonOnClick(button, "-fx-background-color: #5A5A5A");
                 }
             }

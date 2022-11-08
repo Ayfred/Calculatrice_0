@@ -103,6 +103,8 @@ public class Input implements EventHandler<KeyEvent> {//Interface EventHandler a
             controleur.supprimer();
             interfaceGraphique.updateButtonOnKey(buttons.get(19), "-fx-background-color: #5A5A5A");
         }
+        else if(key == KeyCode.Q){//touche % ou ù
+        }
         keyEvent.consume();
     }
 }

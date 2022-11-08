@@ -123,9 +123,9 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                 case "push" -> push();
                 case "C" -> accumulateur.clear(); //Effacement de la pile
                 case "," -> virgule();
-                case "_" -> negatif();
+                case "±" -> negatif();
                 case "%" -> pourcentage();
-                case "<-" -> supprimer();
+                case "←" -> supprimer();
             }
         }
         mouseEvent.consume();
@@ -133,6 +133,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
 
     //Méthode update
     public void update(String nombre){
+
 
         //affichage du résultat dans l'historique
         if(historique_resultat){
