@@ -99,11 +99,12 @@ public class Input implements EventHandler<KeyEvent> {//Interface EventHandler a
             controleur.pourcentage();
             interfaceGraphique.updateButtonOnKey(buttons.get(18), "-fx-background-color: #bcbcbc");
         }
-        else if(key == KeyCode.BACK_SPACE){//touche % ou ù
+        else if(key == KeyCode.BACK_SPACE){
             controleur.supprimer();
             interfaceGraphique.updateButtonOnKey(buttons.get(19), "-fx-background-color: #5A5A5A");
         }
-        else if(key == KeyCode.Q){//touche % ou ù
+        else if(key == KeyCode.Q){
+            System.exit(0);
         }
         keyEvent.consume();
     }

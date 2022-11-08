@@ -215,13 +215,16 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
      * On ne MODIFIE PAS la pile
      */
     public void negatif(){
-        if(!String.valueOf(interfaceGraphique.resultat.charAt(0)).equals("-") && !interfaceGraphique.resultat.equals("0")){//Si le nombre est positif, on le rend négatif
+        //Si le nombre est positif, on le rend négatif
+        if(!String.valueOf(interfaceGraphique.resultat.charAt(0)).equals("-") && !interfaceGraphique.resultat.equals("0")
+                && !interfaceGraphique.resultat.equals("Error")){
             interfaceGraphique.resultat = "-" + interfaceGraphique.resultat;
             interfaceGraphique.updateAffichageResultat();
         }
         //Lorsque l'utilisateur essaie de push "-0" ou tout nombre contenant "-0", on ne fait rien
-        else if(interfaceGraphique.resultat.equals("0")){
-
+        //Gestion d'erreur : On ne fait rien si on a "Error"
+        else if(interfaceGraphique.resultat.equals("0") || interfaceGraphique.resultat.equals("Error")){
+            assert true;
         }
         else{//sinon on enlève le -
             interfaceGraphique.resultat = interfaceGraphique.resultat.substring(1);
@@ -275,8 +278,11 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
      * Creation de la methode pourcentage qui permet de multiplier par 0.01 le chiffre
      */
     public void pourcentage(){
+        //Gestion d'erreur: Si le résultat est "Error"
+        if(!interfaceGraphique.resultat.equals("Error")){
         interfaceGraphique.resultat = String.valueOf(Double.parseDouble(interfaceGraphique.resultat)/100);
         interfaceGraphique.updateAffichageResultat();
+        }
     }
 
     /**
@@ -300,5 +306,6 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                 interfaceGraphique.updateAffichageResultat();
             }
         }
+
     }
 }

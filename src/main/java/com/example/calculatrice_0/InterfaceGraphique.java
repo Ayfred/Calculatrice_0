@@ -1,6 +1,9 @@
 package com.example.calculatrice_0;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -29,12 +32,12 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Stack;
 import java.util.concurrent.atomic.AtomicReference;
 
 
 public class InterfaceGraphique extends Application{//Interface Application
     //Création des objets nécéssaires pour la création de la calculatrice
+    String version = "2.2.3"; String date = "08/11/2022";
     int largeur = 340; int longueur = 600;
     Controleur controleur = new Controleur(this);
     Input input = new Input(controleur);
@@ -46,7 +49,7 @@ public class InterfaceGraphique extends Application{//Interface Application
     String historique_1 = ""; String historique_2 = ""; String historique_3 = "";
     List<Button> buttons;
     double xOffset; double yOffset;
-    Color couleur_texte = Color.WHITE; Color couleur_numero = Color.WHITE;
+    Color couleur_texte = Color.WHITE; String couleur_updateButtonOnClick_Key = "-fx-background-color: #00FF00";
     PauseTransition transition = new PauseTransition(Duration.seconds(0.05));
     //Ajout du PropertyChangeSupport
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
@@ -149,7 +152,7 @@ public class InterfaceGraphique extends Application{//Interface Application
     //Méthode de création des Label
     public void createLabels(StackPane sp){
         double centre = -10;
-        double coord_y_resultat = -5*largeur/12;
+        double coord_y_resultat = -5*largeur/12.;
 
         //Label affichage de résultat ou des nombres entrés dans la calculatrice
         affichageResultat = new Label(resultat);
@@ -253,7 +256,7 @@ public class InterfaceGraphique extends Application{//Interface Application
                 case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9","," -> {
                     button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
                     button.setStyle("-fx-background-color: #5A5A5A");//couleur grise
-                    button.setTextFill(couleur_numero);//texte blanc
+                    button.setTextFill(Color.WHITE);//texte blanc
                     updateButtonOnClick(button, "-fx-background-color: #5A5A5A");
                 }
                 case "C", "%", "±" -> {
@@ -265,11 +268,6 @@ public class InterfaceGraphique extends Application{//Interface Application
                 case "/", "x", "-", "+", "=" -> {
                     button.setStyle("-fx-background-color: #EC9706");//couleur orange
                     button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
-                    updateButtonOnClick(button, "-fx-background-color: #EC9706");
-                }
-                case "push" ->{
-                    button.setStyle("-fx-background-color: #EC9706");//couleur orange
-                    button.setFont(Font.font("Courier New", FontWeight.BOLD, 18));
                     updateButtonOnClick(button, "-fx-background-color: #EC9706");
                 }
                 case "←" ->{
@@ -322,14 +320,14 @@ public class InterfaceGraphique extends Application{//Interface Application
         transition.setOnFinished(event -> button.setStyle(couleur));
         button.setOnMouseClicked(event -> {
             event.consume();
-            button.setStyle("-fx-background-color: #00FF00");
+            button.setStyle(couleur_updateButtonOnClick_Key);
             transition.playFromStart();
         });
     }
 
     public void updateButtonOnKey(Button button, String couleur){
         transition.setOnFinished(event -> button.setStyle(couleur));
-        button.setStyle("-fx-background-color: #00FF00");
+        button.setStyle(couleur_updateButtonOnClick_Key);
         transition.playFromStart();
     }
 
@@ -340,12 +338,16 @@ public class InterfaceGraphique extends Application{//Interface Application
 
     /*--------------------------------------------------------Easter Egg-----------------------------------------------------------------------------*/
 
+    Boolean stop = false;
+
     public void easter_egg_affichage(Stage stage, StackPane sp){
+
         Button buttonInfo = new Button("i");
         Button buttonDark = new Button("D");
         Button buttonWhite = new Button("W");
         Button easterEgg = new Button();
-        Label credits = new Label("Calculatrice développée par Ayfred & Smilaid, 2022Ⓒ\nVersion 2.2.3, Mis à jour le 08/11/22\nhttps://github.com/Ayfred/Calculatrice_polonaise\nProjet réalisé pour:\n\n\n\n ");
+        Label credits = new Label("Calculatrice développée par Ayfred & Smilaid, 2022Ⓒ\nVersion " + version + ", Mis à jour le " + date + "\nhttps://github.com/Ayfred/Calculatrice_polonaise\nProjet réalisé pour:\n\n\n\n ");
+        Label moving_credits = new Label("Calculatrice développée par Ayfred & Smilaid");
         Image IMT_Mines_Ales = new Image("imt_mines_ales.jpg");
 
         int x = 2; int y = 2;
@@ -356,10 +358,19 @@ public class InterfaceGraphique extends Application{//Interface Application
         credits.setTranslateY(-180);
         credits.setAlignment(Pos.CENTER);
         credits.setTextAlignment(TextAlignment.CENTER);
+        credits.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
         credits.setStyle("-fx-background-color: #444444");
         credits.setTextFill(couleur_texte);
         credits.setVisible(false);
         sp.getChildren().add(credits);
+
+        moving_credits.setTranslateX(0);
+        moving_credits.setTranslateY(-85);
+        moving_credits.setTextFill(Color.DEEPPINK);
+        moving_credits.setVisible(false);
+        moving_credits.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+        sp.getChildren().add(moving_credits);
+        movingCredit(moving_credits, -40, 40, 0.5);
 
         ImageView image_IMT_Mines_Ales = new ImageView(IMT_Mines_Ales);
         image_IMT_Mines_Ales.setTranslateX(0);
@@ -381,11 +392,16 @@ public class InterfaceGraphique extends Application{//Interface Application
         buttonDark.setOnMouseClicked(mouseEvent ->{
             sp.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii( 0.05, 0.05, 0.05, 0.05, true), Insets.EMPTY)));
             couleur_texte = Color.WHITE;
+            update_couleur_numero(Color.WHITE, Color.GRAY, Color.WHITE);
             update_dark_white_mode();
-            titre.setTextFill(Color.WHITE);
+            update_couleur_bouton("-fx-background-color: #5A5A5A", "-fx-background-color: #bcbcbc" ,"-fx-background-color: #EC9706");
             buttonDark.setVisible(false);
             buttonWhite.setVisible(true);
-            buttonInfo.setStyle("-fx-background-color: #FFFFFF");//couleur blanche
+            moving_credits.setVisible(false);
+            titre.setTextFill(Color.WHITE);
+            stop = true;
+            titre.setTranslateX(-b_x + 50);
+            titre.setTranslateY(b_y);
         });
         sp.getChildren().add(buttonDark);
 
@@ -401,11 +417,16 @@ public class InterfaceGraphique extends Application{//Interface Application
         buttonWhite.setOnMouseClicked(mouseEvent ->{
             sp.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii( 0.05, 0.05, 0.05, 0.05, true), Insets.EMPTY)));
             couleur_texte = Color.BLACK;
+            update_couleur_numero(Color.WHITE, Color.GRAY, Color.WHITE);
             update_dark_white_mode();
-            titre.setTextFill(Color.BLACK);
+            update_couleur_bouton("-fx-background-color: #5A5A5A", "-fx-background-color: #bcbcbc" ,"-fx-background-color: #EC9706");
             buttonDark.setVisible(true);
             buttonWhite.setVisible(false);
-            buttonInfo.setStyle("-fx-background-color: #000000");//couleur blanche
+            moving_credits.setVisible(false);
+            titre.setTextFill(Color.BLACK);
+            stop = true;
+            titre.setTranslateX(-b_x + 50);
+            titre.setTranslateY(b_y);
         });
         sp.getChildren().add(buttonWhite);
 
@@ -415,9 +436,9 @@ public class InterfaceGraphique extends Application{//Interface Application
         buttonInfo.setTranslateX(b_x-75);
         buttonInfo.setTranslateY(b_y);
         buttonInfo.setShape(new Circle(0.5));
-        buttonInfo.setStyle("-fx-background-color: #FFFFFF");//couleur blanche
+        buttonInfo.setStyle("-fx-background-color: #FFFF00");//couleur blanche
         buttonInfo.setFont(Font.font("Courier New", FontWeight.BOLD, 12));
-        buttonInfo.setTextFill(Color.ORANGE);
+        buttonInfo.setTextFill(Color.BLACK);
         buttonInfo.setOnMouseClicked(mouseEvent ->{
             if(activation.get()){
                 credits.setVisible(true);
@@ -438,8 +459,8 @@ public class InterfaceGraphique extends Application{//Interface Application
         Image curseur = new Image("UnicornCursor.png");
         Image easter = new Image("easter.jpg");
         ImageView image_easter = new ImageView(easter);
-        image_easter.setFitHeight(25);
-        image_easter.setFitWidth(25);
+        image_easter.setFitHeight(40);
+        image_easter.setFitWidth(40);
         easterEgg.setGraphic(image_easter);
         easterEgg.setTranslateX(120);
         easterEgg.setTranslateY(-140);
@@ -447,16 +468,23 @@ public class InterfaceGraphique extends Application{//Interface Application
         easterEgg.setOnMouseClicked(mouseEvent ->{
             stage.getScene().setCursor(new ImageCursor(curseur));
             sp.setBackground(new Background(new BackgroundFill(Color.PINK, new CornerRadii( 0.05, 0.05, 0.05, 0.05, true), Insets.EMPTY)));
-            couleur_texte = Color.PURPLE; couleur_numero = Color.HOTPINK;
-            update_dark_white_mode(); update_couleur_numero();
+            couleur_texte = Color.PURPLE;
+            update_dark_white_mode(); update_couleur_numero(Color.HOTPINK, Color.DARKBLUE, Color.MEDIUMPURPLE);
+            update_couleur_bouton("-fx-background-color: #9702b0", "-fx-background-color: #9702b0" ,"-fx-background-color: #9702b0");
+            couleur_updateButtonOnClick_Key = "-fx-background-color: #be2ed6";
             titre.setTextFill(Color.DEEPPINK);
             credits.setVisible(false);
             image_IMT_Mines_Ales.setVisible(false);
+            moving_credits.setVisible(true);
             easterEgg.setVisible(false);
+            stop = false;
+            movingCredit(titre, -110, 30, 0.5);
             activation.set(true);
         });
         easterEgg.setVisible(false);
         sp.getChildren().add(easterEgg);
+
+
     }
 
     public void update_dark_white_mode(){
@@ -468,11 +496,55 @@ public class InterfaceGraphique extends Application{//Interface Application
         affichagePile.setTextFill(couleur_texte);
     }
 
-    public void update_couleur_numero(){
-        for( int i = 0 ; i < buttons.size(); i++){
-            if(i <= 10 ){
-                buttons.get(i).setTextFill(couleur_numero);
+    public void update_couleur_numero(Color color1, Color color2, Color color3){
+        for (Button button : buttons) {
+            switch (button.getText()) {
+                case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "←" -> button.setTextFill(color1);
+                case "C", "%", "±" -> button.setTextFill(color2);
+                case "/", "x", "-", "+", "=" -> button.setTextFill(color3);
             }
         }
+    }
+
+    public void update_couleur_bouton(String color1, String color2, String color3){
+        for (Button button : buttons) {
+            switch (button.getText()) {
+                case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "←" -> {
+                    button.setStyle(color1);
+                    updateButtonOnClick(button, color1);
+                }
+                case "C", "%", "±" -> {
+                    button.setStyle(color2);
+                    updateButtonOnClick(button, color2);
+                }
+                case "/", "x", "-", "+", "=" -> {
+                    button.setStyle(color3);
+                    updateButtonOnClick(button, color3);
+                }
+
+            }
+        }
+    }
+
+
+    public void movingCredit(Label label, int debut, int fin, double speed){
+        AtomicReference<Boolean> aller = new AtomicReference<>(true);
+        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e ->{
+            if(aller.get() && !stop){
+                label.setTranslateX(label.getTranslateX()+ speed);
+                if(label.getTranslateX() == fin){
+                    aller.set(false);
+                }
+            }
+            else if(!aller.get() && !stop){
+                label.setTranslateX(label.getTranslateX() - speed);
+                if (label.getTranslateX() == debut) {
+                    aller.set(true);
+                }
+            }
+        }), new KeyFrame(Duration.millis(50)));
+        clock.setCycleCount(Animation.INDEFINITE);
+        clock.play();
+        if(stop){clock.stop();}
     }
 }
