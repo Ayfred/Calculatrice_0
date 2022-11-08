@@ -7,8 +7,6 @@ import javafx.scene.input.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.text.DecimalFormat;
-import java.util.Locale;
 
 public class Controleur implements PropertyChangeListener, EventHandler<MouseEvent> {//implémentation des interfaces PropertyChangeListener et EventHandler
 
@@ -161,7 +159,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
             //Permet d'entrer un nombre de 1 jusqu'à 999 999 999
             else{
                 interfaceGraphique.resultat = interfaceGraphique.resultat + nombre;
-                System.out.println(interfaceGraphique.resultat);
+                /*System.out.println(interfaceGraphique.resultat);
                 interfaceGraphique.resultat = interfaceGraphique.resultat.replaceAll(" ", "");
                 int m = 0;
                 for(int i = 1; i <= interfaceGraphique.resultat.length()-2; i++){
@@ -171,15 +169,15 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                         System.out.println(interfaceGraphique.resultat.substring(interfaceGraphique.resultat.length()-i));
                         interfaceGraphique.resultat = interfaceGraphique.resultat.substring(0, interfaceGraphique.resultat.length() -i-m) + " " + interfaceGraphique.resultat.substring(interfaceGraphique.resultat.length()-i-m);
                     }
-                }
+                }*/
             }
         }
 
         //mettre à jour l'affichage du nombre sur la calculatrice
         interfaceGraphique.updateAffichageResultat();
 
-        //reset le message
-        if(!interfaceGraphique.message.equals("")){
+        //reset le message et on n'efface pas le message lorsqu'on atteint la taille limite de la pile pour avertir l'utilisateur
+        if(!interfaceGraphique.message.equals("") && interfaceGraphique.resultat.length() < 9){
             interfaceGraphique.message = "";
             interfaceGraphique.updateAffichageMessage();
         }
@@ -190,7 +188,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
      * de commentaires
      */
     public void push(){
-        //Gestion d'erreur : si on essai de push le string "Error"
+        //Gestion d'erreur : si on essaye de push le string "Error"
         if(interfaceGraphique.resultat.equals("Error")){
             interfaceGraphique.message = "Veuillez sélectionner un chiffre";
             interfaceGraphique.updateAffichageMessage();
@@ -200,6 +198,11 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
             //Suppression de l'espace lors du stockage du nombre dans la pile
             interfaceGraphique.resultat = interfaceGraphique.resultat.replaceAll(" ", "");
             accumulateur.push(Double.parseDouble(interfaceGraphique.resultat),"pushNombre");
+        }
+        //Gestion d'erreur: Si on essaye de stocker la virgule dans la pile
+        else if(interfaceGraphique.resultat.equals(".")){
+            interfaceGraphique.resultat = "0";
+            accumulateur.push(0, "pushNombre");
         }
         else{
             accumulateur.push(Double.parseDouble(interfaceGraphique.resultat),"pushNombre");
