@@ -29,6 +29,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Stack;
 import java.util.concurrent.atomic.AtomicReference;
 
 
@@ -37,16 +38,15 @@ public class InterfaceGraphique extends Application{//Interface Application
     int largeur = 340; int longueur = 600;
     Controleur controleur = new Controleur(this);
     Input input = new Input(controleur);
-    Label affichageResultat;
-    Label affichageMessage;
+    Label affichageResultat; Label affichageMessage; Label affichagePile;
     Label affichageHistorique_1; Label affichageHistorique_2; Label affichageHistorique_3;
-    Label affichagePile;
+    Label titre = new Label("Calculator");
     String resultat = "0";
     String message = "";
     String historique_1 = ""; String historique_2 = ""; String historique_3 = "";
     List<Button> buttons;
     double xOffset; double yOffset;
-    Color couleur_texte = Color.WHITE;
+    Color couleur_texte = Color.WHITE; Color couleur_numero = Color.WHITE;
     PauseTransition transition = new PauseTransition(Duration.seconds(0.05));
     //Ajout du PropertyChangeSupport
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
@@ -67,6 +67,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         createLabels(stackPane);
         createButtons(stackPane);
         init(stage, stackPane);
+        easter_egg_affichage(stage, stackPane);
 
 
         //Coordonnées du StackPane
@@ -103,38 +104,11 @@ public class InterfaceGraphique extends Application{//Interface Application
 
     public void init(Stage stage, StackPane sp) {
         Button buttonClose = new Button("x");
-        Button buttonInfo = new Button("i");
         Button buttonMinimize = new Button("-");
-        Button buttonDark = new Button("D");
-        Button buttonWhite = new Button("W");
-        Button easterEgg = new Button("e");
-        Label titre = new Label("Calculator");
         Image image = new Image("Calculatrice.jpg");
-        Label credits = new Label("Calculatrice développée par Ayfred & Smilaid, 2022Ⓒ\nVersion 2.2.3, Mis à jour le 08/11/22\nProjet réalisé pour:\n\n\n\n ");
-        Image IMT_Mines_Ales = new Image("imt_mines_ales.png");
 
         int x = 2; int y = 2;
         int b_x = 5*largeur/11; int b_y = -10*longueur/21;
-
-        credits.setPrefSize(largeur,180);
-        credits.setTranslateX(0);
-        credits.setTranslateY(-180);
-        credits.setAlignment(Pos.CENTER);
-        credits.setTextAlignment(TextAlignment.CENTER);
-        credits.setStyle("-fx-background-color: #444444");
-        credits.setTextFill(couleur_texte);
-        credits.setVisible(false);
-        sp.getChildren().add(credits);
-
-        ImageView image_IMT_Mines_Ales = new ImageView(IMT_Mines_Ales);
-        image_IMT_Mines_Ales.setTranslateX(20);
-        image_IMT_Mines_Ales.setTranslateY(-50);
-        image_IMT_Mines_Ales.setFitHeight(100);
-        image_IMT_Mines_Ales.setFitWidth(200);
-        image_IMT_Mines_Ales.setPreserveRatio(true);
-        image_IMT_Mines_Ales.setVisible(true);
-        sp.getChildren().add(image_IMT_Mines_Ales);
-
 
         buttonClose.setPrefSize(x,y);
         buttonClose.setTranslateX(b_x);
@@ -156,44 +130,6 @@ public class InterfaceGraphique extends Application{//Interface Application
         buttonMinimize.setOnMouseClicked(mouseEvent -> stage.setIconified(true));
         sp.getChildren().add(buttonMinimize);
 
-        buttonDark.setPrefSize(x,y);
-        buttonDark.setTranslateX(b_x-50);
-        buttonDark.setTranslateY(b_y);
-        buttonDark.setShape(new Circle(0.5));
-        buttonDark.setStyle("-fx-background-color: #000000");//couleur grise
-        buttonDark.setFont(Font.font("Courier New", FontWeight.NORMAL, 12));
-        buttonDark.setTextFill(Color.WHITE);
-        buttonDark.setOnMouseClicked(mouseEvent ->{
-            sp.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii( 0.05, 0.05, 0.05, 0.05, true), Insets.EMPTY)));
-            couleur_texte = Color.WHITE;
-            update_dark_white_mode();
-            titre.setTextFill(Color.WHITE);
-            buttonDark.setVisible(false);
-            buttonWhite.setVisible(true);
-            buttonInfo.setStyle("-fx-background-color: #FFFFFF");//couleur blanche
-        });
-        sp.getChildren().add(buttonDark);
-
-        buttonDark.setVisible(false);
-
-        buttonWhite.setPrefSize(x,y);
-        buttonWhite.setTranslateX(b_x-50);
-        buttonWhite.setTranslateY(b_y);
-        buttonWhite.setShape(new Circle(0.5));
-        buttonWhite.setStyle("-fx-background-color: #FFFFFF");//couleur grise
-        buttonWhite.setFont(Font.font("Courier New", FontWeight.NORMAL, 12));
-        buttonWhite.setTextFill(Color.BLACK);
-        buttonWhite.setOnMouseClicked(mouseEvent ->{
-            sp.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii( 0.05, 0.05, 0.05, 0.05, true), Insets.EMPTY)));
-            couleur_texte = Color.BLACK;
-            update_dark_white_mode();
-            titre.setTextFill(Color.BLACK);
-            buttonDark.setVisible(true);
-            buttonWhite.setVisible(false);
-            buttonInfo.setStyle("-fx-background-color: #000000");//couleur blanche
-        });
-        sp.getChildren().add(buttonWhite);
-
         titre.setTranslateX(-b_x + 50);
         titre.setTranslateY(b_y);
         titre.setTextFill(Color.WHITE);
@@ -208,47 +144,6 @@ public class InterfaceGraphique extends Application{//Interface Application
         imageView.setFitWidth(14);
         imageView.setPreserveRatio(true);
         sp.getChildren().add(imageView);
-
-        AtomicReference<Boolean> activation = new AtomicReference<>(true);
-        buttonInfo.setPrefSize(x,y);
-        buttonInfo.setTranslateX(b_x-75);
-        buttonInfo.setTranslateY(b_y);
-        buttonInfo.setShape(new Circle(0.5));
-        buttonInfo.setStyle("-fx-background-color: #FFFFFF");//couleur blanche
-        buttonInfo.setFont(Font.font("Courier New", FontWeight.BOLD, 12));
-        buttonInfo.setTextFill(Color.ORANGE);
-        buttonInfo.setOnMouseClicked(mouseEvent ->{
-            if(activation.get()){
-                credits.setVisible(true);
-                easterEgg.setVisible(true);
-                activation.set(false);
-            }
-            else{
-                credits.setVisible(false);
-                easterEgg.setVisible(false);
-                activation.set(true);
-            }
-        });
-
-        sp.getChildren().add(buttonInfo);
-
-        Image curseur = new Image("UnicornCursor.png");
-        easterEgg.setPrefSize(x,y);
-        easterEgg.setTranslateX(b_x-100);
-        easterEgg.setTranslateY(b_y);
-        easterEgg.setShape(new Circle(0.5));
-        easterEgg.setStyle("-fx-background-color: #FFC0CB");//couleur rouge
-        easterEgg.setFont(Font.font("Courier New", FontWeight.BOLD, 12));
-        easterEgg.setTextFill(Color.VIOLET);
-        easterEgg.setOnMouseClicked(mouseEvent ->{
-            stage.getScene().setCursor(new ImageCursor(curseur));
-            sp.setBackground(new Background(new BackgroundFill(Color.PINK, new CornerRadii( 0.05, 0.05, 0.05, 0.05, true), Insets.EMPTY)));
-            couleur_texte = Color.PURPLE;update_dark_white_mode();
-            titre.setTextFill(Color.DEEPPINK);
-
-        });
-        easterEgg.setVisible(false);
-        sp.getChildren().add(easterEgg);
     }
 
     //Méthode de création des Label
@@ -308,14 +203,6 @@ public class InterfaceGraphique extends Application{//Interface Application
         sp.getChildren().add(affichagePile);
     }
 
-    public void update_dark_white_mode(){
-        affichageResultat.setTextFill(couleur_texte);
-        affichageMessage.setTextFill(couleur_texte);
-        affichageHistorique_1.setTextFill(couleur_texte);
-        affichageHistorique_2.setTextFill(couleur_texte);
-        affichageHistorique_3.setTextFill(couleur_texte);
-        affichagePile.setTextFill(couleur_texte);
-    }
 
 
     //Méthode de création des boutons
@@ -366,7 +253,7 @@ public class InterfaceGraphique extends Application{//Interface Application
                 case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9","," -> {
                     button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
                     button.setStyle("-fx-background-color: #5A5A5A");//couleur grise
-                    button.setTextFill(Color.WHITE);//texte blanc
+                    button.setTextFill(couleur_numero);//texte blanc
                     updateButtonOnClick(button, "-fx-background-color: #5A5A5A");
                 }
                 case "C", "%", "±" -> {
@@ -449,5 +336,143 @@ public class InterfaceGraphique extends Application{//Interface Application
     //Lancement de la calculatrice
     public static void main(String[] args) {
         launch();
+    }
+
+    /*--------------------------------------------------------Easter Egg-----------------------------------------------------------------------------*/
+
+    public void easter_egg_affichage(Stage stage, StackPane sp){
+        Button buttonInfo = new Button("i");
+        Button buttonDark = new Button("D");
+        Button buttonWhite = new Button("W");
+        Button easterEgg = new Button();
+        Label credits = new Label("Calculatrice développée par Ayfred & Smilaid, 2022Ⓒ\nVersion 2.2.3, Mis à jour le 08/11/22\nhttps://github.com/Ayfred/Calculatrice_polonaise\nProjet réalisé pour:\n\n\n\n ");
+        Image IMT_Mines_Ales = new Image("imt_mines_ales.jpg");
+
+        int x = 2; int y = 2;
+        int b_x = 5*largeur/11; int b_y = -10*longueur/21;
+
+        credits.setPrefSize(largeur,180);
+        credits.setTranslateX(0);
+        credits.setTranslateY(-180);
+        credits.setAlignment(Pos.CENTER);
+        credits.setTextAlignment(TextAlignment.CENTER);
+        credits.setStyle("-fx-background-color: #444444");
+        credits.setTextFill(couleur_texte);
+        credits.setVisible(false);
+        sp.getChildren().add(credits);
+
+        ImageView image_IMT_Mines_Ales = new ImageView(IMT_Mines_Ales);
+        image_IMT_Mines_Ales.setTranslateX(0);
+        image_IMT_Mines_Ales.setTranslateY(-140);
+        image_IMT_Mines_Ales.setFitHeight(80);
+        image_IMT_Mines_Ales.setFitWidth(180);
+        image_IMT_Mines_Ales.setPreserveRatio(true);
+        image_IMT_Mines_Ales.setVisible(false);
+        sp.getChildren().add(image_IMT_Mines_Ales);
+
+
+        buttonDark.setPrefSize(x,y);
+        buttonDark.setTranslateX(b_x-50);
+        buttonDark.setTranslateY(b_y);
+        buttonDark.setShape(new Circle(0.5));
+        buttonDark.setStyle("-fx-background-color: #000000");//couleur grise
+        buttonDark.setFont(Font.font("Courier New", FontWeight.NORMAL, 12));
+        buttonDark.setTextFill(Color.WHITE);
+        buttonDark.setOnMouseClicked(mouseEvent ->{
+            sp.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii( 0.05, 0.05, 0.05, 0.05, true), Insets.EMPTY)));
+            couleur_texte = Color.WHITE;
+            update_dark_white_mode();
+            titre.setTextFill(Color.WHITE);
+            buttonDark.setVisible(false);
+            buttonWhite.setVisible(true);
+            buttonInfo.setStyle("-fx-background-color: #FFFFFF");//couleur blanche
+        });
+        sp.getChildren().add(buttonDark);
+
+        buttonDark.setVisible(false);
+
+        buttonWhite.setPrefSize(x,y);
+        buttonWhite.setTranslateX(b_x-50);
+        buttonWhite.setTranslateY(b_y);
+        buttonWhite.setShape(new Circle(0.5));
+        buttonWhite.setStyle("-fx-background-color: #FFFFFF");//couleur grise
+        buttonWhite.setFont(Font.font("Courier New", FontWeight.NORMAL, 12));
+        buttonWhite.setTextFill(Color.BLACK);
+        buttonWhite.setOnMouseClicked(mouseEvent ->{
+            sp.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii( 0.05, 0.05, 0.05, 0.05, true), Insets.EMPTY)));
+            couleur_texte = Color.BLACK;
+            update_dark_white_mode();
+            titre.setTextFill(Color.BLACK);
+            buttonDark.setVisible(true);
+            buttonWhite.setVisible(false);
+            buttonInfo.setStyle("-fx-background-color: #000000");//couleur blanche
+        });
+        sp.getChildren().add(buttonWhite);
+
+
+        AtomicReference<Boolean> activation = new AtomicReference<>(true);
+        buttonInfo.setPrefSize(x,y);
+        buttonInfo.setTranslateX(b_x-75);
+        buttonInfo.setTranslateY(b_y);
+        buttonInfo.setShape(new Circle(0.5));
+        buttonInfo.setStyle("-fx-background-color: #FFFFFF");//couleur blanche
+        buttonInfo.setFont(Font.font("Courier New", FontWeight.BOLD, 12));
+        buttonInfo.setTextFill(Color.ORANGE);
+        buttonInfo.setOnMouseClicked(mouseEvent ->{
+            if(activation.get()){
+                credits.setVisible(true);
+                easterEgg.setVisible(true);
+                image_IMT_Mines_Ales.setVisible(true);
+                activation.set(false);
+            }
+            else{
+                credits.setVisible(false);
+                easterEgg.setVisible(false);
+                image_IMT_Mines_Ales.setVisible(false);
+                activation.set(true);
+            }
+        });
+
+        sp.getChildren().add(buttonInfo);
+
+        Image curseur = new Image("UnicornCursor.png");
+        Image easter = new Image("easter.jpg");
+        ImageView image_easter = new ImageView(easter);
+        image_easter.setFitHeight(25);
+        image_easter.setFitWidth(25);
+        easterEgg.setGraphic(image_easter);
+        easterEgg.setTranslateX(120);
+        easterEgg.setTranslateY(-140);
+        easterEgg.setBackground(null);
+        easterEgg.setOnMouseClicked(mouseEvent ->{
+            stage.getScene().setCursor(new ImageCursor(curseur));
+            sp.setBackground(new Background(new BackgroundFill(Color.PINK, new CornerRadii( 0.05, 0.05, 0.05, 0.05, true), Insets.EMPTY)));
+            couleur_texte = Color.PURPLE; couleur_numero = Color.HOTPINK;
+            update_dark_white_mode(); update_couleur_numero();
+            titre.setTextFill(Color.DEEPPINK);
+            credits.setVisible(false);
+            image_IMT_Mines_Ales.setVisible(false);
+            easterEgg.setVisible(false);
+            activation.set(true);
+        });
+        easterEgg.setVisible(false);
+        sp.getChildren().add(easterEgg);
+    }
+
+    public void update_dark_white_mode(){
+        affichageResultat.setTextFill(couleur_texte);
+        affichageMessage.setTextFill(couleur_texte);
+        affichageHistorique_1.setTextFill(couleur_texte);
+        affichageHistorique_2.setTextFill(couleur_texte);
+        affichageHistorique_3.setTextFill(couleur_texte);
+        affichagePile.setTextFill(couleur_texte);
+    }
+
+    public void update_couleur_numero(){
+        for( int i = 0 ; i < buttons.size(); i++){
+            if(i <= 10 ){
+                buttons.get(i).setTextFill(couleur_numero);
+            }
+        }
     }
 }
