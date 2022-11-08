@@ -4,6 +4,7 @@ import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,19 +12,24 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Stack;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class InterfaceGraphique extends Application{//Interface Application
@@ -39,21 +45,14 @@ public class InterfaceGraphique extends Application{//Interface Application
     String message = "";
     String historique_1 = ""; String historique_2 = ""; String historique_3 = "";
     List<Button> buttons;
-    double yOffset;
-    double xOffset;
-
+    double xOffset; double yOffset;
     Color couleur_texte = Color.WHITE;
-
     PauseTransition transition = new PauseTransition(Duration.seconds(0.05));
-
-
     //Ajout du PropertyChangeSupport
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-    //création de la Vbox
-    VBox box = new VBox();
     //Création de la StackPane
-    StackPane stackPane = new StackPane(box);
+    StackPane stackPane = new StackPane();
 
     /**
      * Méthode de création de la fenêtre
@@ -63,26 +62,16 @@ public class InterfaceGraphique extends Application{//Interface Application
     public void start(Stage stage) {
         //Ajout du listener controleur
         support.addPropertyChangeListener(controleur);
+
         //creation de nouveaux objets
         createLabels(stackPane);
         createButtons(stackPane);
-
         init(stage, stackPane);
 
-        //configuration par défaut
-        box.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii( 0.03, 0.03, 0.03, 0.03, true), Insets.EMPTY)));
 
         //Coordonnées du StackPane
         stackPane.setTranslateX(0); stackPane.setTranslateY(0);
         stackPane.setPrefSize(longueur, largeur);
-        stackPane.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY ,Insets.EMPTY)));
-
-        //Ajout du StackPane à la Vbox
-        //box.getChildren().add(stackPane);
-
-        //Création de la fenêtre scene
-        //StackPane stackPane_1= new StackPane(box);
-        //stackPane_1.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY ,Insets.EMPTY)));
 
         Scene scene = new Scene (stackPane, largeur, longueur);
         //Ajout des touches
@@ -96,8 +85,8 @@ public class InterfaceGraphique extends Application{//Interface Application
         //Initialisation de stage
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(scene);
-        stage.initStyle(StageStyle.TRANSPARENT);
-
+        stage.getIcons().add(new Image("Calculatrice.jpg"));
+        stage.setTitle("Calculator");
 
         //Déplacement de la fenêtre en maintenant sur un endroit de la calculatrice puis en déplaçant la souris
         scene.setOnMousePressed(event -> {
@@ -114,28 +103,45 @@ public class InterfaceGraphique extends Application{//Interface Application
 
     public void init(Stage stage, StackPane sp) {
         Button buttonClose = new Button("x");
+        Button buttonInfo = new Button("i");
         Button buttonMinimize = new Button("-");
         Button buttonDark = new Button("D");
         Button buttonWhite = new Button("W");
+        Button easterEgg = new Button("e");
         Label titre = new Label("Calculator");
         Image image = new Image("Calculatrice.jpg");
-        Label background = new Label();
+        Label credits = new Label("Calculatrice développée par Ayfred & Smilaid, 2022Ⓒ\nVersion 2.2.3, Mis à jour le 08/11/22\nProjet réalisé pour:\n\n\n\n ");
+        Image IMT_Mines_Ales = new Image("imt_mines_ales.png");
 
         int x = 2; int y = 2;
         int b_x = 5*largeur/11; int b_y = -10*longueur/21;
 
-        background.setPrefSize(largeur, 40);
-        background.setTranslateX(140);
-        background.setTranslateY(b_y-7);
-        background.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(0.5,0.5,0.5,0.5,true), Insets.EMPTY)));
-        //sp.getChildren().add(background);
+        credits.setPrefSize(largeur,180);
+        credits.setTranslateX(0);
+        credits.setTranslateY(-180);
+        credits.setAlignment(Pos.CENTER);
+        credits.setTextAlignment(TextAlignment.CENTER);
+        credits.setStyle("-fx-background-color: #444444");
+        credits.setTextFill(couleur_texte);
+        credits.setVisible(false);
+        sp.getChildren().add(credits);
+
+        ImageView image_IMT_Mines_Ales = new ImageView(IMT_Mines_Ales);
+        image_IMT_Mines_Ales.setTranslateX(20);
+        image_IMT_Mines_Ales.setTranslateY(-50);
+        image_IMT_Mines_Ales.setFitHeight(100);
+        image_IMT_Mines_Ales.setFitWidth(200);
+        image_IMT_Mines_Ales.setPreserveRatio(true);
+        image_IMT_Mines_Ales.setVisible(true);
+        sp.getChildren().add(image_IMT_Mines_Ales);
+
 
         buttonClose.setPrefSize(x,y);
         buttonClose.setTranslateX(b_x);
         buttonClose.setTranslateY(b_y);
         buttonClose.setShape(new Circle(0.5));
-        buttonClose.setStyle("-fx-background-color: #FF0000");//couleur grise
-        buttonClose.setFont(Font.font("Courier New", FontWeight.NORMAL, 10));
+        buttonClose.setStyle("-fx-background-color: #FF0000");//couleur rouge
+        buttonClose.setFont(Font.font("Courier New", FontWeight.NORMAL, 12));
         buttonClose.setTextFill(Color.WHITE);
         buttonClose.setOnMouseClicked(mouseEvent -> stage.close());
         sp.getChildren().add(buttonClose);
@@ -145,7 +151,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         buttonMinimize.setTranslateY(b_y);
         buttonMinimize.setShape(new Circle(0.5));
         buttonMinimize.setStyle("-fx-background-color: #808080");//couleur grise
-        buttonMinimize.setFont(Font.font("Courier New", FontWeight.NORMAL, 10));
+        buttonMinimize.setFont(Font.font("Courier New", FontWeight.NORMAL, 12));
         buttonMinimize.setTextFill(Color.WHITE);
         buttonMinimize.setOnMouseClicked(mouseEvent -> stage.setIconified(true));
         sp.getChildren().add(buttonMinimize);
@@ -155,16 +161,17 @@ public class InterfaceGraphique extends Application{//Interface Application
         buttonDark.setTranslateY(b_y);
         buttonDark.setShape(new Circle(0.5));
         buttonDark.setStyle("-fx-background-color: #000000");//couleur grise
-        buttonDark.setFont(Font.font("Courier New", FontWeight.NORMAL, 10));
+        buttonDark.setFont(Font.font("Courier New", FontWeight.NORMAL, 12));
         buttonDark.setTextFill(Color.WHITE);
         buttonDark.setOnMouseClicked(mouseEvent ->{
-            box.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+            sp.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii( 0.05, 0.05, 0.05, 0.05, true), Insets.EMPTY)));
             couleur_texte = Color.WHITE;
             update_dark_white_mode();
-            background.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
             titre.setTextFill(Color.WHITE);
             buttonDark.setVisible(false);
-            buttonWhite.setVisible(true);});
+            buttonWhite.setVisible(true);
+            buttonInfo.setStyle("-fx-background-color: #FFFFFF");//couleur blanche
+        });
         sp.getChildren().add(buttonDark);
 
         buttonDark.setVisible(false);
@@ -174,34 +181,74 @@ public class InterfaceGraphique extends Application{//Interface Application
         buttonWhite.setTranslateY(b_y);
         buttonWhite.setShape(new Circle(0.5));
         buttonWhite.setStyle("-fx-background-color: #FFFFFF");//couleur grise
-        buttonWhite.setFont(Font.font("Courier New", FontWeight.NORMAL, 10));
+        buttonWhite.setFont(Font.font("Courier New", FontWeight.NORMAL, 12));
         buttonWhite.setTextFill(Color.BLACK);
         buttonWhite.setOnMouseClicked(mouseEvent ->{
-            box.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+            sp.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii( 0.05, 0.05, 0.05, 0.05, true), Insets.EMPTY)));
             couleur_texte = Color.BLACK;
             update_dark_white_mode();
-            background.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
             titre.setTextFill(Color.BLACK);
             buttonDark.setVisible(true);
             buttonWhite.setVisible(false);
+            buttonInfo.setStyle("-fx-background-color: #000000");//couleur blanche
         });
         sp.getChildren().add(buttonWhite);
 
-        titre.setTranslateX(-b_x + 40);
+        titre.setTranslateX(-b_x + 50);
         titre.setTranslateY(b_y);
         titre.setTextFill(Color.WHITE);
-        titre.setFont(Font.font("Calibri", FontWeight.BOLD, 14));
+        titre.setFont(Font.font("Calibri", FontWeight.BOLD, 16));
         sp.getChildren().add(titre);
 
         ImageView imageView = new ImageView(image);
         //Setting the position of the image
-        imageView.setTranslateX(-b_x);
-        imageView.setTranslateY(b_y);
-        imageView.setFitHeight(17);
-        imageView.setFitWidth(12);
+        imageView.setTranslateX(-b_x+2);
+        imageView.setTranslateY(b_y-1);
+        imageView.setFitHeight(18);
+        imageView.setFitWidth(14);
         imageView.setPreserveRatio(true);
-
         sp.getChildren().add(imageView);
+
+        AtomicReference<Boolean> activation = new AtomicReference<>(true);
+        buttonInfo.setPrefSize(x,y);
+        buttonInfo.setTranslateX(b_x-75);
+        buttonInfo.setTranslateY(b_y);
+        buttonInfo.setShape(new Circle(0.5));
+        buttonInfo.setStyle("-fx-background-color: #FFFFFF");//couleur blanche
+        buttonInfo.setFont(Font.font("Courier New", FontWeight.BOLD, 12));
+        buttonInfo.setTextFill(Color.ORANGE);
+        buttonInfo.setOnMouseClicked(mouseEvent ->{
+            if(activation.get()){
+                credits.setVisible(true);
+                easterEgg.setVisible(true);
+                activation.set(false);
+            }
+            else{
+                credits.setVisible(false);
+                easterEgg.setVisible(false);
+                activation.set(true);
+            }
+        });
+
+        sp.getChildren().add(buttonInfo);
+
+        Image curseur = new Image("UnicornCursor.png");
+        easterEgg.setPrefSize(x,y);
+        easterEgg.setTranslateX(b_x-100);
+        easterEgg.setTranslateY(b_y);
+        easterEgg.setShape(new Circle(0.5));
+        easterEgg.setStyle("-fx-background-color: #FFC0CB");//couleur rouge
+        easterEgg.setFont(Font.font("Courier New", FontWeight.BOLD, 12));
+        easterEgg.setTextFill(Color.VIOLET);
+        easterEgg.setOnMouseClicked(mouseEvent ->{
+            stage.getScene().setCursor(new ImageCursor(curseur));
+            sp.setBackground(new Background(new BackgroundFill(Color.PINK, new CornerRadii( 0.05, 0.05, 0.05, 0.05, true), Insets.EMPTY)));
+            couleur_texte = Color.PURPLE;update_dark_white_mode();
+            titre.setTextFill(Color.DEEPPINK);
+
+        });
+        easterEgg.setVisible(false);
+        sp.getChildren().add(easterEgg);
     }
 
     //Méthode de création des Label
@@ -213,7 +260,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         affichageResultat = new Label(resultat);
         affichageResultat.setTranslateY(coord_y_resultat); affichageResultat.setTranslateX(centre);
         affichageResultat.setTextFill(couleur_texte);
-        affichageResultat.setFont(Font.font("Calibri", FontWeight.NORMAL, 62));
+        affichageResultat.setFont(Font.font("Calibri", FontWeight.NORMAL, 60));
         sp.getChildren().add(affichageResultat);
         StackPane.setAlignment(affichageResultat, Pos.CENTER_RIGHT);
 
@@ -275,7 +322,7 @@ public class InterfaceGraphique extends Application{//Interface Application
     public void createButtons(StackPane sp){
         //Liste des noms des boutons
         String[] nomBoutons = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "C",
-                                "push", "+", "-", "x", "/", "±", ",", "%", "←"};
+                                "=", "+", "-", "x", "/", "±", ",", "%", "←"};
 
         //Initialisation des coordonnées des boutons
         int b_x = -14*largeur/39; int b_y = -largeur/8;
@@ -324,11 +371,11 @@ public class InterfaceGraphique extends Application{//Interface Application
                 }
                 case "C", "%", "±" -> {
                     button.setStyle("-fx-background-color: #bcbcbc");//couleur grise
-                    button.setTextFill(Color.WHITE);
+                    button.setTextFill(Color.GRAY);
                     button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
                     updateButtonOnClick(button, "-fx-background-color: #bcbcbc");
                 }
-                case "/", "x", "-", "+" -> {
+                case "/", "x", "-", "+", "=" -> {
                     button.setStyle("-fx-background-color: #EC9706");//couleur orange
                     button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
                     updateButtonOnClick(button, "-fx-background-color: #EC9706");
@@ -340,7 +387,7 @@ public class InterfaceGraphique extends Application{//Interface Application
                 }
                 case "←" ->{
                     button.setStyle("-fx-background-color: #5A5A5A");//couleur grise
-                    button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
+                    button.setFont(Font.font("Courier New", FontWeight.BOLD, 38));
                     updateButtonOnClick(button, "-fx-background-color: #5A5A5A");
                 }
             }

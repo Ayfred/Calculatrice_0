@@ -120,7 +120,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                 case "8" -> update("8");
                 case "9" -> update("9");
                 case "+", "-", "x", "/" -> operation(k);
-                case "push" -> push();
+                case "=" -> push();
                 case "C" -> accumulateur.clear(); //Effacement de la pile
                 case "," -> virgule();
                 case "±" -> negatif();
