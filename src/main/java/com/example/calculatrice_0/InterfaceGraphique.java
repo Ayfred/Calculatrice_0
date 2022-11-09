@@ -7,6 +7,7 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -39,7 +40,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class InterfaceGraphique extends Application{//Interface Application
     //Création des objets nécéssaires pour la création de la calculatrice
-    String version = "2.3.2"; String date =  new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+    String version = "2.3.3"; String date =  new SimpleDateFormat("dd-MM-yyyy").format(new Date());
     int largeur = 340; int longueur = 600;
     Controleur controleur = new Controleur(this);
     Input input = new Input(controleur);
@@ -340,7 +341,7 @@ public class InterfaceGraphique extends Application{//Interface Application
 
     /*--------------------------------------------------------Easter Egg-----------------------------------------------------------------------------*/
 
-    Boolean stop = false;
+    Boolean stop = false; Boolean stop_flashing = false;
 
     public void easter_egg_affichage(Stage stage, StackPane sp){
 
@@ -372,7 +373,6 @@ public class InterfaceGraphique extends Application{//Interface Application
         moving_credits.setVisible(false);
         moving_credits.setFont(Font.font("Arial", FontWeight.BOLD, 12));
         sp.getChildren().add(moving_credits);
-        movingCredit(moving_credits, -40, 40, 0.5);
 
         ImageView image_IMT_Mines_Ales = new ImageView(IMT_Mines_Ales);
         image_IMT_Mines_Ales.setTranslateX(0);
@@ -404,6 +404,7 @@ public class InterfaceGraphique extends Application{//Interface Application
             stop = true;
             titre.setTranslateX(-b_x + 50);
             titre.setTranslateY(b_y);
+            stage.getScene().setCursor(Cursor.DEFAULT);
         });
         sp.getChildren().add(buttonDark);
 
@@ -429,6 +430,7 @@ public class InterfaceGraphique extends Application{//Interface Application
             stop = true;
             titre.setTranslateX(-b_x + 50);
             titre.setTranslateY(b_y);
+            stage.getScene().setCursor(Cursor.DEFAULT);
         });
         sp.getChildren().add(buttonWhite);
 
@@ -445,6 +447,8 @@ public class InterfaceGraphique extends Application{//Interface Application
             if(activation.get()){
                 credits.setVisible(true);
                 easterEgg.setVisible(true);
+                stop_flashing = false;
+                flashing(easterEgg);
                 image_IMT_Mines_Ales.setVisible(true);
                 activation.set(false);
             }
@@ -453,6 +457,7 @@ public class InterfaceGraphique extends Application{//Interface Application
                 easterEgg.setVisible(false);
                 image_IMT_Mines_Ales.setVisible(false);
                 activation.set(true);
+                stop_flashing = true;
             }
         });
 
@@ -479,8 +484,9 @@ public class InterfaceGraphique extends Application{//Interface Application
             image_IMT_Mines_Ales.setVisible(false);
             moving_credits.setVisible(true);
             easterEgg.setVisible(false);
-            stop = false;
-            movingCredit(titre, -110, 30, 0.5);
+            stop = false; stop_flashing = true;
+            movingLabel(titre, -110, 30, 0.5);
+            movingLabel(moving_credits, -40, 40, 0.5);
             activation.set(true);
         });
         easterEgg.setVisible(false);
@@ -529,9 +535,10 @@ public class InterfaceGraphique extends Application{//Interface Application
     }
 
 
-    public void movingCredit(Label label, int debut, int fin, double speed){
+    public void movingLabel(Label label, int debut, int fin, double speed){
         AtomicReference<Boolean> aller = new AtomicReference<>(true);
-        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e ->{
+        Timeline clock = new Timeline();
+        KeyFrame keyFrame = new KeyFrame(Duration.ZERO, event ->{
             if(aller.get() && !stop){
                 label.setTranslateX(label.getTranslateX()+ speed);
                 if(label.getTranslateX() == fin){
@@ -544,9 +551,35 @@ public class InterfaceGraphique extends Application{//Interface Application
                     aller.set(true);
                 }
             }
-        }), new KeyFrame(Duration.millis(50)));
+            else{
+                clock.stop();
+            }
+        });
+        clock.getKeyFrames().addAll(keyFrame, new KeyFrame(Duration.millis(50)));
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();
         if(stop){clock.stop();}
+    }
+
+    public void flashing(Button button){
+        AtomicReference<Boolean> presence = new AtomicReference<>(true);
+        Timeline clock = new Timeline();
+        KeyFrame keyFrame = new KeyFrame(Duration.ZERO, event ->{
+            if(presence.get() && !stop_flashing){
+                button.setVisible(true);
+                presence.set(false);
+            }
+            else if(!presence.get() && !stop_flashing){
+                button.setVisible(false);
+                presence.set(true);
+            }
+            else{
+                clock.stop();
+            }
+        });
+        clock.getKeyFrames().addAll(keyFrame, new KeyFrame(Duration.millis(800)));
+        clock.setCycleCount(Animation.INDEFINITE);
+        clock.play();
+        if(stop_flashing){clock.stop();}
     }
 }
