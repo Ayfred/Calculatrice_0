@@ -40,15 +40,14 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class InterfaceGraphique extends Application{//Interface Application
     //Création des objets nécéssaires pour la création de la calculatrice
-    String version = "2.3.3"; String date =  new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+    String version = "2.3.4"; String date =  new SimpleDateFormat("dd-MM-yyyy").format(new Date());
     int largeur = 340; int longueur = 600;
     Controleur controleur = new Controleur(this);
     Input input = new Input(controleur);
     Label affichageResultat; Label affichageMessage; Label affichagePile;
     Label affichageHistorique_1; Label affichageHistorique_2; Label affichageHistorique_3;
     Label titre = new Label("Calculator");
-    String resultat = "0";
-    String message = "";
+    String resultat = "0";String message = "";
     String historique_1 = ""; String historique_2 = ""; String historique_3 = "";
     List<Button> buttons;
     double xOffset; double yOffset;
@@ -342,6 +341,10 @@ public class InterfaceGraphique extends Application{//Interface Application
     /*--------------------------------------------------------Easter Egg-----------------------------------------------------------------------------*/
 
     Boolean stop = false; Boolean stop_flashing = false;
+    int gameState;
+    int darkModeState = 0; int whiteModeState = 1; int easterEggState = 2;
+    AtomicReference<Boolean> creditState = new AtomicReference<>(true);
+
 
     public void easter_egg_affichage(Stage stage, StackPane sp){
 
@@ -399,12 +402,21 @@ public class InterfaceGraphique extends Application{//Interface Application
             update_couleur_bouton("-fx-background-color: #5A5A5A", "-fx-background-color: #bcbcbc" ,"-fx-background-color: #EC9706");
             buttonDark.setVisible(false);
             buttonWhite.setVisible(true);
-            moving_credits.setVisible(false);
+            credits.setVisible(false);
+            image_IMT_Mines_Ales.setVisible(false);
             titre.setTextFill(Color.WHITE);
-            stop = true;
-            titre.setTranslateX(-b_x + 50);
-            titre.setTranslateY(b_y);
-            stage.getScene().setCursor(Cursor.DEFAULT);
+            if(gameState == easterEggState){
+                stop = true;
+                titre.setTranslateX(-b_x + 50);
+                titre.setTranslateY(b_y);
+                gameState = darkModeState;
+                moving_credits.setVisible(false);
+                stage.getScene().setCursor(Cursor.DEFAULT);
+            }
+            creditState.set(true);
+            gameState = darkModeState;
+            easterEgg.setVisible(false);
+            stop_flashing = true;
         });
         sp.getChildren().add(buttonDark);
 
@@ -425,17 +437,25 @@ public class InterfaceGraphique extends Application{//Interface Application
             update_couleur_bouton("-fx-background-color: #5A5A5A", "-fx-background-color: #bcbcbc" ,"-fx-background-color: #EC9706");
             buttonDark.setVisible(true);
             buttonWhite.setVisible(false);
-            moving_credits.setVisible(false);
+            credits.setVisible(false);
             titre.setTextFill(Color.BLACK);
-            stop = true;
-            titre.setTranslateX(-b_x + 50);
-            titre.setTranslateY(b_y);
-            stage.getScene().setCursor(Cursor.DEFAULT);
+            image_IMT_Mines_Ales.setVisible(false);
+            if(gameState == easterEggState){
+                stop = true;
+                titre.setTextFill(Color.BLACK);
+                titre.setTranslateX(-b_x + 50);
+                titre.setTranslateY(b_y);
+                gameState = whiteModeState;
+                moving_credits.setVisible(false);
+                stage.getScene().setCursor(Cursor.DEFAULT);
+            }
+            creditState.set(true);
+            gameState = whiteModeState;
+            easterEgg.setVisible(false);
+            stop_flashing = true;
         });
         sp.getChildren().add(buttonWhite);
 
-
-        AtomicReference<Boolean> activation = new AtomicReference<>(true);
         buttonInfo.setPrefSize(x,y);
         buttonInfo.setTranslateX(b_x-75);
         buttonInfo.setTranslateY(b_y);
@@ -444,19 +464,24 @@ public class InterfaceGraphique extends Application{//Interface Application
         buttonInfo.setFont(Font.font("Courier New", FontWeight.BOLD, 12));
         buttonInfo.setTextFill(Color.BLACK);
         buttonInfo.setOnMouseClicked(mouseEvent ->{
-            if(activation.get()){
+            if(creditState.get()){
                 credits.setVisible(true);
-                easterEgg.setVisible(true);
-                stop_flashing = false;
-                flashing(easterEgg);
                 image_IMT_Mines_Ales.setVisible(true);
-                activation.set(false);
+                if(gameState == whiteModeState || gameState == darkModeState){
+                    stop_flashing = false;
+                    flashing(easterEgg);
+                    easterEgg.setVisible(true);
+                }else{
+                    stop_flashing = true;
+                    easterEgg.setVisible(false);
+                }
+                creditState.set(false);
             }
             else{
                 credits.setVisible(false);
                 easterEgg.setVisible(false);
                 image_IMT_Mines_Ales.setVisible(false);
-                activation.set(true);
+                creditState.set(true);
                 stop_flashing = true;
             }
         });
@@ -487,12 +512,11 @@ public class InterfaceGraphique extends Application{//Interface Application
             stop = false; stop_flashing = true;
             movingLabel(titre, -110, 30, 0.5);
             movingLabel(moving_credits, -40, 40, 0.5);
-            activation.set(true);
+            creditState.set(true);
+            gameState = easterEggState;
         });
         easterEgg.setVisible(false);
         sp.getChildren().add(easterEgg);
-
-
     }
 
     public void update_dark_white_mode(){
