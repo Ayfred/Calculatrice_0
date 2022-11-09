@@ -1,4 +1,4 @@
-package com.example.calculatrice_0;
+package com.example.calculatrice;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -54,20 +54,13 @@ public class Accumulateur {
     public void push(double nombre, String operation){
         pile.push(nombre);
         //Distinction du push avec un opérateur et avec un nombre
-        if(operation.equals("+")){
-            support.firePropertyChange(operation, null, pile);
-        }
-        else if(operation.equals("-")){
-            support.firePropertyChange(operation, null, pile);
-        }
-        else if(operation.equals("x")){
-            support.firePropertyChange(operation, null, pile);
-        }
-        else if(operation.equals("/")){
-            support.firePropertyChange(operation, null, pile);
-        }
-        else if(operation.equals("pushNombre")){
-            support.firePropertyChange("pushNombre", null, pile);
+        switch (operation) {
+            case "+":
+            case "-" :
+            case "x":
+            case "/" :
+                support.firePropertyChange(operation, null, pile); break;
+            case "pushNombre" : support.firePropertyChange("pushNombre", null, pile); break;
         }
     }
 

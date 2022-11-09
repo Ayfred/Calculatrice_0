@@ -1,4 +1,4 @@
-package com.example.calculatrice_0;
+package com.example.calculatrice;
 
 import java.util.Stack;
 

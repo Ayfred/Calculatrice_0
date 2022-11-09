@@ -1,4 +1,4 @@
-package com.example.calculatrice_0;
+package com.example.calculatrice;
 
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -36,7 +36,10 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         switch(evt.getPropertyName()){
-            case "+", "-", "x", "/" -> {
+            case "+" :
+            case "-" :
+            case "x" :
+            case "/" :{
                 //Affichage du résultat après opération
                 double dernier_nombre = accumulateur.pile.getLast();
 
@@ -66,8 +69,9 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
 
                 //Mise à jour de l'affichage de la pile
                 interfaceGraphique.affichagePile.setText(String.valueOf(accumulateur.pile));
+                break;
             }
-            case "pushNombre" -> {
+            case "pushNombre" : {
                 //Affichage du nombre 0
                 interfaceGraphique.updateHistorique();
                 interfaceGraphique.resultat = "0";
@@ -81,8 +85,9 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
 
                 //Mise à jour de l'affichage de la pile
                 interfaceGraphique.affichagePile.setText(String.valueOf(accumulateur.pile));
+                break;
             }
-            case "Clear" -> {
+            case "Clear" : {
                 //Réinitialisation du résultat
                 interfaceGraphique.resultat = "0";
                 interfaceGraphique.updateAffichageResultat();
@@ -94,6 +99,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
 
                 //Mise à jour de l'affichage de la pile
                 interfaceGraphique.affichagePile.setText("");
+                break;
             }
 
         }
@@ -109,23 +115,26 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
         String k = button.getText();
         if(mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED){
             switch (k) {
-                case "0" -> update("0");
-                case "1" -> update("1");
-                case "2" -> update("2");
-                case "3" -> update("3");
-                case "4" -> update("4");
-                case "5" -> update("5");
-                case "6" -> update("6");
-                case "7" -> update("7");
-                case "8" -> update("8");
-                case "9" -> update("9");
-                case "+", "-", "x", "/" -> operation(k);
-                case "=" -> push();
-                case "C" -> accumulateur.clear(); //Effacement de la pile
-                case "," -> virgule();
-                case "±" -> negatif();
-                case "%" -> pourcentage();
-                case "←" -> supprimer();
+                case "0" : update("0"); break;
+                case "1" : update("1");
+                case "2" : update("2");
+                case "3" : update("3");
+                case "4" : update("4");
+                case "5" : update("5");
+                case "6" : update("6");
+                case "7" : update("7");
+                case "8" : update("8");
+                case "9" : update("9");
+                case "+" :
+                case "-" :
+                case "x" :
+                case "/" : operation(k); break;
+                case "=" : push(); break;
+                case "C" : accumulateur.clear(); break;//Effacement de la pile
+                case "," : virgule(); break;
+                case "±" : negatif(); break;
+                case "%" : pourcentage(); break;
+                case "←" : supprimer(); break;
             }
         }
         mouseEvent.consume();
@@ -252,10 +261,10 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
         if(accumulateur.pile.size() >= 2){
             //Distinction des opérations
             switch (k) {
-                case "+" -> accumulateur.add();
-                case "-" -> accumulateur.sub();
-                case "x" -> accumulateur.mult();
-                case "/" -> {
+                case "+" : accumulateur.add(); break;
+                case "-" : accumulateur.sub(); break;
+                case "x" : accumulateur.mult(); break;
+                case "/" : {
                     //Gestion d'erreur : Divison par 0
                     if (accumulateur.pile.getLast() == 0) {
                         interfaceGraphique.message = "Erreur division par 0 impossible";
@@ -265,6 +274,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                     } else {
                         accumulateur.div();
                     }
+                    break;
                 }
             }
         }

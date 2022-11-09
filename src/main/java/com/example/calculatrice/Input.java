@@ -1,4 +1,4 @@
-package com.example.calculatrice_0;
+package com.example.calculatrice;
 
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;

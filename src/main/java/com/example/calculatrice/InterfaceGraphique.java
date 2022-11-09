@@ -1,4 +1,4 @@
-package com.example.calculatrice_0;
+package com.example.calculatrice;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -41,7 +41,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class InterfaceGraphique extends Application{//Interface Application
     //Création des objets nécéssaires pour la création de la calculatrice
     String version = "2.3.5"; String date =  new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-    int largeur = 340; int longueur = 600;
+    int largeur = 380; int longueur = 660;
     Controleur controleur = new Controleur(this);
     Input input = new Input(controleur);
     Label affichageResultat; Label affichageMessage; Label affichagePile;
@@ -255,27 +255,34 @@ public class InterfaceGraphique extends Application{//Interface Application
             //Cas particulier des boutons (couleurs, textes, polices, tailles, formes, etc...)
             String button_i = nomBoutons[i];
             switch(button_i){
-                case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9","," -> {
+                case "0" : case "1" : case "2" : case "3" : case "4" : case "5" : case "6" : case "7" : case "8" : case "9" :
+                case "," :{
                     button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
                     button.setStyle("-fx-background-color: #5A5A5A");//couleur grise
                     button.setTextFill(Color.WHITE);//texte blanc
                     updateButtonOnClick(button, "-fx-background-color: #5A5A5A");
+                    break;
                 }
-                case "C", "%", "±" -> {
+                case "C" : case "%" :
+                case "±" : {
                     button.setStyle("-fx-background-color: #bcbcbc");//couleur grise
                     button.setTextFill(Color.GRAY);
                     button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
                     updateButtonOnClick(button, "-fx-background-color: #bcbcbc");
+                    break;
                 }
-                case "/", "x", "-", "+", "=" -> {
+                case "/" : case "x" : case "-" : case "+" :
+                case "=" :{
                     button.setStyle("-fx-background-color: #EC9706");//couleur orange
                     button.setFont(Font.font("Courier New", FontWeight.BOLD, 36));
                     updateButtonOnClick(button, "-fx-background-color: #EC9706");
+                    break;
                 }
-                case "←" ->{
+                case "←" :{
                     button.setStyle("-fx-background-color: #5A5A5A");//couleur grise
                     button.setFont(Font.font("Courier New", FontWeight.BOLD, 38));
                     updateButtonOnClick(button, "-fx-background-color: #5A5A5A");
+                    break;
                 }
             }
         }
@@ -531,9 +538,13 @@ public class InterfaceGraphique extends Application{//Interface Application
     public void update_couleur_numero(Color color1, Color color2, Color color3){
         for (Button button : buttons) {
             switch (button.getText()) {
-                case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "←" -> button.setTextFill(color1);
-                case "C", "%", "±" -> button.setTextFill(color2);
-                case "/", "x", "-", "+", "=" -> button.setTextFill(color3);
+                case "0" : case "1" : case "2" :
+                case "3" : case "4" : case "5" : case "6" : case "7" : case "8" : case "9" : case "," :
+                case "←" : button.setTextFill(color1); break;
+                case "C" : case "%" :
+                case "±" : button.setTextFill(color2); break;
+                case "/" : case "x" : case "-" : case "+" :
+                case "=" : button.setTextFill(color3); break;
             }
         }
     }
@@ -541,17 +552,24 @@ public class InterfaceGraphique extends Application{//Interface Application
     public void update_couleur_bouton(String color1, String color2, String color3){
         for (Button button : buttons) {
             switch (button.getText()) {
-                case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "←" -> {
+                case "0" : case "1" : case "2" : case "3" : case "4" : case "5" :
+                case "6" : case "7" : case "8" : case "9" : case "," :
+                case  "←" : {
                     button.setStyle(color1);
                     updateButtonOnClick(button, color1);
+                    break;
                 }
-                case "C", "%", "±" -> {
+                case "C" : case "%" :
+                case "±" :{
                     button.setStyle(color2);
                     updateButtonOnClick(button, color2);
+                    break;
                 }
-                case "/", "x", "-", "+", "=" -> {
+                case "/" : case "x" : case "-" : case "+" :
+                case "=" :{
                     button.setStyle(color3);
                     updateButtonOnClick(button, color3);
+                    break;
                 }
 
             }
