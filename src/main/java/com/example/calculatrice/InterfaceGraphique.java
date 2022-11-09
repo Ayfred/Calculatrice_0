@@ -40,8 +40,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class InterfaceGraphique extends Application{//Interface Application
     //Création des objets nécéssaires pour la création de la calculatrice
-    String version = "2.3.5"; String date =  new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-    int largeur = 380; int longueur = 660;
+    String version = "3.1"; String date =  new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+    int largeur = 380; int longueur = 680;
     Controleur controleur = new Controleur(this);
     Input input = new Input(controleur);
     Label affichageResultat; Label affichageMessage; Label affichagePile;
@@ -217,11 +217,13 @@ public class InterfaceGraphique extends Application{//Interface Application
                                 "=", "+", "-", "x", "/", "±", ",", "%", "←"};
 
         //Initialisation des coordonnées des boutons
+        int separation_1 = 90; int separation_2 = 85;
+
         int b_x = -14*largeur/39; int b_y = -largeur/8;
-        int b_x_1 = b_x + 80; int b_y_1 = b_y + 75;
-        int b_x_2 = b_x_1 + 80; int b_y_2 = b_y_1 + 75;
-        int b_x_3 = b_x_2 + 80; int b_y_3 = b_y_2 + 75;
-        int b_y_4 = b_y_3 + 75;
+        int b_x_1 = b_x + separation_1; int b_y_1 = b_y + separation_2;
+        int b_x_2 = b_x_1 + separation_1; int b_y_2 = b_y_1 + separation_2;
+        int b_x_3 = b_x_2 + separation_1; int b_y_3 = b_y_2 + separation_2;
+        int b_y_4 = b_y_3 + separation_2;
 
         //Liste des coordonnées des boutons sur la calculatrice
         int[][] pos = {{b_x,b_y_4},{b_x,b_y_3},{b_x_1,b_y_3},{b_x_2,b_y_3},//0-3
@@ -231,7 +233,7 @@ public class InterfaceGraphique extends Application{//Interface Application
                 {b_x_1, b_y_4}};
 
         //initialisation de la taille des boutons
-        double x = 70; double y = 70;
+        double x = 80; double y = 80;
 
         List<Button> buttons = new ArrayList<>();
 
@@ -366,9 +368,9 @@ public class InterfaceGraphique extends Application{//Interface Application
         int x = 2; int y = 2;
         int b_x = 5*largeur/11; int b_y = -10*longueur/21;
 
-        credits.setPrefSize(largeur,180);
+        credits.setPrefSize(largeur,200);
         credits.setTranslateX(0);
-        credits.setTranslateY(-180);
+        credits.setTranslateY(-210);
         credits.setAlignment(Pos.CENTER);
         credits.setTextAlignment(TextAlignment.CENTER);
         credits.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
@@ -378,7 +380,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         sp.getChildren().add(credits);
 
         moving_credits.setTranslateX(0);
-        moving_credits.setTranslateY(-85);
+        moving_credits.setTranslateY(-100);
         moving_credits.setTextFill(Color.DEEPPINK);
         moving_credits.setVisible(false);
         moving_credits.setFont(Font.font("Arial", FontWeight.BOLD, 12));
@@ -386,7 +388,7 @@ public class InterfaceGraphique extends Application{//Interface Application
 
         ImageView image_IMT_Mines_Ales = new ImageView(IMT_Mines_Ales);
         image_IMT_Mines_Ales.setTranslateX(0);
-        image_IMT_Mines_Ales.setTranslateY(-140);
+        image_IMT_Mines_Ales.setTranslateY(-160);
         image_IMT_Mines_Ales.setFitHeight(80);
         image_IMT_Mines_Ales.setFitWidth(180);
         image_IMT_Mines_Ales.setPreserveRatio(true);
