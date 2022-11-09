@@ -40,7 +40,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class InterfaceGraphique extends Application{//Interface Application
     //Création des objets nécéssaires pour la création de la calculatrice
-    String version = "2.3.4"; String date =  new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+    String version = "2.3.5"; String date =  new SimpleDateFormat("dd-MM-yyyy").format(new Date());
     int largeur = 340; int longueur = 600;
     Controleur controleur = new Controleur(this);
     Input input = new Input(controleur);
