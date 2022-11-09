@@ -18,14 +18,17 @@ public class Accumulateur {
         this.pile = pile;
     }
 
-    //Méthode d'ajout d'un listener
+    /**
+     * Methode addPropertyChangeListener
+     * @param listener Listener qui permet de detecter les changements
+     */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
     }
 
     /**
-     * Methode arrondi le nombre a cinq chiffres apres la virgule
-     * @param nombre qu'on veut arrondir
+     * Methode arrondir le nombre a cinq chiffres apres la virgule
+     * @param nombre On entre le nombre qu'on veut arrondir
      */
     public double arrondi(double nombre){
         if(nombre%1 != 0){
@@ -48,17 +51,14 @@ public class Accumulateur {
 
     /**
      * Methode push avec integration du firePropertyChange qui permet de detecter tout changement de la pile
-     * @param nombre qu'on veut mettre dans la pile
+     * @param nombre Nombre qu'on souhaite stocker dans la pile
      * @param operation quelle type... operateur ou nombre
      */
     public void push(double nombre, String operation){
         pile.push(nombre);
         //Distinction du push avec un opérateur et avec un nombre
         switch (operation) {
-            case "+":
-            case "-" :
-            case "x":
-            case "/" :
+            case "+": case "-" : case "x": case "/" :
                 support.firePropertyChange(operation, null, pile); break;
             case "pushNombre" : support.firePropertyChange("pushNombre", null, pile); break;
         }
@@ -101,12 +101,9 @@ public class Accumulateur {
     }
 
     /**
-     * Methode division avec la methode arrondi et push
+     * Methode division avec la methode arrondi, push et swap
      */
     public void div(){
-        /*double dernier = pile.pop();
-        double avant_dernier = pile.pop();
-        push(arrondi(avant_dernier / dernier), "/");*/
         swap();
         push(arrondi(pile.pop()/pile.pop()), "/");
     }

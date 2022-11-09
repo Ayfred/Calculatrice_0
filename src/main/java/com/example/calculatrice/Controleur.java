@@ -106,7 +106,10 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
         System.out.println(accumulateur.pile);
     }
 
-    //Méthode abstraite des événements liés à la souris
+    /**
+     * Méthode abstraite des événements liés à la souris
+     * @param mouseEvent
+     */
     @Override
     public void handle(MouseEvent mouseEvent) {
 
@@ -140,7 +143,10 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
         mouseEvent.consume();
     }
 
-    //Méthode update
+    /**
+     * Méthode update
+     * @param nombre
+     */
     public void update(String nombre){
 
 

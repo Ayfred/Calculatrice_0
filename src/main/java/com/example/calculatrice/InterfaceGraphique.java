@@ -107,6 +107,11 @@ public class InterfaceGraphique extends Application{//Interface Application
 
     }
 
+    /**
+     *
+     * @param stage
+     * @param sp
+     */
     public void init(Stage stage, StackPane sp) {
         Button buttonClose = new Button("x");
         Button buttonMinimize = new Button("-");
@@ -151,7 +156,10 @@ public class InterfaceGraphique extends Application{//Interface Application
         sp.getChildren().add(imageView);
     }
 
-    //Méthode de création des Label
+    /**
+     * Méthode de création des Label
+     * @param sp
+     */
     public void createLabels(StackPane sp){
         double centre = -10;
         double coord_y_resultat = -5*largeur/12.;
@@ -209,8 +217,10 @@ public class InterfaceGraphique extends Application{//Interface Application
     }
 
 
-
-    //Méthode de création des boutons
+    /**
+     * Méthode de création des boutons
+     * @param sp
+     */
     public void createButtons(StackPane sp){
         //Liste des noms des boutons
         String[] nomBoutons = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "C",
@@ -317,6 +327,9 @@ public class InterfaceGraphique extends Application{//Interface Application
         affichageHistorique_3.setText(historique_3);
     }
 
+    /**
+     *
+     */
     public void resetHistorique(){
         historique_1 = "";
         historique_2 = "";
@@ -326,6 +339,11 @@ public class InterfaceGraphique extends Application{//Interface Application
         affichageHistorique_3.setText(historique_3);
     }
 
+    /**
+     *
+     * @param button
+     * @param couleur
+     */
     public void updateButtonOnClick(Button button, String couleur){
         PauseTransition transition = new PauseTransition(Duration.seconds(0.1));
         transition.setOnFinished(event -> button.setStyle(couleur));
@@ -336,6 +354,11 @@ public class InterfaceGraphique extends Application{//Interface Application
         });
     }
 
+    /**
+     *
+     * @param button
+     * @param couleur
+     */
     public void updateButtonOnKey(Button button, String couleur){
         transition.setOnFinished(event -> button.setStyle(couleur));
         button.setStyle(couleur_updateButtonOnClick_Key);
@@ -354,7 +377,11 @@ public class InterfaceGraphique extends Application{//Interface Application
     int darkModeState = 0; int whiteModeState = 1; int easterEggState = 2;
     AtomicReference<Boolean> creditState = new AtomicReference<>(true);
 
-
+    /**
+     *
+     * @param stage
+     * @param sp
+     */
     public void easter_egg_affichage(Stage stage, StackPane sp){
 
         Button buttonInfo = new Button("i");
@@ -528,6 +555,9 @@ public class InterfaceGraphique extends Application{//Interface Application
         sp.getChildren().add(easterEgg);
     }
 
+    /**
+     *
+     */
     public void update_dark_white_mode(){
         affichageResultat.setTextFill(couleur_texte);
         affichageMessage.setTextFill(couleur_texte);
@@ -537,6 +567,12 @@ public class InterfaceGraphique extends Application{//Interface Application
         affichagePile.setTextFill(couleur_texte);
     }
 
+    /**
+     *
+     * @param color1
+     * @param color2
+     * @param color3
+     */
     public void update_couleur_numero(Color color1, Color color2, Color color3){
         for (Button button : buttons) {
             switch (button.getText()) {
@@ -551,6 +587,12 @@ public class InterfaceGraphique extends Application{//Interface Application
         }
     }
 
+    /**
+     *
+     * @param color1
+     * @param color2
+     * @param color3
+     */
     public void update_couleur_bouton(String color1, String color2, String color3){
         for (Button button : buttons) {
             switch (button.getText()) {
@@ -578,7 +620,13 @@ public class InterfaceGraphique extends Application{//Interface Application
         }
     }
 
-
+    /**
+     *
+     * @param label
+     * @param debut
+     * @param fin
+     * @param speed
+     */
     public void movingLabel(Label label, int debut, int fin, double speed){
         AtomicReference<Boolean> aller = new AtomicReference<>(true);
         Timeline clock = new Timeline();
@@ -605,6 +653,10 @@ public class InterfaceGraphique extends Application{//Interface Application
         if(stop){clock.stop();}
     }
 
+    /**
+     *
+     * @param button
+     */
     public void flashing(Button button){
         AtomicReference<Boolean> presence = new AtomicReference<>(true);
         Timeline clock = new Timeline();

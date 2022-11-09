@@ -11,11 +11,18 @@ public class Input implements EventHandler<KeyEvent> {//Interface EventHandler a
 
     private final Controleur controleur;
 
-    //Création du constructeur
+    /**
+     * Création du constructeur
+     * @param controleur
+     */
     public Input(Controleur controleur) {
         this.controleur = controleur;
     }
 
+    /**
+     *
+     * @param keyEvent
+     */
     @Override
     public void handle(KeyEvent keyEvent){
         KeyCode key = keyEvent.getCode();
