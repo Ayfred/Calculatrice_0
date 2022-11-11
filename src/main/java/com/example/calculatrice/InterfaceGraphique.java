@@ -201,31 +201,31 @@ public class InterfaceGraphique extends Application{//Interface Application
 
         //Configuration de l'affichage des messages pour la gestion d'erreurs ou commentaires
         affichageMessage = new Label(message);
-        affichageMessage.setTranslateY(coord_y_resultat-40); affichageMessage.setTranslateX(centre);
+        affichageMessage.setTranslateY(coord_y_resultat-40); affichageMessage.setTranslateX(centre+20);
         affichageMessage.setTextFill(couleur_texte);
         affichageMessage.setFont(Font.font("Calibri", FontWeight.BOLD, 18));
         sp.getChildren().add(affichageMessage);
-        StackPane.setAlignment(affichageMessage, Pos.CENTER);
+        StackPane.setAlignment(affichageMessage, Pos.CENTER_LEFT);
 
         //Configuration des Labels pour l'affichage de l'historique des 3 dernières valeurs enregistrées par la calculatrice
         affichageHistorique_1 = new Label(historique_1);
         affichageHistorique_1.setTranslateY(coord_y_resultat-60); affichageHistorique_1.setTranslateX(centre);
-        affichageHistorique_1.setTextFill(couleur_texte);
-        affichageHistorique_1.setFont(Font.font("Calibri", FontWeight.NORMAL, 18));
+        affichageHistorique_1.setTextFill(Color.LIGHTGRAY);
+        affichageHistorique_1.setFont(Font.font("Calibri", FontWeight.NORMAL, 22));
         sp.getChildren().add(affichageHistorique_1);
         StackPane.setAlignment(affichageHistorique_1, Pos.CENTER_RIGHT);
 
         affichageHistorique_2 = new Label(historique_2);
         affichageHistorique_2.setTranslateY(coord_y_resultat-80); affichageHistorique_2.setTranslateX(centre);
-        affichageHistorique_2.setTextFill(couleur_texte);
-        affichageHistorique_2.setFont(Font.font("Calibri", FontWeight.NORMAL, 18));
+        affichageHistorique_2.setTextFill(Color.LIGHTGRAY);
+        affichageHistorique_2.setFont(Font.font("Calibri", FontWeight.NORMAL, 22));
         sp.getChildren().add(affichageHistorique_2);
         StackPane.setAlignment(affichageHistorique_2, Pos.CENTER_RIGHT);
 
         affichageHistorique_3 = new Label(historique_3);
         affichageHistorique_3.setTranslateY(coord_y_resultat-100); affichageHistorique_3.setTranslateX(centre);
-        affichageHistorique_3.setTextFill(couleur_texte);
-        affichageHistorique_3.setFont(Font.font("Calibri", FontWeight.NORMAL, 18));
+        affichageHistorique_3.setTextFill(Color.LIGHTGRAY);
+        affichageHistorique_3.setFont(Font.font("Calibri", FontWeight.NORMAL, 22));
         sp.getChildren().add(affichageHistorique_3);
         StackPane.setAlignment(affichageHistorique_3, Pos.CENTER_RIGHT);
 
@@ -233,7 +233,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         affichagePile = new Label();
         affichagePile.setTranslateY(coord_y_resultat+40); affichagePile.setTranslateX(centre);
         affichagePile.setTextFill(couleur_texte);
-        affichagePile.setFont(Font.font("Calibri", FontWeight.NORMAL, 14));
+        affichagePile.setFont(Font.font("Calibri", FontWeight.NORMAL, 18));
         sp.getChildren().add(affichagePile);
     }
 
@@ -463,6 +463,15 @@ public class InterfaceGraphique extends Application{//Interface Application
         buttonDark.setFont(Font.font("Courier New", FontWeight.NORMAL, 12));
         buttonDark.setTextFill(Color.WHITE);
         buttonDark.setOnMouseClicked(mouseEvent ->{
+            if(gameState == easterEggState){
+                stop = true;
+                titre.setTranslateX(-b_x + 50);
+                titre.setTranslateY(b_y);
+                gameState = darkModeState;
+                moving_credits.setVisible(false);
+                stage.getScene().setCursor(Cursor.DEFAULT);
+            }
+            gameState = darkModeState;
             sp.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii( 0.05, 0.05, 0.05, 0.05, true), Insets.EMPTY)));
             couleur_texte = Color.WHITE;
             update_couleur_numero(Color.WHITE, Color.GRAY, Color.WHITE);
@@ -473,16 +482,7 @@ public class InterfaceGraphique extends Application{//Interface Application
             credits.setVisible(false);
             image_IMT_Mines_Ales.setVisible(false);
             titre.setTextFill(Color.WHITE);
-            if(gameState == easterEggState){
-                stop = true;
-                titre.setTranslateX(-b_x + 50);
-                titre.setTranslateY(b_y);
-                gameState = darkModeState;
-                moving_credits.setVisible(false);
-                stage.getScene().setCursor(Cursor.DEFAULT);
-            }
             creditState.set(true);
-            gameState = darkModeState;
             easterEgg.setVisible(false);
             stop_flashing = true;
         });
@@ -498,6 +498,16 @@ public class InterfaceGraphique extends Application{//Interface Application
         buttonWhite.setFont(Font.font("Courier New", FontWeight.NORMAL, 12));
         buttonWhite.setTextFill(Color.BLACK);
         buttonWhite.setOnMouseClicked(mouseEvent ->{
+            if(gameState == easterEggState){
+                stop = true;
+                titre.setTextFill(Color.BLACK);
+                titre.setTranslateX(-b_x + 50);
+                titre.setTranslateY(b_y);
+                gameState = whiteModeState;
+                moving_credits.setVisible(false);
+                stage.getScene().setCursor(Cursor.DEFAULT);
+            }
+            gameState = whiteModeState;
             sp.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii( 0.05, 0.05, 0.05, 0.05, true), Insets.EMPTY)));
             couleur_texte = Color.BLACK;
             update_couleur_numero(Color.WHITE, Color.GRAY, Color.WHITE);
@@ -508,17 +518,7 @@ public class InterfaceGraphique extends Application{//Interface Application
             credits.setVisible(false);
             titre.setTextFill(Color.BLACK);
             image_IMT_Mines_Ales.setVisible(false);
-            if(gameState == easterEggState){
-                stop = true;
-                titre.setTextFill(Color.BLACK);
-                titre.setTranslateX(-b_x + 50);
-                titre.setTranslateY(b_y);
-                gameState = whiteModeState;
-                moving_credits.setVisible(false);
-                stage.getScene().setCursor(Cursor.DEFAULT);
-            }
             creditState.set(true);
-            gameState = whiteModeState;
             easterEgg.setVisible(false);
             stop_flashing = true;
         });
@@ -567,6 +567,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         easterEgg.setTranslateY(-140);
         easterEgg.setBackground(null);
         easterEgg.setOnMouseClicked(mouseEvent ->{
+            gameState = easterEggState;
             stage.getScene().setCursor(new ImageCursor(curseur));
             sp.setBackground(new Background(new BackgroundFill(Color.PINK, new CornerRadii( 0.05, 0.05, 0.05, 0.05, true), Insets.EMPTY)));
             couleur_texte = Color.PURPLE;
@@ -582,7 +583,6 @@ public class InterfaceGraphique extends Application{//Interface Application
             movingLabel(titre, -110, 30, 0.5);
             movingLabel(moving_credits, -40, 40, 0.5);
             creditState.set(true);
-            gameState = easterEggState;
         });
         easterEgg.setVisible(false);
         sp.getChildren().add(easterEgg);
@@ -594,9 +594,21 @@ public class InterfaceGraphique extends Application{//Interface Application
     public void update_dark_white_mode(){
         affichageResultat.setTextFill(couleur_texte);
         affichageMessage.setTextFill(couleur_texte);
-        affichageHistorique_1.setTextFill(couleur_texte);
-        affichageHistorique_2.setTextFill(couleur_texte);
-        affichageHistorique_3.setTextFill(couleur_texte);
+        if(gameState == darkModeState){
+            affichageHistorique_1.setTextFill(Color.LIGHTGRAY);
+            affichageHistorique_2.setTextFill(Color.LIGHTGRAY);
+            affichageHistorique_3.setTextFill(Color.LIGHTGRAY);
+        }
+        else if(gameState == whiteModeState){
+            affichageHistorique_1.setTextFill(Color.DARKGRAY);
+            affichageHistorique_2.setTextFill(Color.DARKGRAY);
+            affichageHistorique_3.setTextFill(Color.DARKGRAY);
+        }
+        else if(gameState == easterEggState){
+            affichageHistorique_1.setTextFill(Color.DARKVIOLET);
+            affichageHistorique_2.setTextFill(Color.DARKVIOLET);
+            affichageHistorique_3.setTextFill(Color.DARKVIOLET);
+        }
         affichagePile.setTextFill(couleur_texte);
     }
 
