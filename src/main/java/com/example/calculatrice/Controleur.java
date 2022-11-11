@@ -246,7 +246,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
     }
 
     /**
-     * Methode qui permet d'ajouter un signe - a un nombre lors de <b>l'affichage</b> de ce dernier
+     * Ajoute un signe - a un nombre lors de <b>l'affichage</b> de ce dernier
      * On ne modifie PAS la pile mais seulement l'affichage
      */
     public void negatif(){
@@ -270,7 +270,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
 
 
     /**
-     * Methode d'implementation de la virgule
+     * Ajoute une virgule au resultat
      */
     public void virgule(){
         //On regarde si le resultat contient une virgule
