@@ -8,6 +8,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+/**
+ * Le controleur doit assurer la liaison entre l'accumulateur qui est la memoire de la pile et de l'interfaceGrphique qui affiche le contenu de la pile
+ */
 public class Controleur implements PropertyChangeListener, EventHandler<MouseEvent> {//implémentation des interfaces PropertyChangeListener et EventHandler
 
     Accumulateur accumulateur = new Accumulateur(new Pile());
@@ -143,15 +146,15 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                 case "," : virgule(); break;
                 case "±" : negatif(); break;
                 case "%" : pourcentage(); break;
-                case "←" : supprimer(); break;
+                case "⌫" : supprimer(); break;
             }
         }
         mouseEvent.consume();
     }
 
     /**
-     * Méthode update
-     * @param nombre
+     * Met à jour le resultat
+     * @param nombre on entre le chiffre qu'on veut ajouter au resultat
      */
     public void update(String nombre){
         //Mise à jour de l'affichage du résultat dans l'historique

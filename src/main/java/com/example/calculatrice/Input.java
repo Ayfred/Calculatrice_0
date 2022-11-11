@@ -7,6 +7,9 @@ import javafx.scene.input.KeyEvent;
 
 import java.util.List;
 
+/**
+ * Input permet d'ecouter les evenements lies au clavier
+ */
 public class Input implements EventHandler<KeyEvent> {//Interface EventHandler avec comme type KeyEvent pour la gestion du clavier
 
     private final Controleur controleur;

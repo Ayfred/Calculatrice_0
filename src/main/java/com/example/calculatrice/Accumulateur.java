@@ -29,6 +29,7 @@ public class Accumulateur {
     /**
      * Arrondi le nombre a cinq chiffres apres la virgule
      * @param nombre On entre le nombre qu'on veut arrondir
+     * @return nombre arrondi a cinq chiffres
      */
     public double arrondi(double nombre){
         if(nombre%1 != 0){
@@ -107,7 +108,7 @@ public class Accumulateur {
     }
 
     /**
-     * Changer le signe du dernier element de la pile
+     * Change le signe du dernier element de la pile
      */
     public void neg(){
         double dernier = pile.pop();

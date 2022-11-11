@@ -37,7 +37,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
-
+/**
+ * InterfaceGraphique permet de creer la fenetre et le contenu de la calculatrice
+ */
 public class InterfaceGraphique extends Application{//Interface Application
     //Création des objets nécéssaires pour la création de la calculatrice
 
@@ -243,7 +245,7 @@ public class InterfaceGraphique extends Application{//Interface Application
     public void createButtons(StackPane sp){
         //Liste des noms des boutons
         String[] nomBoutons = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "C",
-                                "=", "+", "-", "x", "/", "±", ",", "%", "␡"};
+                                "=", "+", "-", "x", "/", "±", ",", "%", "⌫"};
 
         //Initialisation des coordonnées des boutons
         int separation_1 = 90; int separation_2 = 85;
@@ -310,9 +312,9 @@ public class InterfaceGraphique extends Application{//Interface Application
                     updateButtonOnClick(button, "-fx-background-color: #EC9706");
                     break;
                 }
-                case "←" :{
+                case "⌫" :{
                     button.setStyle("-fx-background-color: #5A5A5A");//couleur grise
-                    button.setFont(Font.font("Courier New", FontWeight.BOLD, 38));
+                    button.setFont(Font.font("Courier New", FontWeight.BOLD, 30));
                     updateButtonOnClick(button, "-fx-background-color: #5A5A5A");
                     break;
                 }
@@ -609,7 +611,7 @@ public class InterfaceGraphique extends Application{//Interface Application
             switch (button.getText()) {
                 case "0" : case "1" : case "2" :
                 case "3" : case "4" : case "5" : case "6" : case "7" : case "8" : case "9" : case "," :
-                case "←" : button.setTextFill(color1); break;
+                case "⌫" : button.setTextFill(color1); break;
                 case "C" : case "%" :
                 case "±" : button.setTextFill(color2); break;
                 case "/" : case "x" : case "-" : case "+" :
@@ -629,7 +631,7 @@ public class InterfaceGraphique extends Application{//Interface Application
             switch (button.getText()) {
                 case "0" : case "1" : case "2" : case "3" : case "4" : case "5" :
                 case "6" : case "7" : case "8" : case "9" : case "," :
-                case  "←" : {
+                case  "⌫" : {
                     button.setStyle(color1);
                     updateButtonOnClick(button, color1);
                     break;
