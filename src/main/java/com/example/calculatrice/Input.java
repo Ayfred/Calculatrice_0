@@ -12,16 +12,16 @@ public class Input implements EventHandler<KeyEvent> {//Interface EventHandler a
     private final Controleur controleur;
 
     /**
-     * Création du constructeur
-     * @param controleur
+     * Creation du constructeur
+     * @param controleur on entre le controleur de la calculatrice
      */
     public Input(Controleur controleur) {
         this.controleur = controleur;
     }
 
     /**
-     *
-     * @param keyEvent
+     * Handle permet de detecter tous les evenements lies au clavier
+     * @param keyEvent parametre qui contient toutes les informations du clavier
      */
     @Override
     public void handle(KeyEvent keyEvent){
@@ -31,7 +31,10 @@ public class Input implements EventHandler<KeyEvent> {//Interface EventHandler a
 
         //Configuration des touches du clavier
         if(key == KeyCode.DIGIT0 || key == KeyCode.NUMPAD0){
+            //On fait comprendre au controleur que lorsqu'on appuie sur 0, on veut afficher "0" dans l'affichage du resultat
             controleur.update("0");
+
+            //Permet d'avoir un affichage de vert sur le bouton lorsque l'on appuie sur 0
             interfaceGraphique.updateButtonOnKey(buttons.get(0), "-fx-background-color: #5A5A5A");
         }
         else if(key == KeyCode.DIGIT1 || key == KeyCode.NUMPAD1){
@@ -111,8 +114,11 @@ public class Input implements EventHandler<KeyEvent> {//Interface EventHandler a
             interfaceGraphique.updateButtonOnKey(buttons.get(19), "-fx-background-color: #5A5A5A");
         }
         else if(key == KeyCode.Q){
+            //Ferme la fenêtre
             System.exit(0);
         }
+
+        //Permet de réinitialiser keyEvent à chaque événement du clavier
         keyEvent.consume();
     }
 }

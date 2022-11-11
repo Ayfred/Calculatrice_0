@@ -40,52 +40,67 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class InterfaceGraphique extends Application{//Interface Application
     //Création des objets nécéssaires pour la création de la calculatrice
+
+    //Crédits accessible en appuyant sur "i" de la calculatrice
     String version = "3.1.0"; String date =  new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+
+    //Taille de la fenêtre
     int largeur = 380; int longueur = 680;
     Controleur controleur = new Controleur(this);
     Input input = new Input(controleur);
     Label affichageResultat; Label affichageMessage; Label affichagePile;
     Label affichageHistorique_1; Label affichageHistorique_2; Label affichageHistorique_3;
+
+    //Titre de l'application
     Label titre = new Label("Calculator");
     String resultat = "0";String message = "";
     String historique_1 = ""; String historique_2 = ""; String historique_3 = "";
+
+    //Liste des boutons 1-9, C,%,=,+,-,x,/
     List<Button> buttons;
+
+    //Paramètres pour le déplacement de la fenêtre
     double xOffset; double yOffset;
     Color couleur_texte = Color.WHITE; String couleur_updateButtonOnClick_Key = "-fx-background-color: #00FF00";
+
+    //Transition pour les animations
     PauseTransition transition = new PauseTransition(Duration.seconds(0.05));
+
     //Ajout du PropertyChangeSupport
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-    //Création de la StackPane
+    //Création d'une StackPane
     StackPane stackPane = new StackPane();
 
     /**
-     * Méthode de création de la fenêtre
-     * @param stage fenêtre
+     * Creation de la fenetre
+     * @param stage fenetre
      */
     @Override
     public void start(Stage stage) {
         //Ajout du listener controleur
         support.addPropertyChangeListener(controleur);
 
-        //creation de nouveaux objets
+        //Création de nouveaux objets (boutons, labels, images etc...)
         createLabels(stackPane);
         createButtons(stackPane);
         init(stage, stackPane);
+
+        //Création d'un EasterEgg sur la calculatrice
         easter_egg_affichage(stage, stackPane);
 
-
-        //Coordonnées du StackPane
+        //Coordonnées et taille du StackPane
         stackPane.setTranslateX(0); stackPane.setTranslateY(0);
         stackPane.setPrefSize(longueur, largeur);
 
+        //Création d'une scène
         Scene scene = new Scene (stackPane, largeur, longueur);
-        //Ajout des touches
+
+        //Ajout des touches à partir de la classe input
         scene.addEventFilter(KeyEvent.KEY_PRESSED, input);
 
-        //Fichier css seulement pour l'esthétique, ici les bordures de fenêtre arrondies
+        //Fichier css avoir des bordures arrondies de la fenêtre
         scene.setFill(Color.TRANSPARENT);
-
         scene.getStylesheets().add(Objects.requireNonNull(InterfaceGraphique.class.getResource("Windows.css")).toExternalForm());
 
         //Initialisation de stage
@@ -103,23 +118,28 @@ public class InterfaceGraphique extends Application{//Interface Application
             stage.setX(event.getScreenX() + xOffset);
             stage.setY(event.getScreenY() + yOffset);
         });
-        stage.show();
 
+        //Affichage de la fenêtre
+        stage.show();
     }
 
     /**
-     *
-     * @param stage
-     * @param sp
+     * Permet de creer les boutons de l'onglet (fermer, minimiser, info, titre et logo)
+     * @param stage on entre le stage
+     * @param sp on entre le StackPane qui va contenir les objets
      */
     public void init(Stage stage, StackPane sp) {
+        //Création des objets
         Button buttonClose = new Button("x");
         Button buttonMinimize = new Button("-");
         Image image = new Image("Calculatrice.jpg");
 
+        //x, y pour la tailles des boutons
         int x = 2; int y = 2;
+        //b_x, b_y pour les coordonnées des objets
         int b_x = 5*largeur/11; int b_y = -10*longueur/21;
 
+        //Configuration du bouton Close
         buttonClose.setPrefSize(x,y);
         buttonClose.setTranslateX(b_x);
         buttonClose.setTranslateY(b_y);
@@ -130,6 +150,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         buttonClose.setOnMouseClicked(mouseEvent -> stage.close());
         sp.getChildren().add(buttonClose);
 
+        //Configuration du bouton Minimiser
         buttonMinimize.setPrefSize(x,y);
         buttonMinimize.setTranslateX(b_x-25);
         buttonMinimize.setTranslateY(b_y);
@@ -140,12 +161,14 @@ public class InterfaceGraphique extends Application{//Interface Application
         buttonMinimize.setOnMouseClicked(mouseEvent -> stage.setIconified(true));
         sp.getChildren().add(buttonMinimize);
 
+        //Configuration du label titre
         titre.setTranslateX(-b_x + 50);
         titre.setTranslateY(b_y);
         titre.setTextFill(Color.WHITE);
         titre.setFont(Font.font("Calibri", FontWeight.BOLD, 16));
         sp.getChildren().add(titre);
 
+        //Configuration du logo de la calculatrice
         ImageView imageView = new ImageView(image);
         //Setting the position of the image
         imageView.setTranslateX(-b_x+2);
@@ -157,25 +180,24 @@ public class InterfaceGraphique extends Application{//Interface Application
     }
 
     /**
-     * Méthode de création des Label
-     * @param sp
+     * Creation des Labels
+     * @param sp on entre le StackPane qui va contenir les labels
      */
     public void createLabels(StackPane sp){
+        //Initialisation des coordonnées
         double centre = -10;
         double coord_y_resultat = -5*largeur/12.;
 
-        //Label affichage de résultat ou des nombres entrés dans la calculatrice
+        //Configuration de l'affichage de résultat
         affichageResultat = new Label(resultat);
         affichageResultat.setTranslateY(coord_y_resultat); affichageResultat.setTranslateX(centre);
         affichageResultat.setTextFill(couleur_texte);
         affichageResultat.setFont(Font.font("Calibri", FontWeight.NORMAL, 60));
         sp.getChildren().add(affichageResultat);
         StackPane.setAlignment(affichageResultat, Pos.CENTER_RIGHT);
-
-
         affichageResultat.setAlignment(Pos.CENTER);
 
-        //Label affichage des messages pour la gestion d'erreurs
+        //Configuration de l'affichage des messages pour la gestion d'erreurs ou commentaires
         affichageMessage = new Label(message);
         affichageMessage.setTranslateY(coord_y_resultat-40); affichageMessage.setTranslateX(centre);
         affichageMessage.setTextFill(couleur_texte);
@@ -183,8 +205,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         sp.getChildren().add(affichageMessage);
         StackPane.setAlignment(affichageMessage, Pos.CENTER);
 
-
-        //Labels pour l'affichage de l'historique des 3 dernières valeurs enregistrées par la calculatrice
+        //Configuration des Labels pour l'affichage de l'historique des 3 dernières valeurs enregistrées par la calculatrice
         affichageHistorique_1 = new Label(historique_1);
         affichageHistorique_1.setTranslateY(coord_y_resultat-60); affichageHistorique_1.setTranslateX(centre);
         affichageHistorique_1.setTextFill(couleur_texte);
@@ -206,9 +227,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         sp.getChildren().add(affichageHistorique_3);
         StackPane.setAlignment(affichageHistorique_3, Pos.CENTER_RIGHT);
 
-
-
-        //Label affichage de l'état de la pile
+        //Configuration du Label affichage de l'état de la pile
         affichagePile = new Label();
         affichagePile.setTranslateY(coord_y_resultat+40); affichagePile.setTranslateX(centre);
         affichagePile.setTextFill(couleur_texte);
@@ -218,17 +237,18 @@ public class InterfaceGraphique extends Application{//Interface Application
 
 
     /**
-     * Méthode de création des boutons
-     * @param sp
+     * Creation des boutons
+     * @param sp on entre le StackPane qui va contenir les boutons
      */
     public void createButtons(StackPane sp){
         //Liste des noms des boutons
         String[] nomBoutons = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "C",
-                                "=", "+", "-", "x", "/", "±", ",", "%", "←"};
+                                "=", "+", "-", "x", "/", "±", ",", "%", "␡"};
 
         //Initialisation des coordonnées des boutons
         int separation_1 = 90; int separation_2 = 85;
 
+        //Initialisation des coordonnées des boutons
         int b_x = -14*largeur/39; int b_y = -largeur/8;
         int b_x_1 = b_x + separation_1; int b_y_1 = b_y + separation_2;
         int b_x_2 = b_x_1 + separation_1; int b_y_2 = b_y_1 + separation_2;
@@ -242,9 +262,10 @@ public class InterfaceGraphique extends Application{//Interface Application
                 {b_x,b_y},{b_x_3,b_y_4},{b_x_3,b_y_3},{b_x_3,b_y_2},{b_x_3,b_y_1},{b_x_3,b_y},{b_x_1,b_y},{b_x_2,b_y_4}, {b_x_2, b_y},
                 {b_x_1, b_y_4}};
 
-        //initialisation de la taille des boutons
+        //Initialisation de la taille des boutons
         double x = 80; double y = 80;
 
+        //Liste des boutons
         List<Button> buttons = new ArrayList<>();
 
         //Création des boutons
@@ -260,8 +281,7 @@ public class InterfaceGraphique extends Application{//Interface Application
             //Liste boutons
             buttons.add(button);
 
-
-            //Ajout des méthodes au bouton
+            //Ajout des méthodes MouseEvent au bouton
             button.addEventHandler(MouseEvent.MOUSE_CLICKED, controleur);
 
             //Cas particulier des boutons (couleurs, textes, polices, tailles, formes, etc...)
@@ -298,25 +318,26 @@ public class InterfaceGraphique extends Application{//Interface Application
                 }
             }
         }
+
         //Ajout de la liste des boutons à la variable buttons
         this.buttons = buttons;
     }
 
 
     /**
-     * Methode de mise a jour du Label AffichageResultat
+     * Mise a jour du Label AffichageResultat
      */
     public void updateAffichageResultat(){
         affichageResultat.setText(resultat);
     }
 
     /**
-     * Methode de mise a jour du Label AffichageMessage
+     * Mise a jour du Label AffichageMessage
      */
     public void updateAffichageMessage(){affichageMessage.setText(message);}
 
     /**
-     * Methode de mise a jour de l'historique
+     * Mise a jour de l'historique
      */
     public void updateHistorique(){
         historique_3 = historique_2;
@@ -328,7 +349,7 @@ public class InterfaceGraphique extends Application{//Interface Application
     }
 
     /**
-     *
+     * Efface l'historique de la calculatrice
      */
     public void resetHistorique(){
         historique_1 = "";
@@ -340,9 +361,9 @@ public class InterfaceGraphique extends Application{//Interface Application
     }
 
     /**
-     *
-     * @param button
-     * @param couleur
+     * Permet d'avoir un affichage d'une autre couleur au moment ou l'on appuie sur un bouton (ici couleur verte)
+     * @param button on choisi le bouton qui aura cette affichage
+     * @param couleur on choisi sa couleur par defaut pour que la couleur du bouton puisse revenir a sa couleur initiale
      */
     public void updateButtonOnClick(Button button, String couleur){
         PauseTransition transition = new PauseTransition(Duration.seconds(0.1));
@@ -355,9 +376,9 @@ public class InterfaceGraphique extends Application{//Interface Application
     }
 
     /**
-     *
-     * @param button
-     * @param couleur
+     * Meme role que la methode updateButtonOnClick mais pour le clavier
+     * @param button on choisi le bouton qui aura cette affichage
+     * @param couleur on choisi sa couleur par defaut pour que la couleur du bouton puisse revenir a sa couleur initiale
      */
     public void updateButtonOnKey(Button button, String couleur){
         transition.setOnFinished(event -> button.setStyle(couleur));
@@ -372,18 +393,21 @@ public class InterfaceGraphique extends Application{//Interface Application
 
     /*--------------------------------------------------------Easter Egg-----------------------------------------------------------------------------*/
 
+    //Définition des paramètres
     Boolean stop = false; Boolean stop_flashing = false;
     int gameState;
     int darkModeState = 0; int whiteModeState = 1; int easterEggState = 2;
+
+    // creditState est un booléen
     AtomicReference<Boolean> creditState = new AtomicReference<>(true);
 
     /**
-     *
-     * @param stage
-     * @param sp
+     * Creation de l'easter egg
+     * @param stage on entre le stage
+     * @param sp on entre le StackPane
      */
     public void easter_egg_affichage(Stage stage, StackPane sp){
-
+        //Création des objets
         Button buttonInfo = new Button("i");
         Button buttonDark = new Button("D");
         Button buttonWhite = new Button("W");
@@ -392,9 +416,13 @@ public class InterfaceGraphique extends Application{//Interface Application
         Label moving_credits = new Label("Calculatrice développée par Ayfred & Smilaid");
         Image IMT_Mines_Ales = new Image("imt_mines_ales.jpg");
 
+        //Taille des boutons
         int x = 2; int y = 2;
+
+        //Coordonnées des objets
         int b_x = 5*largeur/11; int b_y = -10*longueur/21;
 
+        //Configuration du label credits
         credits.setPrefSize(largeur,200);
         credits.setTranslateX(0);
         credits.setTranslateY(-210);
@@ -406,6 +434,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         credits.setVisible(false);
         sp.getChildren().add(credits);
 
+        //Configuration du label moving_credits
         moving_credits.setTranslateX(0);
         moving_credits.setTranslateY(-100);
         moving_credits.setTextFill(Color.DEEPPINK);
@@ -413,6 +442,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         moving_credits.setFont(Font.font("Arial", FontWeight.BOLD, 12));
         sp.getChildren().add(moving_credits);
 
+        //Configuration de l'image IMT Mines Ales
         ImageView image_IMT_Mines_Ales = new ImageView(IMT_Mines_Ales);
         image_IMT_Mines_Ales.setTranslateX(0);
         image_IMT_Mines_Ales.setTranslateY(-160);
@@ -422,7 +452,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         image_IMT_Mines_Ales.setVisible(false);
         sp.getChildren().add(image_IMT_Mines_Ales);
 
-
+        //Configuration du bouton affichage en noir
         buttonDark.setPrefSize(x,y);
         buttonDark.setTranslateX(b_x-50);
         buttonDark.setTranslateY(b_y);
@@ -455,9 +485,9 @@ public class InterfaceGraphique extends Application{//Interface Application
             stop_flashing = true;
         });
         sp.getChildren().add(buttonDark);
-
         buttonDark.setVisible(false);
 
+        //Configuration du bouton affichage en blanc
         buttonWhite.setPrefSize(x,y);
         buttonWhite.setTranslateX(b_x-50);
         buttonWhite.setTranslateY(b_y);
@@ -492,6 +522,7 @@ public class InterfaceGraphique extends Application{//Interface Application
         });
         sp.getChildren().add(buttonWhite);
 
+        //Configuration du bouton informations
         buttonInfo.setPrefSize(x,y);
         buttonInfo.setTranslateX(b_x-75);
         buttonInfo.setTranslateY(b_y);
@@ -521,9 +552,9 @@ public class InterfaceGraphique extends Application{//Interface Application
                 stop_flashing = true;
             }
         });
-
         sp.getChildren().add(buttonInfo);
 
+        //Configuration du curseur easterEgg
         Image curseur = new Image("UnicornCursor.png");
         Image easter = new Image("easter.jpg");
         ImageView image_easter = new ImageView(easter);
@@ -556,7 +587,7 @@ public class InterfaceGraphique extends Application{//Interface Application
     }
 
     /**
-     *
+     * Permet d'avoir un affichage en noir ou un affichage en blanc
      */
     public void update_dark_white_mode(){
         affichageResultat.setTextFill(couleur_texte);
@@ -568,10 +599,10 @@ public class InterfaceGraphique extends Application{//Interface Application
     }
 
     /**
-     *
-     * @param color1
-     * @param color2
-     * @param color3
+     * Change la couleur des textes des boutons
+     * @param color1 couleur pour les boutons 0-9
+     * @param color2 couleur des boutons C % +/-
+     * @param color3 couleur des boutons des opérateurs
      */
     public void update_couleur_numero(Color color1, Color color2, Color color3){
         for (Button button : buttons) {
@@ -588,10 +619,10 @@ public class InterfaceGraphique extends Application{//Interface Application
     }
 
     /**
-     *
-     * @param color1
-     * @param color2
-     * @param color3
+     * Change la couleur des boutons de la calculatrice
+     * @param color1 couleur pour les boutons 0-9
+     * @param color2 couleur des boutons C % +/-
+     * @param color3 couleur des boutons des opérateurs
      */
     public void update_couleur_bouton(String color1, String color2, String color3){
         for (Button button : buttons) {
@@ -615,17 +646,16 @@ public class InterfaceGraphique extends Application{//Interface Application
                     updateButtonOnClick(button, color3);
                     break;
                 }
-
             }
         }
     }
 
     /**
-     *
-     * @param label
-     * @param debut
-     * @param fin
-     * @param speed
+     * Permet a un label de se mouvoir sur la calculatrice
+     * @param label on entre le label qu'on veut faire mouvoir
+     * @param debut on entre une premiere distance
+     * @param fin on entre la distance de fin
+     * @param speed on entre la vitesse (ici égale à 0.5 ou 1 sinon cela ne marche pas)
      */
     public void movingLabel(Label label, int debut, int fin, double speed){
         AtomicReference<Boolean> aller = new AtomicReference<>(true);
@@ -654,8 +684,8 @@ public class InterfaceGraphique extends Application{//Interface Application
     }
 
     /**
-     *
-     * @param button
+     * Permet a un bouton de clignoter sur la calculatrice
+     * @param button on entre le bouton qu'on veut faire clignoter
      */
     public void flashing(Button button){
         AtomicReference<Boolean> presence = new AtomicReference<>(true);
