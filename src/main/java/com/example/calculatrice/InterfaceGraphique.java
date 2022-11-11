@@ -43,8 +43,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class InterfaceGraphique extends Application{//Interface Application
     //Création des objets nécéssaires pour la création de la calculatrice
 
-    //Crédits accessible en appuyant sur "i" de la calculatrice
-    String version = "3.1.0"; String date =  new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+    //Crédits accessibles depuis le bouton "i" de la calculatrice en haut à gauche en jaune
+    String version = "3.1.6"; String date =  new SimpleDateFormat("dd-MM-yyyy").format(new Date());
 
     //Taille de la fenêtre
     int largeur = 380; int longueur = 680;
