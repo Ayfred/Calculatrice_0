@@ -43,7 +43,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
         switch(evt.getPropertyName()){
             case "+" : case "-" : case "x" :
             case "/" :{
-                double dernier_nombre = accumulateur.pile.getLast();
+                double dernier_nombre = accumulateur.pile.peek();
 
                 //if/else : on traite les zéros inutiles après la virgule si on a un nombre de type double
                 if(dernier_nombre%1 == 0){
@@ -295,7 +295,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                 case "x" : accumulateur.mult(); break;
                 case "/" : {
                     //Gestion d'erreur : Divison par 0
-                    if (accumulateur.pile.getLast() == 0) {
+                    if (accumulateur.pile.peek() == 0) {
                         interfaceGraphique.message = "Erreur division par 0 impossible";
                         interfaceGraphique.updateAffichageMessage();
                         interfaceGraphique.resultat = "Error";
