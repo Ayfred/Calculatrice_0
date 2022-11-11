@@ -19,7 +19,7 @@ public class Accumulateur {
     }
 
     /**
-     * Methode addPropertyChangeListener
+     * Ajout d'un PropertyChangeListener
      * @param listener Listener qui permet de detecter les changements
      */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -27,7 +27,7 @@ public class Accumulateur {
     }
 
     /**
-     * Methode arrondir le nombre a cinq chiffres apres la virgule
+     * Arrondi le nombre a cinq chiffres apres la virgule
      * @param nombre On entre le nombre qu'on veut arrondir
      */
     public double arrondi(double nombre){
@@ -39,8 +39,7 @@ public class Accumulateur {
     }
 
     /**
-     * Methode qui echange le dernier element avec l'avant dernier element de la liste sachant qu'on ne peut pas supprimer un element
-     * au milieu de la pile
+     * Echange le dernier element avec l'avant dernier element de la pile
      */
     public void swap(){
         double temp_dernier = pile.pop();
@@ -50,7 +49,7 @@ public class Accumulateur {
     }
 
     /**
-     * Methode push avec integration du firePropertyChange qui permet de detecter tout changement de la pile
+     * Methode push utilisant les methodes firePropertyChange et push de la pile
      * @param nombre Nombre qu'on souhaite stocker dans la pile
      * @param operation quelle type... operateur ou nombre
      */
@@ -65,8 +64,7 @@ public class Accumulateur {
     }
 
     /**
-     * Methode clear qui permet d'effacer le contenu d'une pile
-     * et integration de firePropertyChange
+     * Efface le contenu d'une pile et averti le listener avec firePropertyChange
      */
     public void clear(){
         pile.clear();
@@ -74,7 +72,7 @@ public class Accumulateur {
     }
 
     /**
-     * Methode addition avec integration de la methode arrondi et push
+     * Addition du dernier et l'avant dernier l'element de la pile
      */
     public void add(){
         double dernier = pile.pop();
@@ -83,7 +81,7 @@ public class Accumulateur {
     }
 
     /**
-     * Methode soustraction avec la methode push et arrondi
+     * Soustrait l'avant dernier element avec le dernier element de la pile
      */
     public void sub(){
         double dernier = pile.pop();
@@ -92,7 +90,7 @@ public class Accumulateur {
     }
 
     /**
-     * Methode multiplication avec la methode arrondi et push
+     * Multiplie le dernier element avec l'avant denrier element de la pile
      */
     public void mult(){
         double dernier = pile.pop();
@@ -101,7 +99,7 @@ public class Accumulateur {
     }
 
     /**
-     * Methode division avec la methode arrondi, push et swap
+     * Divise l'avant dernier element avec le dernier element de la pile
      */
     public void div(){
         swap();
@@ -109,7 +107,7 @@ public class Accumulateur {
     }
 
     /**
-     * Methode negation qui permet de changer le signe du dernier element de la pile
+     * Changer le signe du dernier element de la pile
      */
     public void neg(){
         double dernier = pile.pop();

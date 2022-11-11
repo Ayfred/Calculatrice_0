@@ -25,33 +25,33 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
     public Controleur(InterfaceGraphique interfaceGraphique) {
         this.interfaceGraphique = interfaceGraphique;
         support.addPropertyChangeListener(this);
+        //Ajout du listener controleur dans accumulateur
         accumulateur.addPropertyChangeListener(this);
     }
 
     /**
-     * Methode abstraite qui permet de detecter tous evenements lies au changement de l'etat de la pile
+     * Detecte tous evenements lies au changement de l'etat de la pile
       * @param evt A PropertyChangeEvent object describing the event source
      *          and the property that has changed.
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        //Traitement des différents cas opérations ou opérandes
         switch(evt.getPropertyName()){
-            case "+" :
-            case "-" :
-            case "x" :
+            case "+" : case "-" : case "x" :
             case "/" :{
-                //Affichage du résultat après opération
                 double dernier_nombre = accumulateur.pile.getLast();
 
-                //on évite les zéros inutiles après la virgule si on a un type double
+                //if/else : on traite les zéros inutiles après la virgule si on a un nombre de type double
                 if(dernier_nombre%1 == 0){
                     interfaceGraphique.resultat = String.valueOf((int) dernier_nombre);}
                 else{
                     interfaceGraphique.resultat = String.valueOf(dernier_nombre);
                 }
+                //Affichage du résultat après opération
                 interfaceGraphique.updateAffichageResultat();
 
-                //Mise à jour du message
+                //Mise à jour du message/commentaires
                 if(evt.getPropertyName().equals("+")){
                     interfaceGraphique.message = "Opération addition effectuée";
                 }
@@ -65,6 +65,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                     interfaceGraphique.message = "Opération division effectuée";
                 }
                 interfaceGraphique.updateAffichageMessage();
+
                 historique_resultat = true;
 
                 //Mise à jour de l'affichage de la pile
@@ -77,7 +78,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                 interfaceGraphique.resultat = "0";
                 interfaceGraphique.updateAffichageResultat();
 
-                //Efface le message dès qu'on appuie sur un chiffre
+                //Efface le label message/commentaires dès qu'on appuie sur un chiffre
                 if(!interfaceGraphique.message.equals("")){
                     interfaceGraphique.message = "";
                     interfaceGraphique.updateAffichageMessage();
@@ -91,9 +92,11 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                 //Réinitialisation du résultat
                 interfaceGraphique.resultat = "0";
                 interfaceGraphique.updateAffichageResultat();
+
                 //Commentaires
                 interfaceGraphique.message = "Effacement de la mémoire terminé";
                 interfaceGraphique.updateAffichageMessage();
+
                 //On efface l'historique
                 interfaceGraphique.resetHistorique();
 
@@ -101,14 +104,12 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                 interfaceGraphique.affichagePile.setText("");
                 break;
             }
-
         }
-        System.out.println(accumulateur.pile);
     }
 
     /**
-     * Méthode abstraite des événements liés à la souris
-     * @param mouseEvent
+     * Detecte tous les evenements lies a la souris
+     * @param mouseEvent parametre qui contient toutes les informations de la souris
      */
     @Override
     public void handle(MouseEvent mouseEvent) {
@@ -116,24 +117,29 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
         //Récupération du texte du bouton qu'on a appuyé
         Button button = (Button) mouseEvent.getSource();
         String k = button.getText();
+
+        //On distingue les evenement de la souris en fonction de chaque bouton appuyé
         if(mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED){
             switch (k) {
                 case "0" : update("0"); break;
-                case "1" : update("1");
-                case "2" : update("2");
-                case "3" : update("3");
-                case "4" : update("4");
-                case "5" : update("5");
-                case "6" : update("6");
-                case "7" : update("7");
-                case "8" : update("8");
-                case "9" : update("9");
-                case "+" :
-                case "-" :
-                case "x" :
+                case "1" : update("1"); break;
+                case "2" : update("2"); break;
+                case "3" : update("3"); break;
+                case "4" : update("4"); break;
+                case "5" : update("5"); break;
+                case "6" : update("6"); break;
+                case "7" : update("7"); break;
+                case "8" : update("8"); break;
+                case "9" : update("9"); break;
+
+                case "+" : case "-" : case "x" :
                 case "/" : operation(k); break;
+
                 case "=" : push(); break;
-                case "C" : accumulateur.clear(); break;//Effacement de la pile
+
+                //Effacement de la pile
+                case "C" : accumulateur.clear(); break;
+
                 case "," : virgule(); break;
                 case "±" : negatif(); break;
                 case "%" : pourcentage(); break;
@@ -148,33 +154,34 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
      * @param nombre
      */
     public void update(String nombre){
-
-
-        //affichage du résultat dans l'historique
+        //Mise à jour de l'affichage du résultat dans l'historique
         if(historique_resultat){
             interfaceGraphique.updateHistorique();
 
-            //reset pour écraser la donnée lorsqu'on entre un nouveau chiffre
+            //Ecrase la donnée lorsqu'on entre un nouveau chiffre
             interfaceGraphique.resultat = "0";
 
-            //ne pas mettre à jour l'historique lorsqu'on tape sur les chiffres sans les push
+            //Ne pas mettre à jour l'historique lorsqu'on tape sur les chiffres sans les avoir push
             historique_resultat = false;
         }
 
-        //mettre à jour l'affichage du nombre sur la calculatrice
-        if((interfaceGraphique.resultat.equals("0") && !nombre.equals("."))
-                || interfaceGraphique.resultat.equals("Error")){//si 0 et pas de virgule ou si Error, on écrase le nombre
+        //Mettre à jour l'affichage du nombre sur la calculatrice
+        //si resultat est égal à "0" ou "-0" et ne contient pas de virgule ou si est égal à Error, on écrase la valeur de résulat
+        if(((interfaceGraphique.resultat.equals("0") || interfaceGraphique.resultat.equals("-0")) && !nombre.equals(".")
+                || interfaceGraphique.resultat.equals("Error"))){
             interfaceGraphique.resultat = nombre;
         }
         else{
-            //Limite de 9 chiffres en tout et 2 espaces soit un total d'une longueur de 11 pour la chaine de caractère
+            //Limite de 9 chiffres en tout
             if(interfaceGraphique.resultat.length() >= 9){
                 interfaceGraphique.message = "Taille maximale atteinte !";
                 interfaceGraphique.updateAffichageMessage();
             }
-            //Permet d'entrer un nombre de 1 jusqu'à 999 999 999
             else{
+                //Permet d'entrer un nombre
                 interfaceGraphique.resultat = interfaceGraphique.resultat + nombre;
+
+                //Affichage aisée du nombre
                 /*System.out.println(interfaceGraphique.resultat);
                 interfaceGraphique.resultat = interfaceGraphique.resultat.replaceAll(" ", "");
                 int m = 0;
@@ -189,10 +196,10 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
             }
         }
 
-        //mettre à jour l'affichage du nombre sur la calculatrice
+        //Mettre à jour l'affichage du nombre sur la calculatrice
         interfaceGraphique.updateAffichageResultat();
 
-        //reset le message et on n'efface pas le message lorsqu'on atteint la taille limite de la pile pour avertir l'utilisateur
+        //Efface le contenu du message et n'efface pas le contenu du message lorsqu'on atteint la taille limite de la pile
         if(!interfaceGraphique.message.equals("") && interfaceGraphique.resultat.length() < 9){
             interfaceGraphique.message = "";
             interfaceGraphique.updateAffichageMessage();
@@ -200,8 +207,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
     }
 
     /**
-     * Methode push qui integre la methode push d'accumulateur en rajoutant les changements de texte pour l'affichage
-     * de commentaires
+     * Methode push en tenant compte des erreurs qui peuvent apparaitre lorsque ce dernier est sollicite
      */
     public void push(){
         //Gestion d'erreur : si on essaye de push le string "Error"
@@ -209,39 +215,51 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
             interfaceGraphique.message = "Veuillez sélectionner un chiffre";
             interfaceGraphique.updateAffichageMessage();
         }
+
         //Gestion d'erreur: Impossibilité de convertir une chaine de caractère avec la présence d'espace en un double
         else if(interfaceGraphique.resultat.contains(" ")){
+
             //Suppression de l'espace lors du stockage du nombre dans la pile
             interfaceGraphique.resultat = interfaceGraphique.resultat.replaceAll(" ", "");
             accumulateur.push(Double.parseDouble(interfaceGraphique.resultat),"pushNombre");
         }
-        //Gestion d'erreur: Si on essaye de stocker la virgule dans la pile
+
+        //Gestion d'erreur: Si on essaye de stocker seulement la virgule dans la pile
         else if(interfaceGraphique.resultat.equals(".")){
             interfaceGraphique.resultat = "0";
             accumulateur.push(0, "pushNombre");
         }
+
+        //Stocker "-0" ou "-0." ou "-0.0" reviennent à stocker "0" dans la pile
+        else if(interfaceGraphique.resultat.equals("-0") ||interfaceGraphique.resultat.equals("-0.")||interfaceGraphique.resultat.equals("-0.0")){
+            interfaceGraphique.resultat = "0";
+            accumulateur.push(0, "pushNombre");
+        }
+
         else{
+            //Si pas d'erreur, on stock la valeur de resultat dans la pile
             accumulateur.push(Double.parseDouble(interfaceGraphique.resultat),"pushNombre");
         }
     }
 
     /**
      * Methode qui permet d'ajouter un signe - a un nombre lors de <b>l'affichage</b> de ce dernier
-     * On ne MODIFIE PAS la pile
+     * On ne modifie PAS la pile mais seulement l'affichage
      */
     public void negatif(){
         //Si le nombre est positif, on le rend négatif
-        if(!String.valueOf(interfaceGraphique.resultat.charAt(0)).equals("-") && !interfaceGraphique.resultat.equals("0")
-                && !interfaceGraphique.resultat.equals("Error")){
+        if(!String.valueOf(interfaceGraphique.resultat.charAt(0)).equals("-") && !interfaceGraphique.resultat.equals("Error")){
             interfaceGraphique.resultat = "-" + interfaceGraphique.resultat;
             interfaceGraphique.updateAffichageResultat();
         }
-        //Lorsque l'utilisateur essaie de push "-0" ou tout nombre contenant "-0", on ne fait rien
+
         //Gestion d'erreur : On ne fait rien si on a "Error"
-        else if(interfaceGraphique.resultat.equals("0") || interfaceGraphique.resultat.equals("Error")){
+        else if(interfaceGraphique.resultat.equals("Error")){
             assert true;
         }
-        else{//sinon on enlève le -
+
+        //Si resultat contient déja un -, on enlève le -
+        else{
             interfaceGraphique.resultat = interfaceGraphique.resultat.substring(1);
             interfaceGraphique.updateAffichageResultat();
         }
@@ -249,22 +267,24 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
 
 
     /**
-     * Méthode d'implementation de la virgule
+     * Methode d'implementation de la virgule
      */
     public void virgule(){
-        if(!interfaceGraphique.resultat.contains("."))//On regarde si le resultat contient une virgule
+        //On regarde si le resultat contient une virgule
+        if(!interfaceGraphique.resultat.contains("."))
             update(".");
     }
 
 
     /**
-     * Methode qui permet d'effectuer les operations et en isolant les erreurs liees aux operations
-     * ici la division par zero
-     * @param k on entre l'operateur + - x /
+     * Effectue les operations et en isolant les erreurs liees aux operations
+     * par exemple la division par zero
+     * @param k on entre l'operateur "+" ou "-" ou "x" ou "/"
      */
     public void operation(String k){
         //Gestion d'erreur : Tant que la taille de la pile est supérieure à 2 alors on peut lui appliquer des opérations
         if(accumulateur.pile.size() >= 2){
+
             //Distinction des opérations
             switch (k) {
                 case "+" : accumulateur.add(); break;
@@ -284,17 +304,19 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
                 }
             }
         }
-        else{//Si on veut entrer une opération lorsque la taille de la pile est inférieure ou égale à 1
+
+        //Si on veut entrer une opération lorsque la taille de la pile est inférieure ou égale à 1
+        else{
         interfaceGraphique.message = "Veuillez sélectionner un chiffre";
         interfaceGraphique.updateAffichageMessage();}
     }
 
 
     /**
-     * Creation de la methode pourcentage qui permet de multiplier par 0.01 le chiffre
+     * Permet de multiplier par 0.01 le nombre
      */
     public void pourcentage(){
-        //Gestion d'erreur: Si le résultat est "Error"
+        //Gestion d'erreur: Si le résultat égal à "Error"
         if(!interfaceGraphique.resultat.equals("Error")){
         interfaceGraphique.resultat = String.valueOf(Double.parseDouble(interfaceGraphique.resultat)/100);
         interfaceGraphique.updateAffichageResultat();
@@ -302,7 +324,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
     }
 
     /**
-     * Methode supprimer
+     * Supprime 1 a 1 les chiffres de resultat (chiffres en chaine de caractere)
      */
     public void supprimer(){
         //Gestion d'erreur : Si on essaie de supprimer la chaine de caractère "Error"
@@ -310,13 +332,17 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
             interfaceGraphique.message = "Aucun chiffre à supprimer";
             interfaceGraphique.updateAffichageMessage();
         }
+
+        //Si resultat n'est pas égal à "0"
         else if(!interfaceGraphique.resultat.equals("0")){
+
             //Si le résultat est un chiffre et si on essaie de le supprimer, on retourne à 0
             if(interfaceGraphique.resultat.length() == 1){
                 interfaceGraphique.resultat = "0";
                 interfaceGraphique.updateAffichageResultat();
             }
-            //On supprime le dernier chiffre de résultat
+
+            //Sinon on supprime le dernier chiffre de résultat
             else{
                 interfaceGraphique.resultat = interfaceGraphique.resultat.substring(0, interfaceGraphique.resultat.length()-1);
                 interfaceGraphique.updateAffichageResultat();
