@@ -56,6 +56,7 @@ public class Accumulateur {
      */
     public void push(double nombre, String operation){
         pile.push(nombre);
+
         //Distinction du push avec un opérateur et avec un nombre
         switch (operation) {
             case "+": case "-" : case "x": case "/" :
