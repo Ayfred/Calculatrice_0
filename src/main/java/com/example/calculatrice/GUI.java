@@ -86,7 +86,7 @@ public class GUI extends Application implements IView{//Interface Application
         //Création de nouveaux objets (boutons, labels, images etc...)
         createLabels(stackPane);
         createButtons(stackPane);
-        init(stage, stackPane);
+        initialisation(stage, stackPane);
 
         //Création d'un EasterEgg sur la calculatrice
         easter_egg_affichage(stage, stackPane);
@@ -130,7 +130,7 @@ public class GUI extends Application implements IView{//Interface Application
      * @param stage on entre le stage
      * @param sp on entre le StackPane qui va contenir les objets
      */
-    public void init(Stage stage, StackPane sp) {
+    public void initialisation(Stage stage, StackPane sp) {
         //Création des objets
         Button buttonClose = new Button("x");
         Button buttonMinimize = new Button("-");
