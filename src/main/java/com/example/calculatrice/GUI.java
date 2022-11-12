@@ -40,7 +40,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * InterfaceGraphique permet de creer la fenetre et le contenu de la calculatrice
  */
-public class InterfaceGraphique extends Application{//Interface Application
+public class GUI extends Application implements IView{//Interface Application
     //Création des objets nécéssaires pour la création de la calculatrice
 
     //Crédits accessibles depuis le bouton "i" de la calculatrice en haut à gauche en jaune
@@ -103,7 +103,7 @@ public class InterfaceGraphique extends Application{//Interface Application
 
         //Fichier css avoir des bordures arrondies de la fenêtre
         scene.setFill(Color.TRANSPARENT);
-        scene.getStylesheets().add(Objects.requireNonNull(InterfaceGraphique.class.getResource("Windows.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(GUI.class.getResource("Windows.css")).toExternalForm());
 
         //Initialisation de stage
         stage.initStyle(StageStyle.TRANSPARENT);
@@ -391,6 +391,21 @@ public class InterfaceGraphique extends Application{//Interface Application
     //Lancement de la calculatrice
     public static void main(String[] args) {
         launch();
+    }
+
+    @Override
+    public void affiche() {
+
+    }
+
+    @Override
+    public void change(List<String> data) {
+
+    }
+
+    @Override
+    public void change(String accu) {
+
     }
 
     /*--------------------------------------------------------Easter Egg-----------------------------------------------------------------------------*/

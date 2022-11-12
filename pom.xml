@@ -128,7 +128,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.example.calculatrice/com.example.calculatrice.InterfaceGraphique
+                            <mainClass>com.example.calculatrice/com.example.calculatrice.GUI
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
