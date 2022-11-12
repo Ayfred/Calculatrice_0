@@ -9,16 +9,14 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 /**
- * Le controleur doit assurer la liaison entre l'accumulateur qui est la memoire de la pile et de l'interfaceGrphique qui affiche le contenu de la pile
+ * Le controleur doit assurer la liaison entre l'accumulateur qui est la memoire de la pile et de l'interface graphique GUI qui affiche le contenu de la pile
  */
 public class Controleur implements PropertyChangeListener, EventHandler<MouseEvent> {//implémentation des interfaces PropertyChangeListener et EventHandler
 
     Accumulateur accumulateur = new Accumulateur(new Pile());
     public final GUI GUI;
-
     private boolean historique_resultat = false;
     PropertyChangeSupport support = new PropertyChangeSupport(this);
-
 
     /**
      * Constructeur controleur avec la structure MVC
@@ -39,7 +37,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        //Traitement des différents cas opérations ou opérandes
+        //Traitement des différents cas : opérations ou opérandes
         switch(evt.getPropertyName()){
             case "+" : case "-" : case "x" :
             case "/" :{
@@ -327,7 +325,7 @@ public class Controleur implements PropertyChangeListener, EventHandler<MouseEve
     }
 
     /**
-     * Supprime 1 a 1 les chiffres de resultat (chiffres en chaine de caractere)
+     * Supprime 1 a 1 les chiffres de resultat (chiffres en chaine de caracteres)
      */
     public void supprimer(){
         //Gestion d'erreur : Si on essaie de supprimer la chaine de caractère "Error"

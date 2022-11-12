@@ -31,7 +31,7 @@ public class Accumulateur {
      * @param nombre On entre le nombre qu'on veut arrondir
      * @return nombre arrondi a cinq chiffres
      */
-    public double arrondi(double nombre){
+    public double arrondir(double nombre){
         if(nombre%1 != 0){
             double temp = 1e5;
             return Math.round(nombre * temp) / temp;
@@ -79,7 +79,7 @@ public class Accumulateur {
     public void add(){
         double dernier = pile.pop();
         double avant_dernier = pile.pop();
-        push(arrondi(dernier + avant_dernier), "+");
+        push(arrondir(dernier + avant_dernier), "+");
     }
 
     /**
@@ -88,7 +88,7 @@ public class Accumulateur {
     public void sub(){
         double dernier = pile.pop();
         double avant_dernier = pile.pop();
-        push(arrondi(avant_dernier - dernier), "-");
+        push(arrondir(avant_dernier - dernier), "-");
     }
 
     /**
@@ -97,7 +97,7 @@ public class Accumulateur {
     public void mult(){
         double dernier = pile.pop();
         double avant_dernier = pile.pop();
-        push(arrondi(dernier * avant_dernier), "x");
+        push(arrondir(dernier * avant_dernier), "x");
     }
 
     /**
@@ -105,13 +105,13 @@ public class Accumulateur {
      */
     public void div(){
         swap();
-        push(arrondi(pile.pop()/pile.pop()), "/");
+        push(arrondir(pile.pop()/pile.pop()), "/");
     }
 
     /**
      * Change le signe du dernier element de la pile
      */
-    public void neg(){
+    public void negation(){
         double dernier = pile.pop();
         push(-dernier, "operateur");
     }

@@ -325,7 +325,6 @@ public class GUI extends Application implements IView{//Interface Application
         this.buttons = buttons;
     }
 
-
     /**
      * Mise a jour du Label AffichageResultat
      */
@@ -395,17 +394,17 @@ public class GUI extends Application implements IView{//Interface Application
 
     @Override
     public void affiche() {
-
+        assert true;
     }
 
     @Override
     public void change(List<String> data) {
-
+        assert true;
     }
 
     @Override
     public void change(String accu) {
-
+        assert true;
     }
 
     /*--------------------------------------------------------Easter Egg-----------------------------------------------------------------------------*/
