@@ -1,26 +1,50 @@
-# Calculatrice polonaise
-Calculatrice polonaise avec l'interface de la calculatrice iPhone
+# Calculatrice en notation polonaise inversée
+Calculatrice en notation polonaise inversée avec l'interface de la calculatrice iPhone.
 
-Version 1.01 beta
+- [INSTALLATION](#installation)
+- [DESCRIPTION](#description)
+- [CHANGELOG](#changelog)
+- [RACCOURCIS](#raccourcis)
+- [BUGS](#bugs)
+- [COPYRIGHT](#copyright)
 
-Changelog:
-- Ajout d'un icone
-- Bug fixes
+# INSTALLATION
 
-Future update v1.1:
-- Eviter d'afficher les erreurs pour cela faire des try and catch partout ? à demander
-- nombre à virgule à implementer
+Télécharger la version jar disponible sur Windows, MacOS, Linux:
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Version 1.0 beta
-
-Changelog:
-- Calculatrice polonaise fonctionnelle : ajout de calculs, ajout de clear etc..
-- Ajout d'une interface graphique
-
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    lien du téléchargement
 
 
+# DESCRIPTION
+Qu’est ce une calculatrice en notation polonaise inversée ?
 
-Created and developped by Ayfred & Smilaid
+Inventée en 1924 par le mathématicien polonais Jan Łukasiewicz. La calculatrice en notation polonaise inversée permet d'écrire sans ambiguïté les formules arithmétiques sans parenthèses. Elle diffère d'une calculatrice conventionnelle, à savoir par l'ordre des termes où les opérandes sont présentés devant les opérateurs.
 
+# CHANGELOG
+
+Version 3.2.0:
+
+  - Corrections de bugs
+
+# RACCOURCIS
+    Q                                    Quitter
+    BACK_SPACE                           Supprimer
+    ù                                    Pourcentage                   
+    N                                    Mettre un -
+    .                                    Mettre une virgule
+    C                                    Clear
+    *                                    Multiplication
+    /                                    Division
+    +                                    Addition
+    -                                    Soustraction
+    ENTRER                               Push
+
+# BUGS
+Pour tous bugs trouvés veuillez nous contacter merci.
+
+# COPYRIGHT
+
+Le projet Calculatrice est mis dans le domaine public par les détenteurs des droits d'auteur.
+Pour toutes copies du projet, merci de contacter Ayfred ou Smilaid.
+
+Ce projet a été créé par MU Maxime (Ayfred) et FORAY Léo-Paul (Smilaid).
