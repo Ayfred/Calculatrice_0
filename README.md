@@ -12,7 +12,7 @@ Calculatrice en notation polonaise inversée avec l'interface de la calculatrice
 
 Télécharger la version jar disponible sur Windows, MacOS, Linux:
 
-    https://Ayfred.github.io/Calculatrice_Notation_Polonaise_Inverse/blob/4460ffefe47a14aef36eaf2555a2bf694d00fb7b/Calculator%20v3.2.0.jar
+    https://github.com/Ayfred/Calculatrice_Notation_Polonaise_Inverse/blob/b2852a71dd65b1ec3bab2d1c76f8a4c3f7932e1f/Calculator%20v3.2.0.jar
 
 
 # DESCRIPTION
