@@ -40,7 +40,7 @@ Version 3.2.0:
     ENTRER                               Push
 
 # BUGS
-Pour tous bugs trouvés veuillez nous contacter merci.
+Pour tout bug trouvé veuillez nous contacter merci. 
 
 # COPYRIGHT
 
