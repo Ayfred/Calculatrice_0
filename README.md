@@ -1,6 +1,8 @@
 # Calculatrice en notation polonaise inversée
 Calculatrice en notation polonaise inversée avec l'interface de la calculatrice iPhone.
 
+Projet codé sous Java 8, fonctionne pour les versions de Java 8 ou ultérieures. 
+
 - [INSTALLATION](#installation)
 - [DESCRIPTION](#description)
 - [CHANGELOG](#changelog)
