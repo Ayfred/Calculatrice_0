@@ -40,11 +40,11 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * InterfaceGraphique permet de creer la fenetre et le contenu de la calculatrice
  */
-public class GUI extends Application implements IView{//Interface Application
+public class GUI extends Application{//Interface Application
     //Création des objets nécéssaires pour la création de la calculatrice
 
     //Crédits accessibles depuis le bouton "i" de la calculatrice en haut à gauche en jaune
-    String version = "3.1.8"; String date =  new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+    String version = "3.1.10"; String date =  new SimpleDateFormat("dd-MM-yyyy").format(new Date());
 
     //Taille de la fenêtre
     int largeur = 380; int longueur = 680;
@@ -390,21 +390,6 @@ public class GUI extends Application implements IView{//Interface Application
     //Lancement de la calculatrice
     public static void main(String[] args) {
         launch();
-    }
-
-    @Override
-    public void affiche() {
-        assert true;
-    }
-
-    @Override
-    public void change(List<String> data) {
-        assert true;
-    }
-
-    @Override
-    public void change(String accu) {
-        assert true;
     }
 
     /*--------------------------------------------------------Easter Egg-----------------------------------------------------------------------------*/
