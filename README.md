@@ -3,6 +3,8 @@ Calculatrice en notation polonaise inversée avec l'interface de la calculatrice
 
 Projet codé sous Java 8, fonctionne pour les versions de Java 8 ou ultérieures. 
 
+NB: Le rapport et la fiche d'auto-évaluation sont disponibles.
+
 - [INSTALLATION](#installation)
 - [DESCRIPTION](#description)
 - [CHANGELOG](#changelog)
